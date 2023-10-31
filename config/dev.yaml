@@ -1,0 +1,78 @@
+name: "FuGuApp"
+mode: "debug"
+port: 8090
+version: "v0.0.1"
+start_time: "2023-10-31"
+machine_id: 1
+OwnerEmail: "penghan063@gmail.com"
+landDuration: 48
+cookieName: "sessionid"
+cookieDomain: "localhost:8090"
+sessionMaxAge: 1
+tempJsonPath: "./docs/v2/buildjson/"
+#tempJsonPath: "./tempjson/"
+log:
+  level: "info"
+#  filename: "stargate_backend.log"
+#  max_size: 200
+#  max_age: 30
+#  max_backups: 7
+es:
+  host: 127.0.0.1
+  port: 19200
+  index: "anjian-2022"
+mysql:
+#  host: 192.168.3.66
+#  port: 3306
+  host: 94.74.73.195
+  port: 12121
+  user: "root"
+  password: "123456"
+  dbname: "stargatev1"
+  max_open_conns: 200
+  max_idle_conns: 50
+#mysql:
+#  host: 94.74.73.195
+#  port: 12121
+#  user: "root"
+#  password: "123456"
+#  dbname: "stargatev1"
+#  max_open_conns: 200
+#  max_idle_conns: 50
+redis:
+  host: "94.74.73.195"
+  port: "16379"
+  password: ""
+  db: 0
+#  pool_size: 100
+jwtauth:
+#  jwt_expire_hour: 5
+#  jwt_secret_string: "zhongyingyunjimeiyouxiaoqiang"
+https:
+  enableHttps: false
+#  pemfile: "/stargate/gate-3.io_bundle.pem"
+#  keyfile: "/stargate/gate-3.io.key"
+  pemfile: "/Users/hanpeng/Documents/metamarvel/证书/gate-3.io_bundle.pem"
+  keyfile: "/Users/hanpeng/Documents/metamarvel/证书/gate-3.io.key"
+minio:
+  baseurl: ""
+#etcd:
+#  etcd1: "127.0.0.1:20000"
+#  etcd2: "127.0.0.1:20002"
+#  etcd3: "127.0.0.1:20004"
+etcd:
+  etcd1: "94.74.73.195:20000"
+  etcd2: "94.74.73.195:20002"
+  etcd3: "94.74.73.195:20004"
+aws:
+  bucket: "gate3"
+contractInfo:
+  WinnerUploader: "0xED183440359E45A2C061cFbE89e2b117a1aA7a7F"
+  GoerliAddress: "0xdAA0cfef965998D4c16C1aD25adb00a4689da923"
+  ETHAddress: ""
+  BSCAddress: ""
+  PolygonAddress: ""
+  RangersAddress: ""
+  RangersTestNetAddress: "0x1e1247a56432a60a5c7053e86db0792a55bc33d0"
+  PolygonTestNetAddress: "0xc979216837AA426b914d3cf575352ab44542f4A7"
+  BSCTestNetAddress: "0x03F93F98Eb159f7B730609B98A42ab9b802225F9"

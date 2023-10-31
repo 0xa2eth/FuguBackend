@@ -1,0 +1,93 @@
+
+。version: '3.5'
+services: 
+  fugu:
+    image: ubuntu:18.04
+    restart: always
+    working_dir: /fugu
+    volumes:
+      - ./fugu:/fugu
+    ports:
+      - 18181:8181
+    command: ./fugu dev.yaml
+    networks:
+      bridge_net:
+        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.11
+  stargatehttps:
+    image: ubuntu:18.04
+    restart: always
+    working_dir: /stargatehttps
+    volumes:
+      - ./stargatehttps:/stargatehttps
+    ports:
+      - 18282:8282
+    command: ./stargate dev.yaml
+    networks:
+      bridge_net:
+        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.15
+  datafactory:
+    image: ubuntu:18.04
+    restart: always
+    working_dir: /datafactory
+    volumes:
+      - ./datafactory:/datafactory
+    ports:
+      - 18060:8060
+    command: ./datafactory dev.yaml
+    networks:
+      bridge_net:
+        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.12
+  mysql:
+    image: mysql:8.0
+    restart: always
+    volumes: 
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "12121:3306"
+    environment:
+      - MYSQL_USER= "root"
+      - MYSQL_PASSWORD= "123456"
+      - MYSQL_ROOT_PASSWORD= "123456"
+      - MYSQL_ROOT_HOST= "%"
+    networks:
+      bridge_net:
+        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.13
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 8090:8091
+    volumes: 
+      - ./nginx_conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx_conf/conf.d:/etc/nginx/conf.d
+      - ./frontend/dist:/static_files/dist 
+    networks:
+      bridge_net:
+        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.14 
+  minio:
+    image: minio/minio:RELEASE.2022-02-12T00-51-25Z
+    restart: always
+    working_dir: /minio
+    volumes:
+      - ./minio/data:/data
+    ports:
+      - 9001:9001 # 控制台端口
+      - 9000:9000 # api 端口
+    command: server --console-address ':9001' /data  #指定容器中的目录 /data
+    environment:
+  #   - MINIO_ROOT_USER=minioroot
+  #   - MINIO_ROOT_PASSWORD=minioroot
+  #   - MINIO_DISTRIBUTED_NODES=192.168.121.135,192.168.121.136
+  #   - MINIO_SKIP_CLIENT=yes
+      - MINIO_ACCESS_KEY=minioroot
+      - MINIO_SECRET_KEY=xiawanghan200 
+    networks:
+      bridge_net: 
+        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.16  
+volumes:
+  mysql_data: {}
+  data: {}
+networks:
+  bridge_net:
+    external: true
+    name: ${BRIDGE_NET} 
