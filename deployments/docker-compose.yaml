@@ -1,6 +1,5 @@
-
-。version: '3.5'
-services: 
+version: '3.5'
+services:
   fugu:
     image: ubuntu:18.04
     restart: always
@@ -8,86 +7,53 @@ services:
     volumes:
       - ./fugu:/fugu
     ports:
-      - 18181:8181
+      - 18181:8090
     command: ./fugu dev.yaml
+    # network_mode: host
     networks:
-      bridge_net:
-        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.11
-  stargatehttps:
-    image: ubuntu:18.04
-    restart: always
-    working_dir: /stargatehttps
-    volumes:
-      - ./stargatehttps:/stargatehttps
-    ports:
-      - 18282:8282
-    command: ./stargate dev.yaml
-    networks:
-      bridge_net:
-        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.15
-  datafactory:
-    image: ubuntu:18.04
-    restart: always
-    working_dir: /datafactory
-    volumes:
-      - ./datafactory:/datafactory
-    ports:
-      - 18060:8060
-    command: ./datafactory dev.yaml
-    networks:
-      bridge_net:
-        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.12
+      compose_network:
+        ipv4_address: ${COMPOSE_NETWORK_PREFIX}.11
   mysql:
     image: mysql:8.0
     restart: always
-    volumes: 
-      - mysql_data:/var/lib/mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/conf/:/etc/mysql/conf.d/
     ports:
-      - "12121:3306"
+      - "13306:3306"
+    command: --default-authentication-plugin=mysql_native_password
     environment:
-      - MYSQL_USER= "root"
-      - MYSQL_PASSWORD= "123456"
-      - MYSQL_ROOT_PASSWORD= "123456"
-      - MYSQL_ROOT_HOST= "%"
+      - MYSQL_USER= root
+      - MYSQL_PASSWORD= 123456
+      - MYSQL_ROOT_PASSWORD= 123456
+      - MYSQL_ROOT_HOST= %
     networks:
-      bridge_net:
-        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.13
+      compose_network:
+        ipv4_address: ${COMPOSE_NETWORK_PREFIX}.12
+  redis:
+    image: redis:latest
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - './redis/data:/data'
+    ports:
+      - 16379:6379
+    networks:
+      compose_network:
+        ipv4_address: ${COMPOSE_NETWORK_PREFIX}.13
   nginx:
     image: nginx:latest
     restart: always
     ports:
-      - 8090:8091
-    volumes: 
+      - 10080:80
+    volumes:
       - ./nginx_conf/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx_conf/conf.d:/etc/nginx/conf.d
-      - ./frontend/dist:/static_files/dist 
+      - ./frontend/dist:/static_files/dist
     networks:
-      bridge_net:
-        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.14 
-  minio:
-    image: minio/minio:RELEASE.2022-02-12T00-51-25Z
-    restart: always
-    working_dir: /minio
-    volumes:
-      - ./minio/data:/data
-    ports:
-      - 9001:9001 # 控制台端口
-      - 9000:9000 # api 端口
-    command: server --console-address ':9001' /data  #指定容器中的目录 /data
-    environment:
-  #   - MINIO_ROOT_USER=minioroot
-  #   - MINIO_ROOT_PASSWORD=minioroot
-  #   - MINIO_DISTRIBUTED_NODES=192.168.121.135,192.168.121.136
-  #   - MINIO_SKIP_CLIENT=yes
-      - MINIO_ACCESS_KEY=minioroot
-      - MINIO_SECRET_KEY=xiawanghan200 
-    networks:
-      bridge_net: 
-        ipv4_address: ${BRIDGE_SUBNET_PREFIX}.16  
-volumes:
-  mysql_data: {}
-  data: {}
+      compose_network:
+        ipv4_address: ${COMPOSE_NETWORK_PREFIX}.14
 networks:
-  bridge_net:
+  compose_network:
     external: true
-    name: ${BRIDGE_NET} 
+    name: ${COMPOSE_NETWORK}
