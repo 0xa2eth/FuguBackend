@@ -1,34 +1,42 @@
 package core
 
 import (
+	"FuguBackend/app/code"
+	"FuguBackend/config"
+	"FuguBackend/pkg/browser"
+	"FuguBackend/pkg/color"
+	"FuguBackend/pkg/env"
 	"fmt"
-	"html/template"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"net/http"
 	"net/url"
 	"runtime/debug"
 	"time"
 
-	"github.com/xinliangnote/go-gin-api/assets"
-	"github.com/xinliangnote/go-gin-api/configs"
-	_ "github.com/xinliangnote/go-gin-api/docs"
-	"github.com/xinliangnote/go-gin-api/internal/code"
-	"github.com/xinliangnote/go-gin-api/internal/proposal"
-	"github.com/xinliangnote/go-gin-api/pkg/browser"
-	"github.com/xinliangnote/go-gin-api/pkg/color"
-	"github.com/xinliangnote/go-gin-api/pkg/env"
-	"github.com/xinliangnote/go-gin-api/pkg/errors"
-	"github.com/xinliangnote/go-gin-api/pkg/trace"
-
+	"FuguBackend/app/proposal"
+	"FuguBackend/pkg/errors"
+	"FuguBackend/pkg/trace"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	cors "github.com/rs/cors/wrapper/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 	"golang.org/x/time/rate"
 )
+
+const _UI = `
+
+███████╗██╗   ██╗ ██████╗ ██╗   ██╗    ████████╗ ██████╗ ██╗  ██╗██╗ ██████╗
+██╔════╝██║   ██║██╔════╝ ██║   ██║    ╚══██╔══╝██╔═══██╗╚██╗██╔╝██║██╔════╝
+█████╗  ██║   ██║██║  ███╗██║   ██║       ██║   ██║   ██║ ╚███╔╝ ██║██║     
+██╔══╝  ██║   ██║██║   ██║██║   ██║       ██║   ██║   ██║ ██╔██╗ ██║██║     
+██║     ╚██████╔╝╚██████╔╝╚██████╔╝       ██║   ╚██████╔╝██╔╝ ██╗██║╚██████╗
+╚═╝      ╚═════╝  ╚═════╝  ╚═════╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝
+
+`
 
 type Option func(*option)
 
@@ -239,9 +247,9 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 	}
 
 	fmt.Println(color.Blue(_UI))
-
-	mux.engine.StaticFS("assets", http.FS(assets.Bootstrap))
-	mux.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(assets.Templates, "templates/**/*")))
+	//
+	//mux.engine.StaticFS("assets", http.FS(assets.Bootstrap))
+	//mux.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(assets.Templates, "templates/**/*")))
 
 	// withoutTracePaths 这些请求，默认不记录日志
 	withoutTracePaths := map[string]bool{
@@ -367,7 +375,7 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 
 				if notifyHandler := opt.alertNotify; notifyHandler != nil {
 					notifyHandler(&proposal.AlertMessage{
-						ProjectName:  configs.ProjectName,
+						ProjectName:  config.ProjectName,
 						Env:          env.Active().Value(),
 						TraceID:      traceId,
 						HOST:         context.Host(),
@@ -392,7 +400,7 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 					if err.IsAlert() {
 						if notifyHandler := opt.alertNotify; notifyHandler != nil {
 							notifyHandler(&proposal.AlertMessage{
-								ProjectName:  configs.ProjectName,
+								ProjectName:  config.ProjectName,
 								Env:          env.Active().Value(),
 								TraceID:      traceId,
 								HOST:         context.Host(),
@@ -432,7 +440,7 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 				}
 
 				opt.recordHandler(&proposal.MetricsMessage{
-					ProjectName:  configs.ProjectName,
+					ProjectName:  config.ProjectName,
 					Env:          env.Active().Value(),
 					TraceID:      traceId,
 					HOST:         context.Host(),
@@ -458,10 +466,10 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 
 			// ctx.Request.Header，精简 Header 参数
 			traceHeader := map[string]string{
-				"Content-Type":              ctx.GetHeader("Content-Type"),
-				configs.HeaderLoginToken:    ctx.GetHeader(configs.HeaderLoginToken),
-				configs.HeaderSignToken:     ctx.GetHeader(configs.HeaderSignToken),
-				configs.HeaderSignTokenDate: ctx.GetHeader(configs.HeaderSignTokenDate),
+				"Content-Type":             ctx.GetHeader("Content-Type"),
+				config.HeaderLoginToken:    ctx.GetHeader(config.HeaderLoginToken),
+				config.HeaderSignToken:     ctx.GetHeader(config.HeaderSignToken),
+				config.HeaderSignTokenDate: ctx.GetHeader(config.HeaderSignTokenDate),
 			}
 
 			t.WithRequest(&trace.Request{
@@ -514,7 +522,7 @@ func New(logger *zap.Logger, options ...Option) (Mux, error) {
 	})
 
 	if opt.enableRate {
-		limiter := rate.NewLimiter(rate.Every(time.Second*1), configs.MaxRequestsPerSecond)
+		limiter := rate.NewLimiter(rate.Every(time.Second*1), config.MaxRequestsPerSecond)
 		mux.engine.Use(func(ctx *gin.Context) {
 			context := newContext(ctx)
 			defer releaseContext(context)

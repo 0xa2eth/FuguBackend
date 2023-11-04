@@ -4,12 +4,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xinliangnote/go-gin-api/configs"
-	"github.com/xinliangnote/go-gin-api/pkg/errors"
+	"FuguBackend/config"
 	"github.com/xinliangnote/go-gin-api/pkg/timeutil"
 	"github.com/xinliangnote/go-gin-api/pkg/trace"
-
-	"github.com/go-redis/redis/v7"
 )
 
 type Option func(*option)

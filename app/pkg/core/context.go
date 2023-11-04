@@ -1,6 +1,8 @@
 package core
 
 import (
+	"FuguBackend/app/proposal"
+	"FuguBackend/pkg/trace"
 	"bytes"
 	stdctx "context"
 	"io/ioutil"
@@ -8,9 +10,6 @@ import (
 	"net/url"
 	"strings"
 	"sync"
-
-	"github.com/xinliangnote/go-gin-api/internal/proposal"
-	"github.com/xinliangnote/go-gin-api/pkg/trace"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"

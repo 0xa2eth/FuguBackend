@@ -3,7 +3,7 @@ package code
 import (
 	_ "embed"
 
-	"github.com/xinliangnote/go-gin-api/configs"
+	"FuguBackend/config"
 )
 
 //go:embed code.go
@@ -78,13 +78,13 @@ const (
 )
 
 func Text(code int) string {
-	lang := configs.Get().Language.Local
+	lang := config.Get().Language.Local
 
-	if lang == configs.ZhCN {
+	if lang == config.ZhCN {
 		return zhCNText[code]
 	}
 
-	if lang == configs.EnUS {
+	if lang == config.EnUS {
 		return enUSText[code]
 	}
 

@@ -1,4 +1,5 @@
 // User 内存对齐 省空间
+package src
 
 type User struct {
 	ID            int
@@ -14,7 +15,8 @@ type User struct {
 	LastLogin     int
 	registerTime  int
 }
-
+type Cave struct {
+}
 type Secret struct {
 	ID        int      `json:"ID"` //autoIncrement
 	AuthorID  int      `json:"author_id"`

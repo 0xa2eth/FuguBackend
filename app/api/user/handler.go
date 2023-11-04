@@ -1,18 +1,17 @@
-package admin
+package user
 
 import (
+	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/repository/mysql"
+	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/services/user"
-	"github.com/xinliangnote/go-gin-api/configs"
-	"github.com/xinliangnote/go-gin-api/internal/pkg/core"
-	"github.com/xinliangnote/go-gin-api/internal/repository/mysql"
-	"github.com/xinliangnote/go-gin-api/internal/repository/redis"
-	"github.com/xinliangnote/go-gin-api/internal/services/admin"
-	"github.com/xinliangnote/go-gin-api/pkg/hash"
+	"FuguBackend/config"
+	"FuguBackend/pkg/hash"
 
 	"go.uber.org/zap"
 )
 
-var _ Handler = (*handler)(nil)
+//var _ Handler = (*handler)(nil)
 
 type Handler interface {
 	i()
@@ -90,12 +89,72 @@ type handler struct {
 	adminService user.Service
 }
 
+func (h *handler) Login() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) Logout() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) ModifyPassword() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) Detail() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) ModifyPersonalInfo() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) List() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) Delete() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) Offline() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) UpdateUsed() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) ResetPassword() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) CreateAdminMenu() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *handler) ListAdminMenu() core.HandlerFunc {
+	//TODO implement me
+	panic("implement me")
+}
+
 func New(logger *zap.Logger, db mysql.Repo, cache redis.Repo) Handler {
 	return &handler{
 		logger:       logger,
 		cache:        cache,
-		hashids:      hash.New(configs.Get().HashIds.Secret, configs.Get().HashIds.Length),
-		adminService: admin.New(db, cache),
+		hashids:      hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
+		adminService: user.New(db, cache),
 	}
 }
 

@@ -1,0 +1,46 @@
+[common]
+version = "0.0.1"
+is_debug = false
+log_level = "info"
+log_path = "./logs/fugu.log"
+start_time = "2023-11-01"
+
+[ser]
+addr = ":8091"
+
+
+[mysql]
+database = "stargatev3"
+host = "192.168.3.66"
+log_level = "info"
+max_idle_conns = 10
+max_open_conns = 20
+password = "123456"
+port = 3306
+user = "root"
+
+[redis]
+redishost = "192.168.3.66:6379"
+sign_prefix = "sign:data:address_"
+import_prefix = "import:data:address_"
+password = "123456"
+
+[etcd]
+host1 = "94.74.73.195:20000"
+host2 = "94.74.73.195:20002"
+host3 = "94.74.73.195:20004"
+
+[aws]
+bucket = "gate3"
+access_key = "AKIASDITKHMUVGS5XGHB"
+secret_key = "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"
+region = "ap-northeast-1"
+endpoint = "https://s3.ap-northeast-1.amazonaws.com/"
+
+[jwt]
+issuer = "gate-3.io"
+secret_key = "hp"
+expiration_time = 86400
+
+[twitter]
+access_key = "AAAAAAAAAAAAAAAAAAAAAOcMhQEAAAAAv7AxXoCTM5%2BdfFUhcaOS3TLvWzM%3DMgLOp3wGhKlah2N9fitsuECrcD2gjk1tku6NZgXKFOgE4yrVyJ"

@@ -1,11 +1,12 @@
-package src
+package merkletree
 
 import (
-	"awesomeProject/src/merkletree"
 	"crypto/sha256"
 	"errors"
 	"log"
 	"strconv"
+
+	"github.com/cbergoon/merkletree"
 )
 
 // TestContent implements the Content interface provided by merkletree and represents the content stored in the tree.

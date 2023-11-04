@@ -1,14 +1,30 @@
 package main
 
 import (
+	"FuguBackend/app"
+	"FuguBackend/app/router"
+
+	"FuguBackend/config"
 	"fmt"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
+/*
+
+███████╗██╗   ██╗ ██████╗ ██╗   ██╗    ████████╗ ██████╗ ██╗  ██╗██╗ ██████╗
+██╔════╝██║   ██║██╔════╝ ██║   ██║    ╚══██╔══╝██╔═══██╗╚██╗██╔╝██║██╔════╝
+█████╗  ██║   ██║██║  ███╗██║   ██║       ██║   ██║   ██║ ╚███╔╝ ██║██║
+██╔══╝  ██║   ██║██║   ██║██║   ██║       ██║   ██║   ██║ ██╔██╗ ██║██║
+██║     ╚██████╔╝╚██████╔╝╚██████╔╝       ██║   ╚██████╔╝██╔╝ ██╗██║╚██████╗
+╚═╝      ╚═════╝  ╚═════╝  ╚═════╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝
+
+*/
 // Copyright © 2023 FuGu Toxic <penghan063@gmail.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,16 +38,6 @@ import (
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-const _UI = `
-
-███████╗██╗   ██╗ ██████╗ ██╗   ██╗    ████████╗ ██████╗ ██╗  ██╗██╗ ██████╗
-██╔════╝██║   ██║██╔════╝ ██║   ██║    ╚══██╔══╝██╔═══██╗╚██╗██╔╝██║██╔════╝
-█████╗  ██║   ██║██║  ███╗██║   ██║       ██║   ██║   ██║ ╚███╔╝ ██║██║     
-██╔══╝  ██║   ██║██║   ██║██║   ██║       ██║   ██║   ██║ ██╔██╗ ██║██║     
-██║     ╚██████╔╝╚██████╔╝╚██████╔╝       ██║   ╚██████╔╝██╔╝ ██╗██║╚██████╗
-╚═╝      ╚═════╝  ╚═════╝  ╚═════╝        ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝
-
-`
 
 func main() {
 	Execute()
@@ -41,7 +47,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "gate3",
+	Use:   "FuGu",
 	Short: "A brief description of your application",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
@@ -52,39 +58,25 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		serverCtx := dao.GetServiceCtx()
+		serverCtx := app.GetServiceCtx()
 		if serverCtx == nil {
 			panic("err config")
 		}
-		config.Logger.Info("[INFO]", zap.Any("====>>>>", serverCtx.C.ServerC))
-		r := router.NewRouter(serverCtx)
-		appRouter, err := app.NewPlatform(serverCtx.C, r, serverCtx)
+		config.Logger.Info("[INFO]", zap.Any("====>>>>", serverCtx.C.Server))
+		r := router.SetApiRouter(serverCtx)
+		appInstance, err := app.NewApp(serverCtx.C, r, serverCtx)
 		if err != nil {
 			config.Logger.Error("init error", zap.Error(err))
 			return
 		}
-		if err := blockchain.EthClientInit(); err != nil {
-			config.Logger.Error("eth_client init failed", zap.Error(err))
-			return
-		}
-		if err := utils.SonyFlakeInit(config.Conf.Common.StartTime, 1); err != nil {
-			config.Logger.Error("SonyFlakeInit init failed", zap.Error(err))
-			return
-		}
-		//go func() {
-		//	fmt.Println("==============start\n")
-		//	gate3.DrawTime(context.Background())
-		//}()
-		//执行定时任务
-		gate3.Start()
 
-		appRouter.AppStart()
+		appInstance.AppStart()
 
 		chSig := make(chan os.Signal)
 		signal.Notify(chSig, syscall.SIGINT, syscall.SIGTERM)
 		<-chSig
 
-		appRouter.AppClose()
+		appInstance.AppClose()
 	},
 }
 
@@ -134,34 +126,4 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
-}
-
-type Platform struct {
-	config    *config.Config
-	router    *gin.Engine
-	serverCtx *svc.ServiceCtx
-}
-
-func NewPlatform(config *config.Config, router *gin.Engine, server *svc.ServiceCtx) (*Platform, error) {
-	return &Platform{
-		config:    config,
-		router:    router,
-		serverCtx: server,
-	}, nil
-}
-
-func (p *Platform) AppStart() error {
-	config.Logger.Info("[INFO]", zap.String("service is", " starting ..."), zap.Any("address:", p.config.ServerC.Addr))
-	if err := p.router.Run(p.config.ServerC.Addr); err != nil {
-		config.Logger.Error("start service faild", zap.Error(err))
-		return err
-	}
-	return nil
-}
-
-func (p *Platform) AppClose() error {
-	p.serverCtx.Rds.Close()
-	db, _ := p.serverCtx.Db.DB()
-	db.Close()
-	return nil
 }
