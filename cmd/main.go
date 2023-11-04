@@ -2,8 +2,6 @@ package main
 
 import (
 	"FuguBackend/app"
-	"FuguBackend/app/router"
-
 	"FuguBackend/config"
 	"fmt"
 	homedir "github.com/mitchellh/go-homedir"
@@ -47,36 +45,32 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "FuGu",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "FuGu App",
+	Short: "",
+	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		serverCtx := app.GetServiceCtx()
-		if serverCtx == nil {
-			panic("err config")
-		}
-		config.Logger.Info("[INFO]", zap.Any("====>>>>", serverCtx.C.Server))
-		r := router.SetApiRouter(serverCtx)
-		appInstance, err := app.NewApp(serverCtx.C, r, serverCtx)
+		//serverCtx := app.GetServiceCtx()
+		//if serverCtx == nil {
+		//	panic("err config")
+		//}
+		//config.Logger.Info("[INFO]", zap.Any("====>>>>", serverCtx.C.Server))
+		//router := router.SetApiRouter(serverCtx)
+		//appInstance, err := app.NewApp(serverCtx.C, router, serverCtx)
+		newApp, err := app.NewApp()
 		if err != nil {
 			config.Logger.Error("init error", zap.Error(err))
 			return
 		}
 
-		appInstance.AppStart()
+		newApp.AppStart()
 
 		chSig := make(chan os.Signal)
 		signal.Notify(chSig, syscall.SIGINT, syscall.SIGTERM)
 		<-chSig
 
-		appInstance.AppClose()
+		newApp.AppClose()
 	},
 }
 

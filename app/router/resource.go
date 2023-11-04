@@ -22,14 +22,6 @@ type resource struct {
 	interceptors interceptor.Interceptor
 	cronServer   cron.Server
 }
-
-//	type ServiceCtx struct {
-//		C    *config.Config
-//		Db   *gorm.DB
-//		Rds  *redis.RedisServ
-//		Aws  *s3.S3
-//		Etcd *clientv3.Client
-//	}
 type Server struct {
 	Mux        core.Mux
 	Db         mysql.Repo
