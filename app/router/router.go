@@ -1,133 +1,100 @@
 package router
 
 import (
-	app "FuguBackend/app"
-	"FuguBackend/app/services/user"
-	"time"
-
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"FuguBackend/app/api/user"
+	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/repository/cron"
 )
 
-func SetApiRouter(svcCtx *app.ServiceCtx) *gin.Engine {
-	gin.ForceConsoleColor()
-	gin.SetMode(gin.DebugMode)
-	r := gin.New()
-	r.Use(cors.New(cors.Config{
-		AllowAllOrigins:  true,
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "X-CSRF-Token", "Authorization", "AccessToken", "Token"},
-		ExposeHeaders:    []string{"Content-Length", "Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "X-GW-Error-Code", "X-GW-Error-Message"},
-		AllowCredentials: true,
-		MaxAge:           1 * time.Hour,
-	}))
-	loadv1(r, svcCtx)
-	LoadAdmin(r, svcCtx)
+//type Resource app.Resource
 
-	// setup swagger ui server side
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	return r
-}
+func SetApiRouter(r *resource) {
+	//// helper
+	//helperHandler := helper.New(r.logger, r.db, r.cache)
+	//
+	//helpers := r.mux.Group("/helper")
+	//{
+	//	helpers.GET("/md5/:str", helperHandler.Md5())
+	//	helpers.POST("/sign", helperHandler.Sign())
+	//}
 
-func LoadAdmin(r *gin.Engine, svcCtx *app.ServiceCtx) {
-	{
-		//潜在后台接口
-		//设置项目方
-		adminGroup := r.Group("/admin")
-		adminGroup.GET("/setProject", api.SetProjectHandler())
-	}
-}
+	// admin
+	adminHandler := user.New(r.logger, r.db, r.cache)
 
-func loadv1(r *gin.Engine, svcCtx *app.ServiceCtx) {
-	apiv1 := r.Group("/api")
-	d := apiv1.Group("/demo")
+	// 需要签名验证，无需登录验证，无需 RBAC 权限验证
+	login := r.mux.Group("/api", r.interceptors.CheckSignature())
 	{
-		d.POST("/d", func(ctx *gin.Context) {
-			xhttp.OkJson(ctx, "hi")
-		})
-		d.POST("/login", func(ctx *gin.Context) {
-			login.Login(ctx, svcCtx)
-		})
-	}
-	//node 通讯
-	{
-		apiv1.POST("/eventMonitor", api.EventMonitorHandler())
+		login.POST("/login", adminHandler.Login())
 	}
 
-	//公开接口
+	// 需要签名验证、登录验证，无需 RBAC 权限验证
+	notRBAC := r.mux.Group("/api", core.WrapAuthHandler(r.interceptors.CheckLogin), r.interceptors.CheckSignature())
 	{
-		apiv1.POST("/walletlogin", api.WalletLoginHandler())
-		apiv1.GET("/homeCampaigns", api.HomeCampaignsHandler())
-		apiv1.POST("/requestToSettle", api.RequestToSettleHandler())
-		apiv1.GET("/recommendation", api.RecommendationHandler())
-		apiv1.GET("/gate3dic", api.Gate3DicHandler1())
+		notRBAC.POST("/admin/logout", adminHandler.Logout())
+		notRBAC.PATCH("/admin/modify_password", adminHandler.ModifyPassword())
+		notRBAC.GET("/admin/info", adminHandler.Detail())
+		notRBAC.PATCH("/admin/modify_personal_info", adminHandler.ModifyPersonalInfo())
 	}
 
-	//user && space
-	user.New()
+	// 需要签名验证、登录验证、RBAC 权限验证
+	api := r.mux.Group("/api", core.WrapAuthHandler(r.interceptors.CheckLogin), r.interceptors.CheckSignature(), r.interceptors.CheckRBAC())
 	{
-		apiv1.GET("/userinfo", api.GetUserinfoHandler())
-		apiv1.GET("/messages", api.GetMessagesHandler())
-		apiv1.GET("/myFollowing", api.MyFollowingHandler())
-		apiv1.GET("/readMessage", api.ReadMessageHandler())
-		apiv1.POST("/editSpace", api.EditSpaceHandler())
-		apiv1.POST("/bindWeb2", api.BindingWeb2Handler())
-		apiv1.GET("/spaceProfile", api.GetSpaceprofileHandler())
-		apiv1.GET("/spaceCampaigns", api.SpaceCampaignsHandler())
-	}
-	//project
-	{
-		apiv1.GET("/getProjectProfile", api.GetProjectProfileHandler())
-		apiv1.GET("/getProjectCampaigns", api.ProjectCampaignsHandler())
-		//新ui设计项目方也可以follow和unfollow
-		apiv1.POST("/projectFollow", api.FollowProjectControllerHandler())
-		apiv1.POST("/projectisfollow", api.IsProjectFollowedHandler())
-		//apiv1.POST("/subscribeProject", api.ProjectSubscribeHandler())
-		//apiv1.POST("/projectSubVerify", api.IsProjectSubscribedHandler())
-		apiv1.POST("/launch", api.LaunchHandler())
-		//apiv1.GET("/launchCallback", api.LaunchCallbackHanlder())
-	}
-	//favorite
-	{
-		//apiv1.GET("/myfavorites", api.MyFavoritesHandler())
-		apiv1.GET("/favorite", api.FavoriteHandler())
-	}
-	//Dashboard
-	{
-		apiv1.POST("/createCampaign", api.CreateCampaignHandler())
-		apiv1.GET("/myCampaigns", api.AllMyCampaignHandler())
-		apiv1.POST("/editCampaign", api.EditCampaignHandler())
-		////任务玩法
-		apiv1.POST("/setTasks", api.SetTaskHandler())
-		//
-		apiv1.POST("/createNftContract", api.CreateNftContractHandler())
-		apiv1.GET("/myNftContracts", api.MyNFTContractHandler())
-		//
-		apiv1.POST("/setReward", api.SetRewardInfoHandler())
-		//
-		////startUp
-		apiv1.GET("/startUp", api.StartUpHandler())
-		////winnerList
-		apiv1.GET("/winnerList", api.WinnerListHandler())
-	}
+		// authorized
+		authorizedHandler := authorized.New(r.logger, r.db, r.cache)
+		api.POST("/authorized", authorizedHandler.Create())
+		api.GET("/authorized", authorizedHandler.List())
+		api.PATCH("/authorized/used", authorizedHandler.UpdateUsed())
+		api.DELETE("/authorized/:id", core.AliasForRecordMetrics("/api/authorized/info"), authorizedHandler.Delete())
 
-	//campaign
-	{
-		//CampaignInfo
-		apiv1.GET("/campaignInfo", api.CampaignInfoHandler())
-		apiv1.GET("/campaignActivity", api.CampaignActivityHandler())
-		apiv1.GET("/participants", api.ParticipantsHandler())
+		api.POST("/authorized_api", authorizedHandler.CreateAPI())
+		api.GET("/authorized_api", authorizedHandler.ListAPI())
+		api.DELETE("/authorized_api/:id", core.AliasForRecordMetrics("/api/authorized_api/info"), authorizedHandler.DeleteAPI())
 
-		//参与项目 和 任务验证
-		apiv1.GET("/verify", api.TaskVerifyHandler())
+		api.POST("/admin", adminHandler.Create())
+		api.GET("/admin", adminHandler.List())
+		api.PATCH("/admin/used", adminHandler.UpdateUsed())
+		api.PATCH("/admin/offline", adminHandler.Offline())
+		api.PATCH("/admin/reset_password/:id", core.AliasForRecordMetrics("/api/admin/reset_password"), adminHandler.ResetPassword())
+		api.DELETE("/admin/:id", core.AliasForRecordMetrics("/api/admin"), adminHandler.Delete())
+
+		api.POST("/admin/menu", adminHandler.CreateAdminMenu())
+		api.GET("/admin/menu/:id", core.AliasForRecordMetrics("/api/admin/menu"), adminHandler.ListAdminMenu())
+
+		// menu
+		menuHandler := menu.New(r.logger, r.db, r.cache)
+		api.POST("/menu", menuHandler.Create())
+		api.GET("/menu", menuHandler.List())
+		api.GET("/menu/:id", core.AliasForRecordMetrics("/api/menu"), menuHandler.Detail())
+		api.PATCH("/menu/used", menuHandler.UpdateUsed())
+		api.PATCH("/menu/sort", menuHandler.UpdateSort())
+		api.DELETE("/menu/:id", core.AliasForRecordMetrics("/api/menu"), menuHandler.Delete())
+		api.POST("/menu_action", menuHandler.CreateAction())
+		api.GET("/menu_action", menuHandler.ListAction())
+		api.DELETE("/menu_action/:id", core.AliasForRecordMetrics("/api/menu_action"), menuHandler.DeleteAction())
+
+		// tool
+		toolHandler := tool.New(r.logger, r.db, r.cache)
+		api.GET("/tool/hashids/encode/:id", core.AliasForRecordMetrics("/api/tool/hashids/encode"), toolHandler.HashIdsEncode())
+		api.GET("/tool/hashids/decode/:id", core.AliasForRecordMetrics("/api/tool/hashids/decode"), toolHandler.HashIdsDecode())
+		api.POST("/tool/cache/search", toolHandler.SearchCache())
+		api.PATCH("/tool/cache/clear", toolHandler.ClearCache())
+		api.GET("/tool/data/dbs", toolHandler.Dbs())
+		api.POST("/tool/data/tables", toolHandler.Tables())
+		api.POST("/tool/data/mysql", toolHandler.SearchMySQL())
+		api.POST("/tool/send_message", toolHandler.SendMessage())
+
+		// config
+		configHandler := config.New(r.logger, r.db, r.cache)
+		api.PATCH("/config/email", configHandler.Email())
+
+		// cron
+		cronHandler := cron.New(r.logger, r.db, r.cache, r.cronServer)
+		api.POST("/cron", cronHandler.Create())
+		api.GET("/cron", cronHandler.List())
+		api.GET("/cron/:id", core.AliasForRecordMetrics("/api/cron/detail"), cronHandler.Detail())
+		api.POST("/cron/:id", core.AliasForRecordMetrics("/api/cron/modify"), cronHandler.Modify())
+		api.PATCH("/cron/used", cronHandler.UpdateUsed())
+		api.PATCH("/cron/exec/:id", core.AliasForRecordMetrics("/api/cron/exec"), cronHandler.Execute())
+
 	}
-
-	//mining
-	{
-		apiv1.GET("/config", api.GetConfigHandler())
-		apiv1.GET("/rewardsPool", api.GetRewardPoolHandler())
-	}
-
 }

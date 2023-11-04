@@ -102,7 +102,7 @@ var ResponseArticle []*Article
 func rangeTree(param interface{}) {
 	var forest []*Tree
 	forest = GetForest()
-	for i, tree := range forest {
+	for _, tree := range forest {
 		proof := tree.getProof(param)
 		isLeaf := tree.verifyLeaf(proof, param)
 		if isLeaf {

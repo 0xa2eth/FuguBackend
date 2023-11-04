@@ -1,13 +1,12 @@
 package interceptor
 
 import (
-	"github.com/xinliangnote/go-gin-api/internal/pkg/core"
-	"github.com/xinliangnote/go-gin-api/internal/proposal"
-	"github.com/xinliangnote/go-gin-api/internal/repository/mysql"
-	"github.com/xinliangnote/go-gin-api/internal/repository/redis"
-	"github.com/xinliangnote/go-gin-api/internal/services/admin"
-	"github.com/xinliangnote/go-gin-api/internal/services/authorized"
+	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/proposal"
+	"FuguBackend/app/repository/mysql"
+	"FuguBackend/app/services/user"
 
+	"FuguBackend/app/repository/redis"
 	"go.uber.org/zap"
 )
 
@@ -32,7 +31,7 @@ type interceptor struct {
 	cache             redis.Repo
 	db                mysql.Repo
 	authorizedService authorized.Service
-	adminService      admin.Service
+	userService       user.Service
 }
 
 func New(logger *zap.Logger, cache redis.Repo, db mysql.Repo) Interceptor {
@@ -41,7 +40,7 @@ func New(logger *zap.Logger, cache redis.Repo, db mysql.Repo) Interceptor {
 		cache:             cache,
 		db:                db,
 		authorizedService: authorized.New(db, cache),
-		adminService:      admin.New(db, cache),
+		userService:       user.New(db, cache),
 	}
 }
 

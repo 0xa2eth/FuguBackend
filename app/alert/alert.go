@@ -1,10 +1,10 @@
 package alert
 
 import (
-	"github.com/xinliangnote/go-gin-api/configs"
-	"github.com/xinliangnote/go-gin-api/internal/proposal"
-	"github.com/xinliangnote/go-gin-api/pkg/errors"
-	"github.com/xinliangnote/go-gin-api/pkg/mail"
+	"FuguBackend/app/proposal"
+	"FuguBackend/config"
+	"FuguBackend/pkg/errors"
+	"FuguBackend/pkg/mail"
 
 	"go.uber.org/zap"
 )
@@ -16,7 +16,7 @@ func NotifyHandler(logger *zap.Logger) func(msg *proposal.AlertMessage) {
 	}
 
 	return func(msg *proposal.AlertMessage) {
-		cfg := configs.Get().Mail
+		cfg := config.Get().Mail
 		if cfg.Host == "" || cfg.Port == 0 || cfg.User == "" || cfg.Pass == "" || cfg.To == "" {
 			logger.Error("Mail config error")
 			return

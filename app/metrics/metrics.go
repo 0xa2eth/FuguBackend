@@ -1,7 +1,7 @@
 package metrics
 
 import (
-	"github.com/xinliangnote/go-gin-api/internal/proposal"
+	"FuguBackend/app/proposal"
 
 	"go.uber.org/zap"
 )

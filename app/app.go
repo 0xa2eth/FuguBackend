@@ -1,6 +1,7 @@
 package app
 
 import (
+	"FuguBackend/app/router"
 	"FuguBackend/config"
 	"FuguBackend/pkg/env"
 	"FuguBackend/pkg/logger"
@@ -43,7 +44,7 @@ func NewApp() (*App, error) {
 		_ = accessLogger.Sync()
 		_ = cronLogger.Sync()
 	}()
-	server, err := NewHTTPServer(accessLogger, cronLogger)
+	server, err := router.NewHTTPServer(accessLogger, cronLogger)
 	if err != nil {
 		return nil, err
 	}

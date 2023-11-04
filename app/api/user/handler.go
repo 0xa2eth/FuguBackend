@@ -83,10 +83,10 @@ type Handler interface {
 }
 
 type handler struct {
-	logger       *zap.Logger
-	cache        redis.Repo
-	hashids      hash.Hash
-	adminService user.Service
+	logger      *zap.Logger
+	cache       redis.Repo
+	hashids     hash.Hash
+	userService user.Service
 }
 
 func (h *handler) Login() core.HandlerFunc {
@@ -151,10 +151,10 @@ func (h *handler) ListAdminMenu() core.HandlerFunc {
 
 func New(logger *zap.Logger, db mysql.Repo, cache redis.Repo) Handler {
 	return &handler{
-		logger:       logger,
-		cache:        cache,
-		hashids:      hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
-		adminService: user.New(db, cache),
+		logger:      logger,
+		cache:       cache,
+		hashids:     hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
+		userService: user.New(db, cache),
 	}
 }
 

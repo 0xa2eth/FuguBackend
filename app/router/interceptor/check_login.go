@@ -1,19 +1,20 @@
 package interceptor
 
 import (
+	"FuguBackend/app/proposal"
+	"FuguBackend/config"
 	"encoding/json"
 	"net/http"
 
-	"github.com/xinliangnote/go-gin-api/configs"
-	"github.com/xinliangnote/go-gin-api/internal/code"
-	"github.com/xinliangnote/go-gin-api/internal/pkg/core"
-	"github.com/xinliangnote/go-gin-api/internal/proposal"
-	"github.com/xinliangnote/go-gin-api/internal/repository/redis"
-	"github.com/xinliangnote/go-gin-api/pkg/errors"
+	"FuguBackend/app/code"
+	"FuguBackend/app/pkg/core"
+
+	"FuguBackend/app/repository/redis"
+	"FuguBackend/pkg/errors"
 )
 
 func (i *interceptor) CheckLogin(ctx core.Context) (sessionUserInfo proposal.SessionUserInfo, err core.BusinessError) {
-	token := ctx.GetHeader(configs.HeaderLoginToken)
+	token := ctx.GetHeader(config.HeaderLoginToken)
 	if token == "" {
 		err = core.Error(
 			http.StatusUnauthorized,
@@ -23,7 +24,7 @@ func (i *interceptor) CheckLogin(ctx core.Context) (sessionUserInfo proposal.Ses
 		return
 	}
 
-	if !i.cache.Exists(configs.RedisKeyPrefixLoginUser + token) {
+	if !i.cache.Exists(config.RedisKeyPrefixLoginUser + token) {
 		err = core.Error(
 			http.StatusUnauthorized,
 			code.AuthorizationError,
@@ -32,7 +33,7 @@ func (i *interceptor) CheckLogin(ctx core.Context) (sessionUserInfo proposal.Ses
 		return
 	}
 
-	cacheData, cacheErr := i.cache.Get(configs.RedisKeyPrefixLoginUser+token, redis.WithTrace(ctx.Trace()))
+	cacheData, cacheErr := i.cache.Get(config.RedisKeyPrefixLoginUser+token, redis.WithTrace(ctx.Trace()))
 	if cacheErr != nil {
 		err = core.Error(
 			http.StatusUnauthorized,
