@@ -1,3 +1,6 @@
+[cmd]
+genTables = 'user'
+
 [common]
 version = "0.0.1"
 is_debug = false
@@ -8,22 +11,34 @@ start_time = "2023-11-01"
 [ser]
 addr = ":8091"
 
-
 [mysql]
-database = "stargatev3"
-host = "192.168.3.66"
-log_level = "info"
-max_idle_conns = 10
-max_open_conns = 20
-password = "123456"
-port = 3306
-user = "root"
 
+    [mysql.base]
+        connmaxlifetime = 60
+        maxidleconn = 60
+        maxopenconn = 10
+        loglevel = "info"
+
+    [mysql.read]
+        host = "127.0.0.1"
+        port = "13306"
+        database = "fugu"
+        pass = "123456"
+        user = "root"
+
+    [mysql.write]
+        host = "127.0.0.1"
+        port = "13306"
+        database = "fugu"
+        pass = "123456"
+        user = "root"
 [redis]
-redishost = "192.168.3.66:6379"
-sign_prefix = "sign:data:address_"
-import_prefix = "import:data:address_"
-password = "123456"
+addr = "127.0.0.1:16379"
+db = 0
+maxretries = 3
+minidleconns = 5
+pass = ""
+poolsize = 10
 
 [etcd]
 host1 = "94.74.73.195:20000"
@@ -44,3 +59,19 @@ expiration_time = 86400
 
 [twitter]
 access_key = "AAAAAAAAAAAAAAAAAAAAAOcMhQEAAAAAv7AxXoCTM5%2BdfFUhcaOS3TLvWzM%3DMgLOp3wGhKlah2N9fitsuECrcD2gjk1tku6NZgXKFOgE4yrVyJ"
+
+
+[hashids]
+length = 12
+secret = "6ab6122836cfef95f8db"
+
+[language]
+local = "zh-cn"
+
+
+[mail]
+host = "smtp.163.com"
+pass = ""
+port = 465
+to = ""
+user = ""

@@ -1,0 +1,2 @@
+{"level":"info","ts":"2023-11-05T22:06:32.269+0800","caller":"app/app.go:67","msg":"[INFO]","service is":" starting ...","address:":":8091"}
+{"level":"info","ts":"2023-11-05T22:06:51.761+0800","caller":"app/app.go:67","msg":"[INFO]","service is":" starting ...","address:":":8091"}

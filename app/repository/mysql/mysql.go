@@ -152,7 +152,7 @@ func dbConnect(user, pass, addr, dbName string) (*gorm.DB, error) {
 	sqlDB.SetMaxIdleConns(cfg.Base.MaxIdleConns)
 
 	// 设置最大连接超时
-	sqlDB.SetConnMaxLifetime(time.Minute * cfg.Base.ConnMaxLifeTime)
+	sqlDB.SetConnMaxLifetime(time.Minute * time.Duration(cfg.Base.ConnMaxLifeTime))
 
 	// 使用插件
 	db.Use(&TracePlugin{})

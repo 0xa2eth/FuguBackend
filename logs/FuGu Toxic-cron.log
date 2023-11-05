@@ -1,0 +1,7 @@
+{"level":"fatal","time":"2023-11-05 21:51:23","caller":"cron/cron_start.go:21","msg":"cron initialize tasks count err","domain":"FuGu Toxic[fat]","error":"Error 1146 (42S02): Table 'fugu.cron_task' doesn't exist"}
+{"level":"fatal","time":"2023-11-05 21:56:28","caller":"cron/cron_start.go:21","msg":"cron initialize tasks count err","domain":"FuGu Toxic[fat]","error":"Error 1146 (42S02): Table 'fugu.cron_task' doesn't exist"}
+{"level":"fatal","time":"2023-11-05 21:59:41","caller":"cron/cron_start.go:21","msg":"cron initialize tasks count err","domain":"FuGu Toxic[fat]","error":"Error 1146 (42S02): Table 'fugu.cron_task' doesn't exist"}
+{"level":"fatal","time":"2023-11-05 22:00:38","caller":"cron/cron_start.go:21","msg":"cron initialize tasks count err","domain":"FuGu Toxic[fat]","error":"Error 1146 (42S02): Table 'fugu.cron_task' doesn't exist"}
+{"level":"fatal","time":"2023-11-05 22:01:14","caller":"cron/cron_start.go:21","msg":"cron initialize tasks count err","domain":"FuGu Toxic[fat]","error":"Error 1146 (42S02): Table 'fugu.cron_task' doesn't exist"}
+{"level":"fatal","time":"2023-11-05 22:05:12","caller":"cron/cron_start.go:21","msg":"cron initialize tasks count err","domain":"FuGu Toxic[fat]","error":"Error 1146 (42S02): Table 'fugu.cron_task' doesn't exist"}
+{"level":"fatal","time":"2023-11-05 22:06:01","caller":"cron/cron_start.go:21","msg":"cron initialize tasks count err","domain":"FuGu Toxic[fat]","error":"Error 1146 (42S02): Table 'fugu.cron_task' doesn't exist"}

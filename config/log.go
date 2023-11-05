@@ -2,11 +2,10 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"time"
-
-	"fmt"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

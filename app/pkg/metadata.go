@@ -5,6 +5,7 @@ type User struct {
 	ID            int
 	NftNum        int
 	FtNum         int
+	TicketNum     int
 	NickName      string
 	Bios          string
 	Avatar        string

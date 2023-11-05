@@ -1,14 +1,16 @@
 package app
 
 import (
+	"fmt"
+	"net/http"
+
 	"FuguBackend/app/router"
 	"FuguBackend/config"
 	"FuguBackend/pkg/env"
 	"FuguBackend/pkg/logger"
 	"FuguBackend/pkg/timeutil"
-	"fmt"
+
 	"go.uber.org/zap"
-	"net/http"
 )
 
 type App struct {
@@ -18,6 +20,7 @@ type App struct {
 }
 
 func NewApp() (*App, error) {
+	config.LoadConfig()
 	// 初始化 access logger
 	accessLogger, err := logger.NewJSONLogger(
 		logger.WithDisableConsole(),

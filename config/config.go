@@ -1,13 +1,11 @@
 package config
 
 import (
-	"io/ioutil"
-	"log"
-	"time"
-
 	"github.com/naoina/toml"
 	"github.com/naoina/toml/ast"
 	"github.com/spf13/viper"
+	"io/ioutil"
+	"log"
 )
 
 // CommonConfig Common
@@ -25,33 +23,35 @@ type ServerConf struct {
 }
 
 type RedisConf struct {
-	RedisHost    string
-	SignPrefix   string
-	ImportPrefix string
-	Password     string
+	Addr         string `toml:"addr"`
+	Pass         string `toml:"pass"`
+	Db           int    `toml:"db"`
+	MaxRetries   int    `toml:"maxretries"`
+	PoolSize     int    `toml:"poolsize"`
+	MinIdleConns int    `toml:"minidleconns"`
 }
 
 // MySQLConf mysql配置
 type MySQLConf struct {
 	Read struct {
-		User     string `toml:"user" json:"user"`         // 用户
-		Password string `toml:"password" json:"password"` // 密码
-		Host     string `toml:"host" json:"host"`         // 地址
-		Port     int    `toml:"port" json:"port"`         // 端口
+		User     string `toml:"user" json:"user"` // 用户
+		Password string `toml:"pass" json:"pass"` // 密码
+		Host     string `toml:"host" json:"host"` // 地址
+		Port     string `toml:"port" json:"port"` // 端口
 		Database string `toml:"database" json:"database"`
 	} `toml:"read" json:"read"`
 	Write struct {
-		User     string `toml:"user" json:"user"`         // 用户
-		Password string `toml:"password" json:"password"` // 密码
-		Host     string `toml:"host" json:"host"`         // 地址
-		Port     int    `toml:"port" json:"port"`         // 端口
+		User     string `toml:"user" json:"user"` // 用户
+		Password string `toml:"pass" json:"pass"` // 密码
+		Host     string `toml:"host" json:"host"` // 地址
+		Port     string `toml:"port" json:"port"` // 端口
 		Database string `toml:"database" json:"database"`
 	} `toml:"write" json:"write"`
 	Base struct {
-		MaxIdleConns    int           `toml:"max_idle_conns" mapstructure:"max_idle_conns" json:"max_idle_conns"`             // 最大空闲连接数
-		MaxOpenConns    int           `toml:"max_open_conns" mapstructure:"max_open_conns" json:"max_open_conns"`             // 最大打开连接数
-		ConnMaxLifeTime time.Duration `toml:"conn_max_life_time" mapstructure:"conn_max_life_time" json:"conn_max_life_time"` // 连接复用时间
-		LogLevel        string        `toml:"log_level" mapstructure:"log_level" json:"log_level"`                            // 日志级别，枚举（info、warn、error和silent）
+		MaxIdleConns    int    `toml:"maxidleconn" mapstructure:"maxidleconn" json:"maxidleconn"`             // 最大空闲连接数
+		MaxOpenConns    int    `toml:"maxopenconn" mapstructure:"maxopenconn" json:"maxopenconn"`             // 最大打开连接数
+		ConnMaxLifeTime int    `toml:"connmaxlifetime" mapstructure:"connmaxlifetime" json:"connmaxlifetime"` // 连接复用时间
+		LogLevel        string `toml:"loglevel" mapstructure:"loglevel" json:"loglevel"`                      // 日志级别，枚举（info、warn、error和silent）
 
 	} `toml:"base" json:"base"`
 }
@@ -80,26 +80,33 @@ type TwitterConf struct {
 	AccessKey string `toml:"access_key" json:"access_key"`
 }
 type HashIds struct {
-	Secret string `toml:"secret"`
-	Length int    `toml:"length"`
+	Secret string `toml:"secret" json:"secret"`
+	Length int    `toml:"length" json:"length"`
 }
-
+type Mail struct {
+	Host string `toml:"host"`
+	Port int    `toml:"port"`
+	User string `toml:"user"`
+	Pass string `toml:"pass"`
+	To   string `toml:"to"`
+}
 type Language struct {
 	Local string `toml:"local"`
 }
 
 // Config ...
 type Config struct {
-	Common   *CommonConfig
-	Server   *ServerConf
-	MySQL    *MySQLConf
-	Redis    *RedisConf
-	Etcd     *EtcdConf
-	Aws      *AwsConf
-	Jwt      *JwtConf
-	Twitter  *TwitterConf
-	HashIds  *HashIds
-	Language *Language
+	Common   *CommonConfig `toml:"common"`
+	Server   *ServerConf   `toml:"server"`
+	MySQL    *MySQLConf    `toml:"mysql"`
+	Redis    *RedisConf    `toml:"redis"`
+	Etcd     *EtcdConf     `toml:"etcd"`
+	Aws      *AwsConf      `toml:"aws"`
+	Jwt      *JwtConf      `toml:"jwt"`
+	Twitter  *TwitterConf  `toml:"twitter"`
+	HashIds  *HashIds      `toml:"hashids"`
+	Language *Language     `toml:"language"`
+	Mail     *Mail         `toml:"mail"`
 }
 
 // Conf ...
@@ -110,13 +117,13 @@ func LoadConfig() {
 	// init the new config params
 	initConf()
 
-	contents, err := ioutil.ReadFile("gate3.toml")
+	contents, err := ioutil.ReadFile("./config/fugucnf.toml")
 	if err != nil {
-		log.Fatal("[FATAL] load gate3.toml: ", err)
+		log.Fatal("[FATAL] load fugucnf.toml: ", err)
 	}
 	tbl, err := toml.Parse(contents)
 	if err != nil {
-		log.Fatal("[FATAL] parse gate3.toml: ", err)
+		log.Fatal("[FATAL] parse fugucnf.toml: ", err)
 	}
 	// parse common config
 	parseCommon(tbl)
@@ -138,18 +145,24 @@ func LoadConfig() {
 	parseJwt(tbl)
 
 	parseTwitter(tbl)
+
+	parseHashids(tbl)
+
 }
 
 func initConf() {
 	Conf = &Config{
-		Common:  &CommonConfig{},
-		Server:  &ServerConf{},
-		MySQL:   &MySQLConf{},
-		Redis:   &RedisConf{},
-		Etcd:    &EtcdConf{},
-		Aws:     &AwsConf{},
-		Jwt:     &JwtConf{},
-		Twitter: &TwitterConf{},
+		Common:   &CommonConfig{},
+		Server:   &ServerConf{},
+		MySQL:    &MySQLConf{},
+		Redis:    &RedisConf{},
+		Etcd:     &EtcdConf{},
+		Aws:      &AwsConf{},
+		Jwt:      &JwtConf{},
+		Twitter:  &TwitterConf{},
+		HashIds:  &HashIds{},
+		Language: &Language{},
+		Mail:     &Mail{},
 	}
 }
 
@@ -264,7 +277,19 @@ func parseTwitter(tbl *ast.Table) {
 		}
 	}
 }
+func parseHashids(tbl *ast.Table) {
+	if val, ok := tbl.Fields["hashids"]; ok {
+		subTbl, ok := val.(*ast.Table)
+		if !ok {
+			log.Fatalln("[FATAL] : ", subTbl)
+		}
 
+		err := toml.UnmarshalTable(subTbl, Conf.HashIds)
+		if err != nil {
+			log.Fatalln("[FATAL] parseHashids: ", err, subTbl)
+		}
+	}
+}
 func UnmarshalConfig(configFilePath string) (*Config, error) {
 	viper.SetConfigFile(configFilePath)
 	viper.SetConfigType("toml")

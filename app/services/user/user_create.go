@@ -2,7 +2,6 @@ package user
 
 import (
 	"FuguBackend/app/pkg/core"
-	"FuguBackend/app/pkg/password"
 	"FuguBackend/app/repository/mysql/user"
 )
 
@@ -14,14 +13,7 @@ type CreateUserData struct {
 }
 
 func (s *service) Create(ctx core.Context, adminData *CreateUserData) (id int32, err error) {
-	model := admin.NewModel()
-	model.Username = adminData.Username
-	model.Password = password.GeneratePassword(adminData.Password)
-	model.Nickname = adminData.Nickname
-	model.Mobile = adminData.Mobile
-	model.CreatedUser = ctx.SessionUserInfo().UserName
-	model.IsUsed = 1
-	model.IsDeleted = -1
+	model := user.NewModel()
 
 	id, err = model.Create(s.db.GetDbW().WithContext(ctx.RequestContext()))
 	if err != nil {

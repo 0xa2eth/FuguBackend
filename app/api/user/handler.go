@@ -89,66 +89,6 @@ type handler struct {
 	userService user.Service
 }
 
-func (h *handler) Login() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) Logout() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) ModifyPassword() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) Detail() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) ModifyPersonalInfo() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) List() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) Delete() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) Offline() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) UpdateUsed() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) ResetPassword() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) CreateAdminMenu() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (h *handler) ListAdminMenu() core.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
-}
-
 func New(logger *zap.Logger, db mysql.Repo, cache redis.Repo) Handler {
 	return &handler{
 		logger:      logger,

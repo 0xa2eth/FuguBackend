@@ -1,15 +1,19 @@
 package hash
 
-import (
-	"github.com/speps/go-hashids"
-)
+import "github.com/speps/go-hashids"
 
 func (h *hash) HashidsEncode(params []int) (string, error) {
 	hd := hashids.NewData()
 	hd.Salt = h.secret
 	hd.MinLength = h.length
 
-	hashStr, err := hashids.NewWithData(hd).Encode(params)
+	data, err := hashids.NewWithData(hd)
+	if err != nil {
+		return "", err
+	}
+
+	hashStr, err := data.Encode(params)
+
 	if err != nil {
 		return "", err
 	}
@@ -21,8 +25,11 @@ func (h *hash) HashidsDecode(hash string) ([]int, error) {
 	hd := hashids.NewData()
 	hd.Salt = h.secret
 	hd.MinLength = h.length
-
-	ids, err := hashids.NewWithData(hd).DecodeWithError(hash)
+	data, err := hashids.NewWithData(hd)
+	if err != nil {
+		return nil, err
+	}
+	ids, err := data.DecodeWithError(hash)
 	if err != nil {
 		return nil, err
 	}

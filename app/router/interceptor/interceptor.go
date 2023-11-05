@@ -4,9 +4,9 @@ import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/proposal"
 	"FuguBackend/app/repository/mysql"
+	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/services/user"
 
-	"FuguBackend/app/repository/redis"
 	"go.uber.org/zap"
 )
 
@@ -17,7 +17,7 @@ type Interceptor interface {
 	CheckLogin(ctx core.Context) (info proposal.SessionUserInfo, err core.BusinessError)
 
 	// CheckRBAC 验证 RBAC 权限是否合法
-	CheckRBAC() core.HandlerFunc
+	//CheckRBAC() core.HandlerFunc
 
 	// CheckSignature 验证签名是否合法，对用签名算法 pkg/signature
 	CheckSignature() core.HandlerFunc
@@ -27,20 +27,20 @@ type Interceptor interface {
 }
 
 type interceptor struct {
-	logger            *zap.Logger
-	cache             redis.Repo
-	db                mysql.Repo
-	authorizedService authorized.Service
-	userService       user.Service
+	logger *zap.Logger
+	cache  redis.Repo
+	db     mysql.Repo
+	//authorizedService authorized.Service
+	userService user.Service
 }
 
 func New(logger *zap.Logger, cache redis.Repo, db mysql.Repo) Interceptor {
 	return &interceptor{
-		logger:            logger,
-		cache:             cache,
-		db:                db,
-		authorizedService: authorized.New(db, cache),
-		userService:       user.New(db, cache),
+		logger: logger,
+		cache:  cache,
+		db:     db,
+		//authorizedService: authorized.New(db, cache),
+		userService: user.New(db, cache),
 	}
 }
 

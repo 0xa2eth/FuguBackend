@@ -1,15 +1,14 @@
 package interceptor
 
 import (
-	"FuguBackend/app/proposal"
-	"FuguBackend/config"
 	"encoding/json"
 	"net/http"
 
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
-
+	"FuguBackend/app/proposal"
 	"FuguBackend/app/repository/redis"
+	"FuguBackend/config"
 	"FuguBackend/pkg/errors"
 )
 

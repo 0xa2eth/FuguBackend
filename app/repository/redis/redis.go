@@ -5,8 +5,11 @@ import (
 	"time"
 
 	"FuguBackend/config"
-	"github.com/xinliangnote/go-gin-api/pkg/timeutil"
-	"github.com/xinliangnote/go-gin-api/pkg/trace"
+	"FuguBackend/pkg/errors"
+	"FuguBackend/pkg/timeutil"
+	"FuguBackend/pkg/trace"
+
+	"github.com/go-redis/redis/v7"
 )
 
 type Option func(*option)
@@ -56,7 +59,7 @@ func New() (Repo, error) {
 func (c *cacheRepo) i() {}
 
 func redisConnect() (*redis.Client, error) {
-	cfg := configs.Get().Redis
+	cfg := config.Get().Redis
 	client := redis.NewClient(&redis.Options{
 		Addr:         cfg.Addr,
 		Password:     cfg.Pass,

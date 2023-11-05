@@ -1,27 +1,27 @@
 package core
 
 import (
-	"FuguBackend/app/code"
-	"FuguBackend/config"
-	"FuguBackend/pkg/browser"
-	"FuguBackend/pkg/color"
-	"FuguBackend/pkg/env"
 	"fmt"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-
 	"net/http"
 	"net/url"
 	"runtime/debug"
 	"time"
 
+	"FuguBackend/app/code"
 	"FuguBackend/app/proposal"
+	"FuguBackend/config"
+	"FuguBackend/pkg/browser"
+	"FuguBackend/pkg/color"
+	"FuguBackend/pkg/env"
 	"FuguBackend/pkg/errors"
 	"FuguBackend/pkg/trace"
+
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	cors "github.com/rs/cors/wrapper/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 	"golang.org/x/time/rate"
