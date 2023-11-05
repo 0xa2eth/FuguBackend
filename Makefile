@@ -2,7 +2,7 @@ GOCMD		=		go
 GORUN		=		$(GOCMD) run
 GOBUILD		=		CGO_ENABLED=0 $(GOCMD) build
 DIST		=		./build
-BINARY		=		$(DIST)/fugu
+BINARY		=		$(DIST)
 
 # 64-Bit
 # Linux
@@ -36,7 +36,7 @@ build-mac:
 .PHONY: build-linux
 build-linux:
 	mkdir -p $(DIST);
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BINARY) ./
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BINARY) ./cmd/main.go
 
 .PHONY: build-linux-mini
 build-linux-mini:
