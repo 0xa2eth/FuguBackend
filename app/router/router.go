@@ -20,6 +20,11 @@ func SetApiRouter(r *resource) {
 	// admin
 	adminHandler := user.New(r.logger, r.db, r.cache)
 
+	test := r.mux.Group("")
+	test.GET("/ping", func(c core.Context) {
+		c.ResponseWriter().WriteString("pong")
+	})
+
 	// 需要签名验证，无需登录验证，无需 RBAC 权限验证
 	login := r.mux.Group("/api", r.interceptors.CheckSignature())
 	{

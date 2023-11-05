@@ -9,7 +9,7 @@ log_path = "./logs/fugu.log"
 start_time = "2023-11-01"
 
 [ser]
-addr = ":8091"
+addr = "127.0.0.1:9999"
 
 [mysql]
 
@@ -46,14 +46,14 @@ host2 = "94.74.73.195:20002"
 host3 = "94.74.73.195:20004"
 
 [aws]
-bucket = "gate3"
+bucket = "fugutoxic"
 access_key = "AKIASDITKHMUVGS5XGHB"
 secret_key = "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"
 region = "ap-northeast-1"
 endpoint = "https://s3.ap-northeast-1.amazonaws.com/"
 
 [jwt]
-issuer = "gate-3.io"
+issuer = "fuguclub.io"
 secret_key = "hp"
 expiration_time = 86400
 
