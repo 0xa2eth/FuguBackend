@@ -3,7 +3,7 @@ package slice
 import (
 	"reflect"
 
-	mathUtil "metapace/pkg/kit/math"
+	mathUtil "FuguBackend/pkg/kit/math"
 )
 
 const (
