@@ -1,7 +1,5 @@
 package secret
 
-import "time"
-
 // Secret
 //
 //go:generate gormgen -structs Secret -input .

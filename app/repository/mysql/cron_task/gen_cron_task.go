@@ -7,7 +7,6 @@ package cron_task
 
 import (
 	"fmt"
-	"time"
 
 	"FuguBackend/app/repository/mysql"
 
