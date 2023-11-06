@@ -105,7 +105,9 @@ redis的list结构
 然后根据siteFriends 中好友 去mysql中找可见秘密
 
 
-
+接口列表：
+user（字段 hot） 注册，login,查询，
+secret post,queryone,querylist,querylist of sb
 
 
 
