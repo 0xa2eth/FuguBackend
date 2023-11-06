@@ -16,3 +16,4 @@
 | 12 | lastlogin |  | bigint |  | YES |  |  |
 | 13 | registertime |  | bigint |  | YES |  |  |
 | 14 | enableroom |  | tinyint |  | YES |  |  |
+| 15 | hot |  | bigint |  | YES |  |  |

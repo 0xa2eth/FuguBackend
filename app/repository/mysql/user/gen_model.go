@@ -1,5 +1,7 @@
 package user
 
+import _ "time"
+
 // User
 //
 //go:generate gormgen -structs User -input .
@@ -18,4 +20,5 @@ type User struct {
 	Lastlogin     int64  //
 	Registertime  int64  //
 	Enableroom    int32  //
+	Hot           int64  //
 }

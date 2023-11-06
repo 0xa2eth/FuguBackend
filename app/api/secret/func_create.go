@@ -1,10 +1,20 @@
 package secret
 
 import (
+	"net/http"
+
+	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/validation"
+	"FuguBackend/app/services/secret"
 )
 
-type createRequest struct{}
+type createRequest struct {
+	AuthorID  int      `json:"authorID"`
+	Content   string   `json:"content"`
+	Images    []string `json:"images"`
+	Timestamp int64    `json:"timestamp"`
+}
 
 type createResponse struct{}
 
@@ -19,7 +29,38 @@ type createResponse struct{}
 // @Failure 400 {object} code.Failure
 // @Router /api/admin [post]
 func (h *handler) Create() core.HandlerFunc {
-	return func(ctx core.Context) {
+	return func(c core.Context) {
+		req := &createRequest{}
+		res := &createResponse{}
+		if err := c.ShouldBindJSON(req); err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.ParamBindError,
+				validation.Error(err)).WithError(err),
+			)
+			return
+		}
+		createData := &secret.Service{
+			Address:       req.Address,
+			Userid:        req.Userid,
+			TwitterID:     req.TwitterID,
+			TwitterName:   req.TwitterName,
+			TwitterUrl:    req.TwitterUrl,
+			TwitterAvatar: req.TwitterAvatar,
+		}
+
+		id, err := h.userService.Create(c, createData)
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.AdminCreateError,
+				code.Text(code.AdminCreateError)).WithError(err),
+			)
+			return
+		}
+
+		res.ID = id
+		c.Payload(res)
 
 	}
 }

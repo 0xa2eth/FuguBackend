@@ -1,11 +1,12 @@
 package config
 
 import (
+	"io/ioutil"
+	"log"
+
 	"github.com/naoina/toml"
 	"github.com/naoina/toml/ast"
 	"github.com/spf13/viper"
-	"io/ioutil"
-	"log"
 )
 
 // CommonConfig Common

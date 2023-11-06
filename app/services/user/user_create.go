@@ -6,10 +6,12 @@ import (
 )
 
 type CreateUserData struct {
-	Username string // 用户名
-	Nickname string // 昵称
-	Mobile   string // 手机号
-	Password string // 密码
+	Address       string `json:"address" binding:"-"`
+	Userid        string `json:"userid" binding:"-"`
+	TwitterID     string `json:"twitterID" binding:"required"`
+	TwitterName   string `json:"twitterName" binding:"required"`
+	TwitterUrl    string `json:"twitterUrl" binding:"-"`
+	TwitterAvatar string `json:"twitterAvatar" binding:"-"`
 }
 
 func (s *service) Create(ctx core.Context, adminData *CreateUserData) (id int32, err error) {

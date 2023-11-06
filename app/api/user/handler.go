@@ -21,16 +21,6 @@ type Handler interface {
 	// @Router /api/login [post]
 	Login() core.HandlerFunc
 
-	// Logout 管理员登出
-	// @Tags API.admin
-	// @Router /api/admin/logout [post]
-	Logout() core.HandlerFunc
-
-	// ModifyPassword 修改密码
-	// @Tags API.admin
-	// @Router /api/admin/modify_password [patch]
-	ModifyPassword() core.HandlerFunc
-
 	// Detail 个人信息
 	// @Tags API.admin
 	// @Router /api/admin/info [get]
@@ -55,31 +45,6 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin/{id} [delete]
 	Delete() core.HandlerFunc
-
-	// Offline 下线管理员
-	// @Tags API.admin
-	// @Router /api/admin/offline [patch]
-	Offline() core.HandlerFunc
-
-	// UpdateUsed 更新管理员为启用/禁用
-	// @Tags API.admin
-	// @Router /api/admin/used [patch]
-	UpdateUsed() core.HandlerFunc
-
-	// ResetPassword 重置密码
-	// @Tags API.admin
-	// @Router /api/admin/reset_password/{id} [patch]
-	ResetPassword() core.HandlerFunc
-
-	// CreateAdminMenu 提交菜单授权
-	// @Tags API.admin
-	// @Router /api/admin/menu [post]
-	CreateAdminMenu() core.HandlerFunc
-
-	// ListAdminMenu 菜单授权列表
-	// @Tags API.admin
-	// @Router /api/admin/menu/{id} [get]
-	ListAdminMenu() core.HandlerFunc
 }
 
 type handler struct {

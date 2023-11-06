@@ -1,6 +1,6 @@
-// User 内存对齐 省空间
 package src
 
+// User ...内存对齐 省空间
 type User struct {
 	ID            int
 	NftNum        int

@@ -117,3 +117,9 @@ secret post,queryone,querylist,querylist of sb
 
 
 */
+
+scripts usage :
+
+    ./scripts/gormgen.sh 127.0.0.1:13306   sqlUser  sqlPassword  fugu user
+  
+   	./scripts/handlergen.sh user

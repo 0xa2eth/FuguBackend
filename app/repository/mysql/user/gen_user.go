@@ -7,6 +7,7 @@ package user
 
 import (
 	"fmt"
+	"time"
 
 	"FuguBackend/app/repository/mysql"
 
@@ -717,5 +718,48 @@ func (qb *userQueryBuilder) OrderByEnableroom(asc bool) *userQueryBuilder {
 	}
 
 	qb.order = append(qb.order, "enableroom "+order)
+	return qb
+}
+
+func (qb *userQueryBuilder) WhereHot(p mysql.Predicate, value int64) *userQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "hot", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *userQueryBuilder) WhereHotIn(value []int64) *userQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "hot", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *userQueryBuilder) WhereHotNotIn(value []int64) *userQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "hot", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *userQueryBuilder) OrderByHot(asc bool) *userQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "hot "+order)
 	return qb
 }
