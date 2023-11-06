@@ -6,7 +6,6 @@ import (
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/validation"
-	"FuguBackend/app/services/secret"
 )
 
 type createRequest struct {
@@ -31,7 +30,7 @@ type createResponse struct{}
 func (h *handler) Create() core.HandlerFunc {
 	return func(c core.Context) {
 		req := &createRequest{}
-		res := &createResponse{}
+		//res := &createResponse{}
 		if err := c.ShouldBindJSON(req); err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
@@ -40,27 +39,27 @@ func (h *handler) Create() core.HandlerFunc {
 			)
 			return
 		}
-		createData := &secret.Service{
-			Address:       req.Address,
-			Userid:        req.Userid,
-			TwitterID:     req.TwitterID,
-			TwitterName:   req.TwitterName,
-			TwitterUrl:    req.TwitterUrl,
-			TwitterAvatar: req.TwitterAvatar,
-		}
-
-		id, err := h.userService.Create(c, createData)
-		if err != nil {
-			c.AbortWithError(core.Error(
-				http.StatusBadRequest,
-				code.AdminCreateError,
-				code.Text(code.AdminCreateError)).WithError(err),
-			)
-			return
-		}
-
-		res.ID = id
-		c.Payload(res)
+		//createData := &secret.Service{
+		//	Address:       req.Address,
+		//	Userid:        req.Userid,
+		//	TwitterID:     req.TwitterID,
+		//	TwitterName:   req.TwitterName,
+		//	TwitterUrl:    req.TwitterUrl,
+		//	TwitterAvatar: req.TwitterAvatar,
+		//}
+		//
+		//id, err := h.userService.Create(c, createData)
+		//if err != nil {
+		//	c.AbortWithError(core.Error(
+		//		http.StatusBadRequest,
+		//		code.AdminCreateError,
+		//		code.Text(code.AdminCreateError)).WithError(err),
+		//	)
+		//	return
+		//}
+		//
+		//res.ID = id
+		//c.Payload(res)
 
 	}
 }
