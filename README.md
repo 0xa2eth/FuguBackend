@@ -91,7 +91,7 @@ uid001_freshFd，
 SDIFF 旧 新 = 旧的有 新的没有 = 删除的
 SDIFF 新 旧 = 新的有 旧的没有 = 新增的
 在mysql数据库siteFriends 中将 删除的和新增的状态更新。
-然后去秘密表拿秘密 select * from secrets s where s.author in basefriend() order by timestamp desc.
+然后去秘密表拿秘密 select * from secrets s where s.author in basefriend()  AND viewlevel = 3 order by timestamp desc.
 
 动作策略 二：
 刷新请求进来，根据id获取最新关注和粉丝列表。（直接在redis中存最新的，redis都不用存）
@@ -123,3 +123,12 @@ scripts usage :
     ./scripts/gormgen.sh 127.0.0.1:13306   sqlUser  sqlPassword  fugu user
   
    	./scripts/handlergen.sh user
+
+
+
+
+// 版本三
+cave 改bio后 要重新发推特 对其内容吗 bio name ？？？
+广场可见 究竟是 全部可见 还是好友可见？好友可见 否则没意义。
+没钱包登陆，刷新时机？刷新策略：策略5 定时更新（1-2min） 在线用户的朋友圈.在线状态。redis存
+登陆 twitter登陆。第一次和之后的常规登陆不同。
