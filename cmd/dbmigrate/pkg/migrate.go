@@ -19,28 +19,27 @@ var cfg config.Config
 func Migrate() {
 	Db := InitMysql()
 	//structs := ScanStructs()
-	Db.AutoMigrate(&Secret{}, &SecretImage{})
-	images := []SecretImage{
-		{
-			ID:       111,
-			SecretID: 999,
-			ImageUrl: "000000",
-		},
-	}
-	Db.Create(&Secret{
-		ID:        0,
-		AuthorID:  0,
-		Content:   "content",
-		Images:    images,
-		Timestamp: 0,
-		Views:     0,
-	})
-	var u = User{ID: 1}
-	err := Db.Table("secrets").First(&u).Error
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(u)
+	Db.AutoMigrate(&User{}, &Secret{}, &SecretImage{}, &Retweet{}, &TaskRecord{}, &Friend{}, &Nft{}, &Ft{})
+	//images := []SecretImage{
+	//	{
+	//		Model:    gorm.Model{},
+	//		SecretID: 0,
+	//		ImageUrl: "",
+	//	},
+	//}
+	//Db.Create(&Secret{
+	//	Model:     gorm.Model{},
+	//	SecretID:  0,
+	//	AuthorID:  0,
+	//	ViewLevel: 0,
+	//	Timestamp: 0,
+	//	Views:     0,
+	//	Content:   "",
+	//	Images:    nil,
+	//	Status:    false,
+	//})
+	//
+	//fmt.Println(u)
 	fmt.Println(" migrate success! ")
 }
 func InitMysql() *gorm.DB {
