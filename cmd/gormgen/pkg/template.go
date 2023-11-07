@@ -21,6 +21,7 @@ package {{.PkgName}}
 
 import (
 	"fmt"
+    "time"
 
 	"FuguBackend/app/repository/mysql"
 

@@ -1,8 +1,10 @@
 package pkg
 
 import (
-	"FuguBackend/config"
 	"fmt"
+
+	"FuguBackend/config"
+
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

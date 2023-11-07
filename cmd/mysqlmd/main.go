@@ -163,7 +163,7 @@ func queryTables(db *gorm.DB, dbName string, tableName string) ([]tableInfo, err
 			fmt.Printf("execute query tables action error,had ignored, detail is [%v]\n", err.Error())
 			continue
 		}
-
+		fmt.Println("scaned tables in database :", info)
 		tableCollect = append(tableCollect, info)
 		tableArray = append(tableArray, info.Name)
 		commentArray = append(commentArray, info.Comment)

@@ -1,11 +1,12 @@
 package math
 
 import (
-	"FuguBackend/pkg/kit/convert"
 	"math"
 	"math/rand"
 	"strings"
 	"time"
+
+	"FuguBackend/pkg/kit/convert"
 
 	"github.com/shopspring/decimal"
 )

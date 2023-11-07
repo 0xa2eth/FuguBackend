@@ -120,7 +120,8 @@ secret post,queryone,querylist,querylist of sb
 
 scripts usage :
 
-    ./scripts/gormgen.sh 127.0.0.1:13306   sqlUser  sqlPassword  fugu user
+    ./scripts/gormgen.sh 127.0.0.1:13306   sqlUser  sqlPassword  fugu user ; 
+	ps:表名要和实际表明一致， 例如：users 不能写成user
   
    	./scripts/handlergen.sh user
 

@@ -1,14 +1,15 @@
 package jwt
 
 import (
-	"FuguBackend/pkg/errcode"
 	"encoding/base64"
 	"encoding/json"
+	"strings"
+	"time"
+
+	"FuguBackend/pkg/errcode"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pkg/errors"
-	"strings"
-	"time"
 )
 
 const (
