@@ -89,7 +89,8 @@ func main() {
 					funcContent += fmt.Sprintf("// @Description%s \n", nameArr[1])
 					// Tags
 					funcContent += fmt.Sprintf("%s \n", v.Decorations().Start.All()[1])
-					funcContent += fmt.Sprintf("// @Accept application/x-www-form-urlencoded \n")
+					//funcContent += fmt.Sprintf("// @Accept application/x-www-form-urlencoded \n")
+					funcContent += fmt.Sprintf("// @Accept application/json \n")
 					funcContent += fmt.Sprintf("// @Produce json \n")
 					funcContent += fmt.Sprintf("// @Param Request body %sRequest true \"请求信息\" \n", Lcfirst(v.Names[0].String()))
 					funcContent += fmt.Sprintf("// @Success 200 {object} %sResponse \n", Lcfirst(v.Names[0].String()))

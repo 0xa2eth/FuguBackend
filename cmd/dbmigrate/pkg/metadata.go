@@ -83,6 +83,7 @@ type TaskRecord struct {
 // Friend ... 推特好友（following + follower）一对多 has many
 // eg: select * from secrets s where s.author in basefriend()  AND viewlevel = 3 order by timestamp desc.
 type Friend struct {
+	gorm.Model
 	BaseID   int  `json:"BaseID,omitempty" gorm:"column:baseid;type:bigint"`
 	FriendID int  `json:"FriendID,omitempty" gorm:"column:friendid;type:bigint"`
 	Status   bool `json:"Status,omitempty" gorm:"column:status;type:tinyint"`

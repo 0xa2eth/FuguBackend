@@ -12,7 +12,7 @@ type loginResponse struct{}
 // @Summary 管理员登录
 // @Description 管理员登录
 // @Tags API.admin
-// @Accept application/x-www-form-urlencoded
+// @Accept application/json
 // @Produce json
 // @Param Request body loginRequest true "请求信息"
 // @Success 200 {object} loginResponse

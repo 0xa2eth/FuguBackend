@@ -12,7 +12,7 @@ type deleteResponse struct{}
 // @Summary 删除管理员
 // @Description 删除管理员
 // @Tags API.admin
-// @Accept application/x-www-form-urlencoded
+// @Accept application/json
 // @Produce json
 // @Param Request body deleteRequest true "请求信息"
 // @Success 200 {object} deleteResponse

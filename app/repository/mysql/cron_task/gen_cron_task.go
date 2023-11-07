@@ -7,7 +7,6 @@ package cron_task
 
 import (
 	"fmt"
-	"time"
 
 	"FuguBackend/app/repository/mysql"
 
@@ -23,7 +22,7 @@ func NewQueryBuilder() *cronTaskQueryBuilder {
 	return new(cronTaskQueryBuilder)
 }
 
-func (t *CronTask) Create(db *gorm.DB) (id int32, err error) {
+func (t *CronTask) Create(db *gorm.DB) (id int64, err error) {
 	if err = db.Create(t).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}

@@ -12,7 +12,7 @@ type modifyPersonalInfoResponse struct{}
 // @Summary 修改个人信息
 // @Description 修改个人信息
 // @Tags API.admin
-// @Accept application/x-www-form-urlencoded
+// @Accept application/json
 // @Produce json
 // @Param Request body modifyPersonalInfoRequest true "请求信息"
 // @Success 200 {object} modifyPersonalInfoResponse

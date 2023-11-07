@@ -12,7 +12,7 @@ type detailResponse struct{}
 // @Summary 个人信息
 // @Description 个人信息
 // @Tags API.admin
-// @Accept application/x-www-form-urlencoded
+// @Accept application/json
 // @Produce json
 // @Param Request body detailRequest true "请求信息"
 // @Success 200 {object} detailResponse

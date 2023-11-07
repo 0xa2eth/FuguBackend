@@ -7,7 +7,6 @@ package retweets
 
 import (
 	"fmt"
-	"time"
 
 	"FuguBackend/app/repository/mysql"
 
@@ -23,7 +22,7 @@ func NewQueryBuilder() *retweetsQueryBuilder {
 	return new(retweetsQueryBuilder)
 }
 
-func (t *Retweets) Create(db *gorm.DB) (id int32, err error) {
+func (t *Retweets) Create(db *gorm.DB) (id int64, err error) {
 	if err = db.Create(t).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}

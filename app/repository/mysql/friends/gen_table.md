@@ -7,3 +7,7 @@
 | 3 | status |  | tinyint(1) |  | YES |  |  |
 | 4 | baseid |  | bigint unsigned |  | YES |  |  |
 | 5 | friendid |  | bigint |  | YES |  |  |
+| 6 | id |  | bigint unsigned | PRI | NO | auto_increment |  |
+| 7 | created_at |  | datetime(3) |  | YES |  |  |
+| 8 | updated_at |  | datetime(3) |  | YES |  |  |
+| 9 | deleted_at |  | datetime(3) | MUL | YES |  |  |

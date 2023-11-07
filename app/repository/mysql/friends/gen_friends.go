@@ -23,7 +23,7 @@ func NewQueryBuilder() *friendsQueryBuilder {
 	return new(friendsQueryBuilder)
 }
 
-func (t *Friends) Create(db *gorm.DB) (id int32, err error) {
+func (t *Friends) Create(db *gorm.DB) (id int64, err error) {
 	if err = db.Create(t).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}
@@ -331,5 +331,177 @@ func (qb *friendsQueryBuilder) OrderByFriendid(asc bool) *friendsQueryBuilder {
 	}
 
 	qb.order = append(qb.order, "friendid "+order)
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereId(p mysql.Predicate, value int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "id", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereIdIn(value []int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "id", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereIdNotIn(value []int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "id", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) OrderById(asc bool) *friendsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "id "+order)
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereCreatedAt(p mysql.Predicate, value time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "created_at", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereCreatedAtIn(value []time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "created_at", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereCreatedAtNotIn(value []time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "created_at", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) OrderByCreatedAt(asc bool) *friendsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "created_at "+order)
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereUpdatedAt(p mysql.Predicate, value time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "updated_at", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereUpdatedAtIn(value []time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "updated_at", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereUpdatedAtNotIn(value []time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "updated_at", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) OrderByUpdatedAt(asc bool) *friendsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "updated_at "+order)
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereDeletedAt(p mysql.Predicate, value time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "deleted_at", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereDeletedAtIn(value []time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "deleted_at", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereDeletedAtNotIn(value []time.Time) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "deleted_at", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) OrderByDeletedAt(asc bool) *friendsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "deleted_at "+order)
 	return qb
 }

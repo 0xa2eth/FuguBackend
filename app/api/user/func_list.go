@@ -12,7 +12,7 @@ type listResponse struct{}
 // @Summary 管理员列表
 // @Description 管理员列表
 // @Tags API.admin
-// @Accept application/x-www-form-urlencoded
+// @Accept application/json
 // @Produce json
 // @Param Request body listRequest true "请求信息"
 // @Success 200 {object} listResponse
