@@ -6,9 +6,9 @@
 package users
 
 import (
-	"fmt"
-
 	"FuguBackend/app/repository/mysql"
+	"fmt"
+	"time"
 
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -26,7 +26,7 @@ func (t *Users) Create(db *gorm.DB) (id int64, err error) {
 	if err = db.Create(t).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}
-	return t.Id, nil
+	return t.Userid, nil
 }
 
 type usersQueryBuilder struct {

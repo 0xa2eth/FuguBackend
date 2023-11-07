@@ -2,21 +2,6 @@ package pkg
 
 import "gorm.io/gorm"
 
-type Nft struct {
-	gorm.Model
-	UserID  int    `json:"UserId,omitempty" gorm:"column:userid;type:bigint"`
-	ChainID int    `json:"ChainId,omitempty" gorm:"column:chainid;type:bigint"`
-	TokenId int    `json:"TokenId,omitempty" gorm:"column:tokenid;type:bigint"`
-	Address string `json:"Address,omitempty" gorm:"column:address;type:varchar(255)"`
-}
-type Ft struct {
-	gorm.Model
-	UserID   int    `json:"UserId,omitempty" gorm:"column:userid;type:bigint"`
-	ChainID  int    `json:"ChainId,omitempty" gorm:"column:chainid;type:bigint"`
-	TokenNum int    `json:"TokenNum,omitempty" gorm:"column:tokennum;type:bigint"`
-	Address  string `json:"Address,omitempty" gorm:"column:address;type:varchar(255)"`
-}
-
 // User ...内存对齐 省空间
 type User struct {
 	gorm.Model
@@ -44,8 +29,6 @@ type User struct {
 	Secrets        []Secret `json:"secrets,omitempty" gorm:"foreignKey:SecretID"`
 	MyFriends      []Friend `json:"MyFriends,omitempty" gorm:"foreignKey:BaseID"`
 }
-type Cave struct {
-}
 
 // Secret ...  一对多 has many
 type Secret struct {
@@ -65,6 +48,22 @@ type SecretImage struct {
 	gorm.Model
 	SecretID int    `json:"SecretID,omitempty" gorm:"column:secretid;type:bigint"`
 	ImageUrl string `json:"ImageUrl,omitempty" gorm:"column:imageurl;type:varchar(255)"`
+}
+
+type Nft struct {
+	gorm.Model
+	UserID  int    `json:"UserId,omitempty" gorm:"column:userid;type:bigint"`
+	ChainID int    `json:"ChainId,omitempty" gorm:"column:chainid;type:bigint"`
+	TokenId int    `json:"TokenId,omitempty" gorm:"column:tokenid;type:bigint"`
+	Address string `json:"Address,omitempty" gorm:"column:address;type:varchar(255)"`
+}
+
+type Ft struct {
+	gorm.Model
+	UserID   int    `json:"UserId,omitempty" gorm:"column:userid;type:bigint"`
+	ChainID  int    `json:"ChainId,omitempty" gorm:"column:chainid;type:bigint"`
+	TokenNum int    `json:"TokenNum,omitempty" gorm:"column:tokennum;type:bigint"`
+	Address  string `json:"Address,omitempty" gorm:"column:address;type:varchar(255)"`
 }
 
 type Retweet struct {
@@ -87,9 +86,4 @@ type Friend struct {
 	BaseID   int  `json:"BaseID,omitempty" gorm:"column:baseid;type:bigint"`
 	FriendID int  `json:"FriendID,omitempty" gorm:"column:friendid;type:bigint"`
 	Status   bool `json:"Status,omitempty" gorm:"column:status;type:tinyint"`
-}
-
-type Viewable struct {
-	SecretID int
-	Users    []int
 }
