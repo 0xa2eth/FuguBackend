@@ -21,7 +21,7 @@ var cfg config.Config
 func Migrate() {
 	Db := InitMysql()
 	//structs := ScanStructs()
-	Db.AutoMigrate(&User{}, &Secret{}, &SecretImage{}, &Retweet{}, &TaskRecord{}, &Friend{}, &Nft{}, &Ft{})
+	Db.AutoMigrate(&User{}, &Secret{}, &SecretImage{}, &Retweet{}, &TaskRecord{}, &Friend{}, &Nft{}, &Ft{}, &InviteCode{})
 	//images := []SecretImage{
 	//	{
 	//		Model:    gorm.Model{},

@@ -5,7 +5,8 @@ import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/validation"
 	"FuguBackend/app/services/user"
-	snow "FuguBackend/pkg/snowflake"
+	"FuguBackend/pkg/snowflake"
+	"github.com/spf13/cast"
 	"net/http"
 )
 
@@ -14,10 +15,11 @@ type createRequest struct {
 	TwitterID     string `json:"twitterID,omitempty" gorm:"column:twitter_id;type:varchar(255)"`
 	TwitterAvatar string `json:"twitterAvatar,omitempty" gorm:"column:twitter_avatar;type:varchar(255)"`
 	TwitterName   string `json:"twitterName,omitempty" gorm:"column:twitter_name;type:varchar(255)"`
+	InviteCode    string `json:"inviteCode,omitempty"`
 }
 
 type createResponse struct {
-	UserID int64 `json:"UserID"`
+	UserID string `json:"UserID"`
 }
 
 // Create 新增管理员
@@ -42,7 +44,8 @@ func (h *handler) Create() core.HandlerFunc {
 			)
 			return
 		}
-		genID, _ := snow.GenID()
+
+		genID, _ := snowflake.GenID()
 		createData := &user.CreateUserData{
 			Address:       "",
 			UserID:        int64(genID),
@@ -61,7 +64,16 @@ func (h *handler) Create() core.HandlerFunc {
 			return
 		}
 
-		res.UserID = id
+		hashId, err := h.hashids.HashidsEncode([]int{cast.ToInt(id)})
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.HashIdsEncodeError,
+				code.Text(code.HashIdsEncodeError)).WithError(err),
+			)
+			return
+		}
+		res.UserID = hashId
 		c.Payload(res)
 	}
 }

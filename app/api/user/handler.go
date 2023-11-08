@@ -2,8 +2,8 @@ package user
 
 import (
 	"FuguBackend/app/pkg/core"
-	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
+	"FuguBackend/app/router"
 	"FuguBackend/app/services/user"
 	"FuguBackend/config"
 	"FuguBackend/pkg/hash"
@@ -54,12 +54,12 @@ type handler struct {
 	userService user.Service
 }
 
-func New(logger *zap.Logger, db mysql.Repo, cache redis.Repo) Handler {
+func New(r *router.Resource) Handler {
 	return &handler{
-		logger:      logger,
-		cache:       cache,
+		logger:      r.Logger,
+		cache:       r.Cache,
 		hashids:     hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
-		userService: user.New(db, cache),
+		userService: user.New(r.Db, r.Cache, r.Logger),
 	}
 }
 

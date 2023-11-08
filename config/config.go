@@ -1,6 +1,7 @@
 package config
 
 import (
+	"FuguBackend/pkg/snowflake"
 	"io/ioutil"
 	"log"
 
@@ -149,6 +150,8 @@ func LoadConfig() {
 
 	parseHashids(tbl)
 
+	// snowflake
+	snowflake.SonyFlakeInit("2023-11-11", 8)
 }
 
 func initConf() {

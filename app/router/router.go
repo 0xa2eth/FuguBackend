@@ -7,7 +7,7 @@ import (
 
 //type Resource app.Resource
 
-func SetApiRouter(r *resource) {
+func SetApiRouter(r *Resource) {
 	//// helper
 	//helperHandler := helper.New(r.logger, r.db, r.cache)
 	//
@@ -18,21 +18,21 @@ func SetApiRouter(r *resource) {
 	//}
 
 	// admin
-	adminHandler := user.New(r.logger, r.db, r.cache)
+	adminHandler := user.New(r)
 
-	test := r.mux.Group("")
+	test := r.Mux.Group("")
 	test.GET("/ping", func(c core.Context) {
 		c.ResponseWriter().WriteString("pong")
 	})
 
 	// 需要签名验证，无需登录验证，无需 RBAC 权限验证
-	login := r.mux.Group("/api", r.interceptors.CheckSignature())
+	login := r.Mux.Group("/api", r.Interceptors.CheckSignature())
 	{
 		login.POST("/login", adminHandler.Login())
 	}
 
 	// 需要签名验证、登录验证，无需 RBAC 权限验证
-	notRBAC := r.mux.Group("/api", core.WrapAuthHandler(r.interceptors.CheckLogin), r.interceptors.CheckSignature())
+	notRBAC := r.Mux.Group("/api", core.WrapAuthHandler(r.Interceptors.CheckLogin), r.Interceptors.CheckSignature())
 	{
 		notRBAC.GET("/admin/info", adminHandler.Detail())
 		notRBAC.PATCH("/admin/modify_personal_info", adminHandler.ModifyPersonalInfo())

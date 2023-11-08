@@ -23,6 +23,7 @@ type User struct {
 	TwitterAvatar  string   `json:"twitterAvatar,omitempty" gorm:"column:twitter_avatar;type:varchar(255)"`
 	TwitterName    string   `json:"twitterName,omitempty" gorm:"column:twitter_name;type:varchar(255)"`
 	CaveReTweetUrl string   `json:"CaveReTweetUrl" gorm:"column:caveretweeturl;type:varchar(255)"`
+	InvitedByCode  string   `json:"invitedByCode" gorm:"column:invitedbycode;type:varchar(255)"`
 	MintCave       bool     `json:"mintCave,omitempty" gorm:"column:mintcave;type:tinyint"`
 	MyNft          []Nft    `json:"MyNft,omitempty" gorm:"foreignKey:UserID"`
 	MyFt           []Ft     `json:"MyFt,omitempty" gorm:"foreignKey:UserID"`
@@ -86,4 +87,10 @@ type Friend struct {
 	BaseID   int  `json:"BaseID,omitempty" gorm:"column:baseid;type:bigint"`
 	FriendID int  `json:"FriendID,omitempty" gorm:"column:friendid;type:bigint"`
 	Status   bool `json:"Status,omitempty" gorm:"column:status;type:tinyint"`
+}
+
+type InviteCode struct {
+	gorm.Model
+	UserID int    `json:"userID,omitempty" gorm:"column:userid;type:bigint"`
+	Code   string `json:"code,omitempty" gorm:"column:code;type:varchar(255)"`
 }

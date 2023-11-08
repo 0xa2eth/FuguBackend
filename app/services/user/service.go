@@ -5,6 +5,7 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/mysql/users"
 	"FuguBackend/app/repository/redis"
+	"go.uber.org/zap"
 )
 
 var _ Service = (*service)(nil)
@@ -18,16 +19,19 @@ type Service interface {
 }
 
 type service struct {
-	db    mysql.Repo
-	cache redis.Repo
+	db     mysql.Repo
+	cache  redis.Repo
+	logger *zap.Logger
 	// todo ...
 	// logger config snowflake
 }
 
-func New(db mysql.Repo, cache redis.Repo) Service {
+func New(db mysql.Repo, cache redis.Repo, logger *zap.Logger) Service {
+	//config.Logger.Info()
 	return &service{
-		db:    db,
-		cache: cache,
+		db:     db,
+		cache:  cache,
+		logger: logger,
 	}
 }
 

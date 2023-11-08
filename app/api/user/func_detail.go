@@ -14,26 +14,25 @@ type detailRequest struct {
 	UserID string `json:"UserID"`
 }
 
-type detailResponse struct{
-	UserID         int      `json:"userId,omitempty" gorm:"column:userid;type:bigint"`
-	TicketNum      int      `json:"ticketNum,omitempty" gorm:"column:ticketnum;type:bigint"`
-	CaveFans       int      `json:"caveFans,omitempty" gorm:"column:cavefans;type:bigint"`
-	TwitterFans    int      `json:"twitterFans,omitempty" gorm:"column:twitterfans;type:bigint"`
-	LastLogin      int      `json:"lastLogin,omitempty" gorm:"column:lastlogin;type:bigint"`
-	RegisTime      int      `json:"regisTime,omitempty" gorm:"column:registime;type:bigint"`
-	EarnedPoint    int      `json:"earnedPoint,omitempty" gorm:"column:earned_point;type:bigint"`
-	CavePoint      int      `json:"CavePoint,omitempty" gorm:"column:cave_point;type:bigint"`
-	Views          int      `json:"views" gorm:"column:views;type:bigint"`
-	Tag            int      `json:"tag" gorm:"column:tag;type:int"`
-	NickName       string   `json:"nickName,omitempty" gorm:"column:nick_name;type:varchar(255)"`
-	Bios           string   `json:"bios,omitempty" gorm:"column:bios;type:varchar(255)"`
-	Avatar         string   `json:"avatar,omitempty" gorm:"column:avatar;type:varchar(255)"`
-	Address        string   `json:"address,omitempty" gorm:"column:address;type:varchar(255)"`
-	TwitterID      string   `json:"twitterID,omitempty" gorm:"column:twitter_id;type:varchar(255)"`
-	TwitterAvatar  string   `json:"twitterAvatar,omitempty" gorm:"column:twitter_avatar;type:varchar(255)"`
-	TwitterName    string   `json:"twitterName,omitempty" gorm:"column:twitter_name;type:varchar(255)"`
-	CaveReTweetUrl string   `json:"CaveReTweetUrl" gorm:"column:caveretweeturl;type:varchar(255)"`
-
+type detailResponse struct {
+	UserID         int    `json:"userId,omitempty" gorm:"column:userid;type:bigint"`
+	TicketNum      int    `json:"ticketNum,omitempty" gorm:"column:ticketnum;type:bigint"`
+	CaveFans       int    `json:"caveFans,omitempty" gorm:"column:cavefans;type:bigint"`
+	TwitterFans    int    `json:"twitterFans,omitempty" gorm:"column:twitterfans;type:bigint"`
+	LastLogin      int    `json:"lastLogin,omitempty" gorm:"column:lastlogin;type:bigint"`
+	RegisTime      int    `json:"regisTime,omitempty" gorm:"column:registime;type:bigint"`
+	EarnedPoint    int    `json:"earnedPoint,omitempty" gorm:"column:earned_point;type:bigint"`
+	CavePoint      int    `json:"CavePoint,omitempty" gorm:"column:cave_point;type:bigint"`
+	Views          int    `json:"views" gorm:"column:views;type:bigint"`
+	Tag            int    `json:"tag" gorm:"column:tag;type:int"`
+	NickName       string `json:"nickName,omitempty" gorm:"column:nick_name;type:varchar(255)"`
+	Bios           string `json:"bios,omitempty" gorm:"column:bios;type:varchar(255)"`
+	Avatar         string `json:"avatar,omitempty" gorm:"column:avatar;type:varchar(255)"`
+	Address        string `json:"address,omitempty" gorm:"column:address;type:varchar(255)"`
+	TwitterID      string `json:"twitterID,omitempty" gorm:"column:twitter_id;type:varchar(255)"`
+	TwitterAvatar  string `json:"twitterAvatar,omitempty" gorm:"column:twitter_avatar;type:varchar(255)"`
+	TwitterName    string `json:"twitterName,omitempty" gorm:"column:twitter_name;type:varchar(255)"`
+	CaveReTweetUrl string `json:"CaveReTweetUrl" gorm:"column:caveretweeturl;type:varchar(255)"`
 }
 
 // Detail 个人信息
@@ -64,7 +63,7 @@ func (h *handler) Detail() core.HandlerFunc {
 			return
 		}
 
-		menuCacheData, err := h.cache.Get(configs.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu", redis.WithTrace(ctx.Trace()))
+		_, err = h.cache.Get(configs.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu", redis.WithTrace(ctx.Trace()))
 		if err != nil {
 			ctx.AbortWithError(core.Error(
 				http.StatusBadRequest,
@@ -74,11 +73,10 @@ func (h *handler) Detail() core.HandlerFunc {
 			return
 		}
 
-// todo
+		// todo
 
-		res. = info.Nickname
-		res.Mobile = info.Mobile
-		res.Menu = menuData
+		res.NickName = info.Nickname
+
 		ctx.Payload(res)
 	}
 }

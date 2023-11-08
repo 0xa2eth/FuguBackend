@@ -3,6 +3,7 @@ package user
 import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/repository/mysql/users"
+	"FuguBackend/config"
 )
 
 type CreateUserData struct {
@@ -15,7 +16,7 @@ type CreateUserData struct {
 
 func (s *service) Create(ctx core.Context, adminData *CreateUserData) (id int64, err error) {
 	model := users.NewModel()
-
+	config.Logger.Error("")
 	id, err = model.Create(s.db.GetDbW().WithContext(ctx.RequestContext()))
 	if err != nil {
 		return 0, err
