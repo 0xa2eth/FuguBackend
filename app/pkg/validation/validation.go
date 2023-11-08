@@ -1,8 +1,8 @@
 package validation
 
 import (
+	"FuguBackend/config"
 	"fmt"
-
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/zh"
@@ -10,22 +10,22 @@ import (
 	"github.com/go-playground/validator/v10"
 	enTranslation "github.com/go-playground/validator/v10/translations/en"
 	zhTranslation "github.com/go-playground/validator/v10/translations/zh"
-	"github.com/xinliangnote/go-gin-api/configs"
 )
 
 var trans ut.Translator
 
 func init() {
-	lang := configs.Get().Language.Local
+	//lang := config.Get().Language.Local
+	lang := "zh-cn"
 
-	if lang == configs.ZhCN {
+	if lang == config.ZhCN {
 		trans, _ = ut.New(zh.New()).GetTranslator("zh")
 		if err := zhTranslation.RegisterDefaultTranslations(binding.Validator.Engine().(*validator.Validate), trans); err != nil {
 			fmt.Println("validator zh translation error", err)
 		}
 	}
 
-	if lang == configs.EnUS {
+	if lang == config.EnUS {
 		trans, _ = ut.New(en.New()).GetTranslator("en")
 		if err := enTranslation.RegisterDefaultTranslations(binding.Validator.Engine().(*validator.Validate), trans); err != nil {
 			fmt.Println("validator en translation error", err)

@@ -59,12 +59,11 @@ package snowflake
 //}
 import (
 	"fmt"
-	_ "github.com/onsi/gomega"
-	"go.uber.org/zap"
-
 	"time"
 
+	_ "github.com/onsi/gomega"
 	"github.com/sony/sonyflake"
+	"go.uber.org/zap"
 )
 
 var (

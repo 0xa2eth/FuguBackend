@@ -40,7 +40,7 @@ func New(logger *zap.Logger, cache redis.Repo, db mysql.Repo) Interceptor {
 		cache:  cache,
 		db:     db,
 		//authorizedService: authorized.New(db, cache),
-		userService: user.New(db, cache),
+		userService: user.New(db, cache, logger),
 	}
 }
 

@@ -4,6 +4,8 @@ import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/repository/mysql/users"
 	"FuguBackend/config"
+	"go.uber.org/zap"
+	"time"
 )
 
 type CreateUserData struct {
@@ -16,10 +18,16 @@ type CreateUserData struct {
 
 func (s *service) Create(ctx core.Context, adminData *CreateUserData) (id int64, err error) {
 	model := users.NewModel()
-	config.Logger.Error("")
-	id, err = model.Create(s.db.GetDbW().WithContext(ctx.RequestContext()))
+	model.TwitterName = adminData.TwitterName
+	model.DeletedAt = time.Now()
+
+	//id, err = model.Create(s.db.GetDbW().WithContext(ctx.RequestContext()))
+	//if err != nil {
+	//	return 0, err
+	//}
+	err = s.db.GetDbW().Create(model).Error
 	if err != nil {
-		return 0, err
+		config.Logger.Error("", zap.Error(err))
 	}
 	return
 }

@@ -1,9 +1,10 @@
 package config
 
 import (
-	"FuguBackend/pkg/snowflake"
 	"io/ioutil"
 	"log"
+
+	"FuguBackend/pkg/snowflake"
 
 	"github.com/naoina/toml"
 	"github.com/naoina/toml/ast"
@@ -129,6 +130,8 @@ func LoadConfig() {
 	}
 	// parse common config
 	parseCommon(tbl)
+	// language
+	parseLanguage(tbl)
 	// init log
 	InitLogger()
 	// parse server config
@@ -253,7 +256,19 @@ func parseAws(tbl *ast.Table) {
 		}
 	}
 }
+func parseLanguage(tbl *ast.Table) {
+	if val, ok := tbl.Fields["language"]; ok {
+		subTbl, ok := val.(*ast.Table)
+		if !ok {
+			log.Fatalln("[FATAL] : ", subTbl)
+		}
 
+		err := toml.UnmarshalTable(subTbl, Conf.Language)
+		if err != nil {
+			log.Fatalln("[FATAL] parseLanguage: ", err, subTbl)
+		}
+	}
+}
 func parseJwt(tbl *ast.Table) {
 	if val, ok := tbl.Fields["jwt"]; ok {
 		subTbl, ok := val.(*ast.Table)

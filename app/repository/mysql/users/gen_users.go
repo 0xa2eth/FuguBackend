@@ -6,9 +6,10 @@
 package users
 
 import (
-	"FuguBackend/app/repository/mysql"
 	"fmt"
 	"time"
+
+	"FuguBackend/app/repository/mysql"
 
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -26,7 +27,7 @@ func (t *Users) Create(db *gorm.DB) (id int64, err error) {
 	if err = db.Create(t).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}
-	return t.Userid, nil
+	return t.Id, nil
 }
 
 type usersQueryBuilder struct {
@@ -1362,5 +1363,48 @@ func (qb *usersQueryBuilder) OrderByCavePoint(asc bool) *usersQueryBuilder {
 	}
 
 	qb.order = append(qb.order, "cave_point "+order)
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereInvitedbycode(p mysql.Predicate, value string) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "invitedbycode", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereInvitedbycodeIn(value []string) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "invitedbycode", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereInvitedbycodeNotIn(value []string) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "invitedbycode", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) OrderByInvitedbycode(asc bool) *usersQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "invitedbycode "+order)
 	return qb
 }

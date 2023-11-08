@@ -1,13 +1,14 @@
 package user
 
 import (
+	"FuguBackend/config"
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/password"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/services/user"
-	"github.com/xinliangnote/go-gin-api/configs"
-	"net/http"
 )
 
 type detailRequest struct {
@@ -63,7 +64,7 @@ func (h *handler) Detail() core.HandlerFunc {
 			return
 		}
 
-		_, err = h.cache.Get(configs.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu", redis.WithTrace(ctx.Trace()))
+		_, err = h.cache.Get(config.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu", redis.WithTrace(ctx.Trace()))
 		if err != nil {
 			ctx.AbortWithError(core.Error(
 				http.StatusBadRequest,

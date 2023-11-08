@@ -35,4 +35,5 @@ type Users struct {
 	Tag            int64     //
 	EarnedPoint    int64     //
 	CavePoint      int64     //
+	Invitedbycode  string    //
 }

@@ -5,6 +5,7 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/mysql/users"
 	"FuguBackend/app/repository/redis"
+
 	"go.uber.org/zap"
 )
 

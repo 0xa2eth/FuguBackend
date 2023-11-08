@@ -1,20 +1,22 @@
 package user
 
 import (
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/validation"
 	"FuguBackend/app/services/user"
 	"FuguBackend/pkg/snowflake"
+
 	"github.com/spf13/cast"
-	"net/http"
 )
 
 type createRequest struct {
-	Address       string `json:"address,omitempty" gorm:"column:address;type:varchar(255)"`
-	TwitterID     string `json:"twitterID,omitempty" gorm:"column:twitter_id;type:varchar(255)"`
-	TwitterAvatar string `json:"twitterAvatar,omitempty" gorm:"column:twitter_avatar;type:varchar(255)"`
-	TwitterName   string `json:"twitterName,omitempty" gorm:"column:twitter_name;type:varchar(255)"`
+	Address       string `json:"address,omitempty" `
+	TwitterID     string `json:"twitterID,omitempty" binding:"required"`
+	TwitterAvatar string `json:"twitterAvatar,omitempty" binding:"required"`
+	TwitterName   string `json:"twitterName,omitempty" binding:"required"`
 	InviteCode    string `json:"inviteCode,omitempty"`
 }
 
@@ -36,7 +38,7 @@ func (h *handler) Create() core.HandlerFunc {
 	return func(c core.Context) {
 		req := new(createRequest)
 		res := new(createResponse)
-		if err := c.ShouldBindForm(req); err != nil {
+		if err := c.ShouldBindJSON(req); err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.ParamBindError,

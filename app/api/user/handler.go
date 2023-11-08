@@ -2,10 +2,15 @@ package user
 
 import (
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/repository/cron"
+	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
-	"FuguBackend/app/router"
-	"FuguBackend/app/services/user"
+	"FuguBackend/app/router/interceptor"
+
+	// "FuguBackend/app/router"
 	"FuguBackend/config"
+
+	"FuguBackend/app/services/user"
 	"FuguBackend/pkg/hash"
 
 	"go.uber.org/zap"
@@ -54,7 +59,7 @@ type handler struct {
 	userService user.Service
 }
 
-func New(r *router.Resource) Handler {
+func New(r *Resource) Handler {
 	return &handler{
 		logger:      r.Logger,
 		cache:       r.Cache,
@@ -64,3 +69,12 @@ func New(r *router.Resource) Handler {
 }
 
 func (h *handler) i() {}
+
+type Resource struct {
+	Mux          core.Mux
+	Logger       *zap.Logger
+	Db           mysql.Repo
+	Cache        redis.Repo
+	Interceptors interceptor.Interceptor
+	CronServer   cron.Server
+}

@@ -8,55 +8,82 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/router/interceptor"
-	"FuguBackend/config"
 	"FuguBackend/pkg/errors"
+	"fmt"
+	"net/http"
+
+	"FuguBackend/config"
+	"FuguBackend/pkg/env"
+	"FuguBackend/pkg/logger"
+	"FuguBackend/pkg/timeutil"
 
 	"go.uber.org/zap"
 )
 
-//type ServiceCtx struct {
-//	C   *config.Config
-//	Db  *gorm.DB
-//	Rds *redis.Repo
-//	Aws *s3.S3
-//}
-//
-//var serviceCtx *ServiceCtx
-//var once sync.Once
-//
-//func NewServiceContext() (*ServiceCtx, error) {
-//	//初始化日志
-//	config.LoadConfig()
-//	//初始化mysql
-//	initMsql, _ := mysql.New()
-//	db, err := initMsql.NewMysqlDB()
-//	if err != nil {
-//		config.Logger.Error("INIT MYSQL CONFIG FAILED", zap.Error(err))
-//		return nil, err
-//	}
-//	//初始化redis
-//	rds := redis.InitRds(config.Conf.RedisC.RedisHost, config.Conf.RedisC.Password, 1)
-//
-//	//初始化aws
-//	awsClient, err := awsc.AWSInit()
-//	if err != nil {
-//		config.Logger.Error("INIT aws CONFIG FAILED", zap.Error(err))
-//		return nil, err
-//	}
-//	//初始化etcd
-//	etcdClient, err := etcd.ETCDInit()
-//
-//	serviceCtxs := NewServerCtx(WithDB(db), WithRds(rds), WithAws(awsClient), WithEtcd(etcdClient))
-//	serviceCtxs.C = config.Conf
-//	return serviceCtxs, nil
-//}
-//
-//func GetServiceCtx() *ServiceCtx {
-//	once.Do(func() {
-//		serviceCtx, _ = NewServiceContext()
-//	})
-//	return serviceCtx
-//}
+type App struct {
+	//config *config.Config
+	//router *gin.Engine
+	Server *http.Server
+}
+
+func NewApp() (*App, error) {
+	config.LoadConfig()
+	// 初始化 access logger
+	accessLogger, err := logger.NewJSONLogger(
+		logger.WithDisableConsole(),
+		logger.WithField("domain", fmt.Sprintf("%s[%s]", config.ProjectName, env.Active().Value())),
+		logger.WithTimeLayout(timeutil.CSTLayout),
+		logger.WithFileP(config.ProjectAccessLogFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	// 初始化 cron logger
+	cronLogger, err := logger.NewJSONLogger(
+		logger.WithDisableConsole(),
+		logger.WithField("domain", fmt.Sprintf("%s[%s]", config.ProjectName, env.Active().Value())),
+		logger.WithTimeLayout(timeutil.CSTLayout),
+		logger.WithFileP(config.ProjectCronLogFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	defer func() {
+		_ = accessLogger.Sync()
+		_ = cronLogger.Sync()
+	}()
+	server, err := NewHTTPServer(accessLogger, cronLogger)
+	if err != nil {
+		return nil, err
+	}
+
+	httpServer := &http.Server{
+		Addr:    config.ProjectPort,
+		Handler: server.Mux,
+	}
+
+	return &App{
+		Server: httpServer,
+	}, nil
+}
+
+func (p *App) AppStart() {
+
+	config.Logger.Info("[INFO]", zap.String("service is", " starting ..."), zap.Any("address:", config.Conf.Server.Addr))
+
+	if err := p.Server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		config.Logger.Fatal("http server startup err", zap.Error(err))
+	}
+}
+
+func (p *App) AppClose() error {
+	//p.appCtx.Rds.Close()
+	//db, _ := p.appCtx.Db.DB()
+	//db.Close()
+	return nil
+}
 
 type Resource struct {
 	Mux          core.Mux

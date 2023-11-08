@@ -1,12 +1,12 @@
 package main
 
 import (
+	"FuguBackend/app/router"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"FuguBackend/app"
 	"FuguBackend/config"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -60,7 +60,7 @@ var rootCmd = &cobra.Command{
 		//config.Logger.Info("[INFO]", zap.Any("====>>>>", serverCtx.C.Server))
 		//router := router.SetApiRouter(serverCtx)
 		//appInstance, err := app.NewApp(serverCtx.C, router, serverCtx)
-		newApp, err := app.NewApp()
+		newApp, err := router.NewApp()
 		if err != nil {
 			config.Logger.Error("init error", zap.Error(err))
 			return

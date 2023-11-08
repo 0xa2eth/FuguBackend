@@ -31,3 +31,4 @@
 | 27 | tag |  | bigint |  | YES |  |  |
 | 28 | earned_point |  | bigint |  | YES |  |  |
 | 29 | cave_point |  | bigint |  | YES |  |  |
+| 30 | invitedbycode |  | varchar(255) |  | YES |  |  |

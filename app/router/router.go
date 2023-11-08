@@ -18,7 +18,7 @@ func SetApiRouter(r *Resource) {
 	//}
 
 	// admin
-	adminHandler := user.New(r)
+	adminHandler := user.New((*user.Resource)(r))
 
 	test := r.Mux.Group("")
 	test.GET("/ping", func(c core.Context) {
@@ -28,7 +28,7 @@ func SetApiRouter(r *Resource) {
 	// 需要签名验证，无需登录验证，无需 RBAC 权限验证
 	login := r.Mux.Group("/api", r.Interceptors.CheckSignature())
 	{
-		login.POST("/login", adminHandler.Login())
+		login.POST("/regis", adminHandler.Create())
 	}
 
 	// 需要签名验证、登录验证，无需 RBAC 权限验证
