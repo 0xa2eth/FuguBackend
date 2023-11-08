@@ -3,8 +3,6 @@ package user
 import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/repository/mysql/users"
-	"FuguBackend/config"
-	"go.uber.org/zap"
 	"time"
 )
 
@@ -21,13 +19,9 @@ func (s *service) Create(ctx core.Context, adminData *CreateUserData) (id int64,
 	model.TwitterName = adminData.TwitterName
 	model.DeletedAt = time.Now()
 
-	//id, err = model.Create(s.db.GetDbW().WithContext(ctx.RequestContext()))
-	//if err != nil {
-	//	return 0, err
-	//}
-	err = s.db.GetDbW().Create(model).Error
+	id, err = model.Create(s.db.GetDbW().WithContext(ctx.RequestContext()))
 	if err != nil {
-		config.Logger.Error("", zap.Error(err))
+		return 0, err
 	}
 	return
 }
