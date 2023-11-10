@@ -37,11 +37,11 @@ func SetApiRouter(r *Resource) {
 	//}
 
 	// 需要签名验证、登录验证、RBAC 权限验证
-	api := r.Mux.Group("/api", core.WrapAuthHandler(r.Interceptors.CheckLogin), r.Interceptors.CheckSignature(), nil)
+	api := r.Mux.Group("/api", nil, nil, nil)
 	{
 		{
 			// user
-			userGroup := api.Group("/fugu")
+			userGroup := api.Group("/user")
 			userHandler := user.New((*user.Resource)(r))
 			// 创建
 			userGroup.POST("", userHandler.Create())
