@@ -31,10 +31,10 @@ type Handler interface {
 	// @Router /api/admin/info [get]
 	Detail() core.HandlerFunc
 
-	// ModifyPersonalInfo 修改个人信息
+	// Modify 修改个人信息
 	// @Tags API.admin
 	// @Router /api/admin/modify_personal_info [patch]
-	ModifyPersonalInfo() core.HandlerFunc
+	Modify() core.HandlerFunc
 
 	// Create 新增管理员
 	// @Tags API.admin

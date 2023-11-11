@@ -4,9 +4,11 @@ import (
 	"FuguBackend/app/pkg/core"
 )
 
-type detailRequest struct{}
+type detailRequest struct {
+}
 
-type detailResponse struct{}
+type detailResponse struct {
+}
 
 // Detail 个人信息
 // @Summary 个人信息

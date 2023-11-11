@@ -46,9 +46,10 @@ func SetApiRouter(r *Resource) {
 			// 创建
 			userGroup.POST("/twitterlogin", userHandler.Create())
 			//
-			userGroup.GET("/:hashid", userHandler.Detail())
+			userGroup.GET("/:UserID", userHandler.Detail())
 			//userGroup.GET("/:hashid/caves", userHandler.Detail())
-			userGroup.GET("/caves", userHandler.List())
+			userGroup.GET("/cave/:UserID", userHandler.List())
+			userGroup.PUT("/:UserID", userHandler.Modify())
 
 		}
 		{

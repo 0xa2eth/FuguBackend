@@ -55,7 +55,7 @@ var _ Context = (*context)(nil)
 
 type Context interface {
 	init()
-
+	Param(obj string) string
 	// ShouldBindQuery 反序列化 querystring
 	// tag: `form:"xxx"` (注：不要写成 query)
 	ShouldBindQuery(obj interface{}) error
@@ -165,6 +165,12 @@ func (c *context) init() {
 
 	c.ctx.Set(_BodyName, body)                                   // cache body是为了trace使用
 	c.ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body)) // re-construct req body
+}
+
+// Param 取路径参数
+// tag: c.Param("userid")
+func (c *context) Param(obj string) string {
+	return c.ctx.Param(obj)
 }
 
 // ShouldBindQuery 反序列化querystring

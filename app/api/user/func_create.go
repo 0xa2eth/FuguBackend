@@ -1,7 +1,9 @@
 package user
 
 import (
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"net/http"
 
 	"FuguBackend/app/code"
@@ -14,11 +16,11 @@ import (
 )
 
 type createRequest struct {
-	Address       string `json:"address,omitempty" `
-	TwitterID     string `json:"twitterID,omitempty" binding:"required"`
-	TwitterAvatar string `json:"twitterAvatar,omitempty" binding:"required"`
-	TwitterName   string `json:"twitterName,omitempty" binding:"required"`
-	InviteCode    string `json:"inviteCode,omitempty"`
+	//Address        string `json:"address,omitempty"`
+	TwitterID      string `json:"twitterID,omitempty" binding:"required"`
+	TwitterAvatar  string `json:"twitterAvatar,omitempty" binding:"required"`
+	TwitterName    string `json:"twitterName,omitempty" binding:"required"`
+	InvitationCode string `json:"invitationCode,omitempty"`
 }
 
 type createResponse struct {
@@ -47,28 +49,50 @@ func (h *handler) Create() core.HandlerFunc {
 			)
 			return
 		}
+		//todo  如果注册过 走login 逻辑 颁发一个令牌 如果没注册过 走注册create逻辑  颁发随机头像
+		search := &user.SearchOneData{TwitterID: req.TwitterID}
+		users, err2 := h.userService.Detail(c, search)
+		if err2 != nil && errors.Is(err2, gorm.ErrRecordNotFound) {
+			// 有错误 ,没找到  -> 注册
 
-		genID, _ := snowflake.GenID()
-		createData := &user.CreateUserData{
-			Address:       "",
-			UserID:        int64(genID),
-			TwitterID:     req.TwitterID,
-			TwitterName:   req.TwitterName,
-			TwitterAvatar: req.TwitterAvatar,
+			genID, _ := snowflake.GenID()
+			createData := &user.CreateUserData{
+				Address:       "",
+				UserID:        int64(genID),
+				TwitterID:     req.TwitterID,
+				TwitterName:   req.TwitterName,
+				TwitterAvatar: req.TwitterAvatar,
+			}
+
+			id, err := h.userService.Create(c, createData)
+			if err != nil {
+				h.logger.Info("err:", zap.Error(err))
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.AdminCreateError,
+					code.Text(code.AdminCreateError)).WithError(err),
+				)
+				return
+			}
+
+			hashId, err := h.hashids.HashidsEncode([]int{cast.ToInt(id)})
+			if err != nil {
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.HashIdsEncodeError,
+					code.Text(code.HashIdsEncodeError)).WithError(err),
+				)
+				return
+			}
+			res.UserID = hashId
+			c.Payload(res)
 		}
-
-		id, err := h.userService.Create(c, createData)
-		if err != nil {
-			h.logger.Info("err:", zap.Error(err))
-			c.AbortWithError(core.Error(
-				http.StatusBadRequest,
-				code.AdminCreateError,
-				code.Text(code.AdminCreateError)).WithError(err),
-			)
-			return
+		if err2 != nil && !errors.Is(err2, gorm.ErrRecordNotFound) {
+			// 有错误 internal error
+			c.Payload(err2)
 		}
-
-		hashId, err := h.hashids.HashidsEncode([]int{cast.ToInt(id)})
+		// 没错误 找到
+		hashId, err := h.hashids.HashidsEncode([]int{cast.ToInt(users.Id)})
 		if err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
