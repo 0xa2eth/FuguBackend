@@ -83,8 +83,6 @@ func NewHTTPServer() (*Server, error) {
 	//r.Logger = logger
 	r.Logger = config.Lg
 
-	openBrowserUri := config.ProjectDomain + config.ProjectPort
-
 	//_, ok := file.IsExists(config.ProjectInstallMark)
 	//if !ok { // 未安装
 	//	openBrowserUri += "/install"
@@ -113,8 +111,9 @@ func NewHTTPServer() (*Server, error) {
 	//r.cronServer = cronServer
 	//}
 
+	//openBrowserUri := config.ProjectDomain + config.ProjectPort
 	mux, err := core.New(config.Lg,
-		core.WithEnableOpenBrowser(openBrowserUri),
+		//core.WithEnableOpenBrowser(openBrowserUri),
 		core.WithEnableCors(),
 		core.WithEnableRate(),
 		core.WithAlertNotify(alert.NotifyHandler(config.Lg)),

@@ -37,6 +37,11 @@ type Handler interface {
 	// @Tags API.user
 	// @Router /api/user/invitecode [get]
 	GenInviteCode() core.HandlerFunc
+
+	// Logout 登出
+	// @Tags API.user
+	// @Router /api/user/logout [get]
+	Logout() core.HandlerFunc
 }
 
 type handler struct {

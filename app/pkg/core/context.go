@@ -55,7 +55,13 @@ var _ Context = (*context)(nil)
 
 type Context interface {
 	init()
+
 	Param(obj string) string
+
+	Set(key string, value any)
+
+	Get(key string) (value any, exists bool)
+
 	// ShouldBindQuery 反序列化 querystring
 	// tag: `form:"xxx"` (注：不要写成 query)
 	ShouldBindQuery(obj interface{}) error
@@ -171,6 +177,22 @@ func (c *context) init() {
 // tag: c.Param("userid")
 func (c *context) Param(obj string) string {
 	return c.ctx.Param(obj)
+}
+
+// Set 将键值对存在上下文中
+// tag: c.Set("userid", "Userid")
+// Set is used to store a new key/value pair exclusively for this context.
+// It also lazy initializes  c.Keys if it was not used previously.
+func (c *context) Set(key string, value any) {
+	c.ctx.Set(key, value)
+}
+
+// Get 取出上下文中的键值对
+// tag: c.Get("userid")
+// Get returns the value for the given key, ie: (value, true).
+// If the value does not exist it returns (nil, false)
+func (c *context) Get(key string) (value any, exists bool) {
+	return c.ctx.Get(key)
 }
 
 // ShouldBindQuery 反序列化querystring

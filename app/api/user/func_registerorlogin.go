@@ -3,8 +3,12 @@ package user
 import (
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/password"
 	"FuguBackend/app/pkg/validation"
+	"FuguBackend/app/proposal"
+	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/services/user"
+	"FuguBackend/config"
 	"FuguBackend/pkg/snowflake"
 	"errors"
 	"github.com/spf13/cast"
@@ -82,6 +86,33 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 				)
 				return
 			}
+			jwt, err3 := password.GenerateJWT(hashId)
+			if err3 != nil {
+				h.logger.Fatal(" Failed to generate auth token!!! ", zap.Error(err2))
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.HashIdsEncodeError,
+					code.Text(code.HashIdsEncodeError)).WithError(err),
+				)
+				return
+			}
+			// 用户信息
+			sessionUserInfo := &proposal.SessionUserInfo{
+				UserID: hashId,
+				//UserName:
+			}
+
+			// 将用户信息记录到 Redis 中
+			err = h.cache.Set(config.RedisKeyPrefixLoginUser+jwt, string(sessionUserInfo.Marshal()), config.LoginSessionTTL, redis.WithTrace(c.Trace()))
+			if err != nil {
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.AdminLoginError,
+					code.Text(code.AdminLoginError)).WithError(err),
+				)
+				return
+			}
+			c.SetHeader(config.HeaderSignToken, jwt)
 			res.UserID = hashId
 			c.Payload(res)
 		}
@@ -89,7 +120,7 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			// 有错误 internal error
 			c.Payload(err2)
 		}
-		// 没错误 找到
+		// 没错误, 找到, 登录逻辑
 		hashId, err := h.hashids.HashidsEncode([]int{cast.ToInt(users.Id)})
 		if err != nil {
 			c.AbortWithError(core.Error(
@@ -99,6 +130,17 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			)
 			return
 		}
+		jwt, err2 := password.GenerateJWT(hashId)
+		if err2 != nil {
+			h.logger.Fatal(" Failed to generate auth token!!! ", zap.Error(err2))
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.HashIdsEncodeError,
+				code.Text(code.HashIdsEncodeError)).WithError(err),
+			)
+			return
+		}
+		c.SetHeader(config.HeaderSignToken, jwt)
 		res.UserID = hashId
 		c.Payload(res)
 	}

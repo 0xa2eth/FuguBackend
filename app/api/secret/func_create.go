@@ -1,10 +1,18 @@
 package secret
 
 import (
+	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
+
+	"errors"
+	"net/http"
 )
 
-type createRequest struct{}
+type createRequest struct {
+	Content   string   `json:"content,omitempty"`
+	Images    []string `json:"images,omitempty"`
+	ViewLevel int      `json:"viewLevel,omitempty"`
+}
 
 type createResponse struct{}
 
@@ -19,7 +27,15 @@ type createResponse struct{}
 // @Failure 400 {object} code.Failure
 // @Router /api/secret/:UserID [post]
 func (h *handler) Create() core.HandlerFunc {
-	return func(ctx core.Context) {
-
+	return func(c core.Context) {
+		userID := c.Param("UserID")
+		if userID == "" {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.ParamBindError,
+				code.Text(code.ParamBindError)).WithError(errors.New("path param not found")),
+			)
+			return
+		}
 	}
 }

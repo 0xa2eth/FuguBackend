@@ -6,6 +6,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/golang-jwt/jwt/v4"
+	"time"
 )
 
 const (
@@ -43,4 +45,31 @@ func GenerateLoginToken(id int32) (token string) {
 	token = hex.EncodeToString(m.Sum(nil))
 
 	return
+}
+
+const (
+	secretKey = "kEf%Wr2SsLke"
+	Issuer    = "Fugu.club"
+)
+
+// CustomClaims 定义 JWT 载荷结构
+type CustomClaims struct {
+	UserID   string `json:"userID"`
+	LoggedIn bool   `json:"loggedIn"`
+	jwt.RegisteredClaims
+}
+
+// GenerateJWT ...  生成 JWT
+func GenerateJWT(userID string) (string, error) {
+	expirationTime := time.Now().Add(1 * time.Hour) // 设置过期时间为1小时
+	claims := &CustomClaims{
+		UserID: userID,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+			Issuer:    Issuer,
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(secretKey))
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func (i *interceptor) CheckLogin(ctx core.Context) (sessionUserInfo proposal.SessionUserInfo, err core.BusinessError) {
-	token := ctx.GetHeader(config.HeaderLoginToken)
+	token := ctx.GetHeader(config.HeaderSignToken)
 	if token == "" {
 		err = core.Error(
 			http.StatusUnauthorized,
