@@ -3,7 +3,7 @@ genTables = 'user'
 
 [common]
 version = "0.0.1"
-is_debug = false
+is_debug = true
 log_level = "info"
 log_path = "./logs/fugu.log"
 start_time = "2023-11-01"

@@ -8,7 +8,6 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/router/interceptor"
-	"FuguBackend/pkg/errors"
 	"fmt"
 	"net/http"
 
@@ -28,33 +27,8 @@ type App struct {
 
 func NewApp() (*App, error) {
 	config.LoadConfig()
-	// 初始化 access logger
-	accessLogger, err := logger.NewJSONLogger(
-		logger.WithDisableConsole(),
-		logger.WithField("domain", fmt.Sprintf("%s[%s]", config.ProjectName, env.Active().Value())),
-		logger.WithTimeLayout(timeutil.CSTLayout),
-		logger.WithFileP(config.ProjectAccessLogFile),
-	)
-	if err != nil {
-		panic(err)
-	}
 
-	// 初始化 cron logger
-	cronLogger, err := logger.NewJSONLogger(
-		logger.WithDisableConsole(),
-		logger.WithField("domain", fmt.Sprintf("%s[%s]", config.ProjectName, env.Active().Value())),
-		logger.WithTimeLayout(timeutil.CSTLayout),
-		logger.WithFileP(config.ProjectCronLogFile),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	defer func() {
-		_ = accessLogger.Sync()
-		_ = cronLogger.Sync()
-	}()
-	server, err := NewHTTPServer(accessLogger, cronLogger)
+	server, err := NewHTTPServer()
 	if err != nil {
 		return nil, err
 	}
@@ -71,10 +45,10 @@ func NewApp() (*App, error) {
 
 func (p *App) AppStart() {
 
-	config.Logger.Info("[INFO]", zap.String("service is", " starting ..."), zap.Any("address:", config.Conf.Server.Addr))
+	config.Lg.Info("[INFO]", zap.String("service is", " starting ..."), zap.Any("address:", config.Conf.Server.Addr))
 
 	if err := p.Server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		config.Logger.Fatal("http server startup err", zap.Error(err))
+		config.Lg.Fatal("http server startup err", zap.Error(err))
 	}
 }
 
@@ -100,13 +74,14 @@ type Server struct {
 	CronServer cron.Server
 }
 
-func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) {
-	if logger == nil {
-		return nil, errors.New("logger required")
-	}
+func NewHTTPServer() (*Server, error) {
+	//if logger == nil {
+	//	return nil, errors.New("logger required")
+	//}
 
 	r := new(Resource)
-	r.Logger = logger
+	//r.Logger = logger
+	r.Logger = config.Lg
 
 	openBrowserUri := config.ProjectDomain + config.ProjectPort
 
@@ -118,14 +93,14 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	// 初始化 DB
 	dbRepo, err := mysql.New()
 	if err != nil {
-		logger.Fatal("new db err", zap.Error(err))
+		config.Lg.Fatal("new db err", zap.Error(err))
 	}
 	r.Db = dbRepo
 
 	// 初始化 Cache
 	cacheRepo, err := redis.New()
 	if err != nil {
-		logger.Fatal("new cache err", zap.Error(err))
+		config.Lg.Fatal("new cache err", zap.Error(err))
 	}
 	r.Cache = cacheRepo
 
@@ -138,12 +113,12 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	//r.cronServer = cronServer
 	//}
 
-	mux, err := core.New(logger,
+	mux, err := core.New(config.Lg,
 		core.WithEnableOpenBrowser(openBrowserUri),
 		core.WithEnableCors(),
 		core.WithEnableRate(),
-		core.WithAlertNotify(alert.NotifyHandler(logger)),
-		core.WithRecordMetrics(metrics.RecordHandler(logger)),
+		core.WithAlertNotify(alert.NotifyHandler(config.Lg)),
+		core.WithRecordMetrics(metrics.RecordHandler(config.Lg)),
 	)
 
 	if err != nil {
@@ -151,7 +126,7 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	}
 
 	r.Mux = mux
-	r.Interceptors = interceptor.New(logger, r.Cache, r.Db)
+	r.Interceptors = interceptor.New(config.Lg, r.Cache, r.Db)
 
 	// 设置 API 路由
 	SetApiRouter(r)
@@ -163,4 +138,33 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	s.CronServer = r.CronServer
 
 	return s, nil
+}
+func GetTraceLogger() (accessLogger, cronLogger *zap.Logger) {
+	// 初始化 access logger
+	accessLogger, err := logger.NewJSONLogger(
+		//logger.WithDisableConsole(),
+		logger.WithField("domain", fmt.Sprintf("%s[%s]", config.ProjectName, env.Active().Value())),
+		logger.WithTimeLayout(timeutil.CSTLayout),
+		logger.WithFileP(config.ProjectAccessLogFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	// 初始化 cron logger
+	cronLogger, err = logger.NewJSONLogger(
+		//logger.WithDisableConsole(),
+		logger.WithField("domain", fmt.Sprintf("%s[%s]", config.ProjectName, env.Active().Value())),
+		logger.WithTimeLayout(timeutil.CSTLayout),
+		logger.WithFileP(config.ProjectCronLogFile),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	defer func() {
+		_ = accessLogger.Sync()
+		_ = cronLogger.Sync()
+	}()
+	return accessLogger, cronLogger
 }

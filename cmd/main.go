@@ -62,7 +62,7 @@ var rootCmd = &cobra.Command{
 		//appInstance, err := app.NewApp(serverCtx.C, router, serverCtx)
 		newApp, err := router.NewApp()
 		if err != nil {
-			config.Logger.Error("init error", zap.Error(err))
+			config.Lg.Error("init error", zap.Error(err))
 			return
 		}
 

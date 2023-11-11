@@ -1,6 +1,7 @@
 package user
 
 import (
+	"go.uber.org/zap"
 	"net/http"
 
 	"FuguBackend/app/code"
@@ -58,6 +59,7 @@ func (h *handler) Create() core.HandlerFunc {
 
 		id, err := h.userService.Create(c, createData)
 		if err != nil {
+			h.logger.Info("err:", zap.Error(err))
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.AdminCreateError,

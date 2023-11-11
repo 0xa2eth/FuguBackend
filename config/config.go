@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -118,11 +119,25 @@ var Conf = &Config{}
 // LoadConfig ...
 func LoadConfig() {
 	// init the new config params
-	initConf()
+	fmt.Println("start load config... ")
+
+	Conf = &Config{
+		Common:   &CommonConfig{},
+		Server:   &ServerConf{},
+		MySQL:    &MySQLConf{},
+		Redis:    &RedisConf{},
+		Etcd:     &EtcdConf{},
+		Aws:      &AwsConf{},
+		Jwt:      &JwtConf{},
+		Twitter:  &TwitterConf{},
+		HashIds:  &HashIds{},
+		Language: &Language{},
+		Mail:     &Mail{},
+	}
 
 	contents, err := ioutil.ReadFile("./config/fugucnf.toml")
 	if err != nil {
-		log.Fatal("[FATAL] load fugucnf.toml: ", err)
+		log.Fatal("[FATAL] failed to load fugucnf.toml: ", err)
 	}
 	tbl, err := toml.Parse(contents)
 	if err != nil {
@@ -155,22 +170,6 @@ func LoadConfig() {
 
 	// snowflake
 	snowflake.SonyFlakeInit("2023-11-11", 8)
-}
-
-func initConf() {
-	Conf = &Config{
-		Common:   &CommonConfig{},
-		Server:   &ServerConf{},
-		MySQL:    &MySQLConf{},
-		Redis:    &RedisConf{},
-		Etcd:     &EtcdConf{},
-		Aws:      &AwsConf{},
-		Jwt:      &JwtConf{},
-		Twitter:  &TwitterConf{},
-		HashIds:  &HashIds{},
-		Language: &Language{},
-		Mail:     &Mail{},
-	}
 }
 
 func parseCommon(tbl *ast.Table) {

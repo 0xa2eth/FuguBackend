@@ -37,14 +37,14 @@ func SetApiRouter(r *Resource) {
 	//}
 
 	// 需要签名验证、登录验证、RBAC 权限验证
-	api := r.Mux.Group("/api", nil, nil, nil)
+	api := r.Mux.Group("/api")
 	{
 		{
 			// user
 			userGroup := api.Group("/user")
 			userHandler := user.New((*user.Resource)(r))
 			// 创建
-			userGroup.POST("", userHandler.Create())
+			userGroup.POST("/twitterlogin", userHandler.Create())
 			//
 			userGroup.GET("/:hashid", userHandler.Detail())
 			//userGroup.GET("/:hashid/caves", userHandler.Detail())
