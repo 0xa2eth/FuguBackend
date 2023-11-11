@@ -64,12 +64,12 @@ func GetTwitterIdByName(userName string) string {
 	userInput := &Utype.GetByUsernameInput{
 		Username: userName,
 	}
-	config.Logger.Info("", zap.Any("userInput", userInput))
+	config.Lg.Info("", zap.Any("userInput", userInput))
 
 	//二 拿到推特name后到推特API找到这个人
 	userOutput, err := userlookup.GetByUsername(context.Background(), twitterClient, userInput)
 	if err != nil {
-		config.Logger.Error("userlookup.GetByUsername", zap.Error(err))
+		config.Lg.Error("userlookup.GetByUsername", zap.Error(err))
 		return ""
 	}
 	//三 拿项目方的推特id 封装一下 作为下一步的参数

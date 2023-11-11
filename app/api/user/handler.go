@@ -18,35 +18,25 @@ var _ Handler = (*handler)(nil)
 type Handler interface {
 	i()
 
-	// Login 管理员登录
-	// @Tags API.admin
-	// @Router /api/login [post]
-	Login() core.HandlerFunc
+	// RegisterOrLogin 注册或登陆
+	// @Tags API.user
+	// @Router /api/user/twitterlogin [post]
+	RegisterOrLogin() core.HandlerFunc
 
-	// Detail 个人信息
-	// @Tags API.admin
-	// @Router /api/admin/info [get]
-	Detail() core.HandlerFunc
+	// UserInfo 用户（洞穴非秘密部分）个人信息
+	// @Tags API.user
+	// @Router /api/user/:UserID [get]
+	UserInfo() core.HandlerFunc
 
-	// Modify 修改个人信息
-	// @Tags API.admin
-	// @Router /api/admin/modify_personal_info [patch]
-	Modify() core.HandlerFunc
+	// ModifyInfo 修改个人（洞穴）信息
+	// @Tags API.user
+	// @Router /api/user/:UserID [put]
+	ModifyInfo() core.HandlerFunc
 
-	// Create 新增管理员
-	// @Tags API.admin
-	// @Router /api/admin [post]
-	Create() core.HandlerFunc
-
-	// List 管理员列表
-	// @Tags API.admin
-	// @Router /api/admin [get]
-	List() core.HandlerFunc
-
-	// Delete 删除管理员
-	// @Tags API.admin
-	// @Router /api/admin/{id} [delete]
-	Delete() core.HandlerFunc
+	// GenInviteCode 生成邀请码
+	// @Tags API.user
+	// @Router /api/user/invitecode [get]
+	GenInviteCode() core.HandlerFunc
 }
 
 type handler struct {

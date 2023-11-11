@@ -1,21 +1,19 @@
 package user
 
 import (
-	"fmt"
-	"net/http"
-
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
-
+	"fmt"
 	"go.uber.org/zap"
+	"net/http"
 )
 
-type detailRequest struct {
+type userInfoRequest struct {
 	UserID string `json:"UserID"`
 }
 
-type detailResponse struct {
+type userInfoResponse struct {
 	UserID    string `json:"userId,omitempty" gorm:"column:userid;type:bigint"`
 	TicketNum int    `json:"ticketNum,omitempty" gorm:"column:ticketnum;type:bigint"`
 	CaveFans  int    `json:"caveFans,omitempty" gorm:"column:cavefans;type:bigint"`
@@ -43,17 +41,17 @@ type FollowedCave struct {
 	CaveAvatar string `json:"caveAvatar"`
 }
 
-// Detail 个人信息
-// @Summary 个人信息
-// @Description 个人信息
-// @Tags API.admin
+// UserInfo 用户（洞穴非秘密部分）个人信息
+// @Summary 用户（洞穴非秘密部分）个人信息
+// @Description 用户（洞穴非秘密部分）个人信息
+// @Tags API.user
 // @Accept application/json
 // @Produce json
-// @Param Request body detailRequest true "请求信息"
-// @Success 200 {object} detailResponse
+// @Param Request body userInfoRequest true "请求信息"
+// @Success 200 {object} userInfoResponse
 // @Failure 400 {object} code.Failure
-// @Router /api/admin/info [get]
-func (h *handler) Detail() core.HandlerFunc {
+// @Router /api/user/:UserID [get]
+func (h *handler) UserInfo() core.HandlerFunc {
 	return func(ctx core.Context) {
 		receive := struct {
 			ID string `uri:"UserID" binding:"required"`
@@ -90,16 +88,16 @@ func (h *handler) Detail() core.HandlerFunc {
 
 		//_, err = h.cache.Get(config.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu", redis.WithTrace(ctx.Trace()))
 		//if err != nil {
-		//	ctx.AbortWithError(core.Error(
-		//		http.StatusBadRequest,
-		//		code.AdminDetailError,
-		//		code.Text(code.AdminDetailError)).WithError(err),
-		//	)
-		//	return
+		// ctx.AbortWithError(core.Error(
+		//    http.StatusBadRequest,
+		//    code.AdminDetailError,
+		//    code.Text(code.AdminDetailError)).WithError(err),
+		// )
+		// return
 		//}
 
 		fmt.Println("info : ", info)
-		res := detailResponse{
+		res := userInfoResponse{
 			UserID:      receive.ID,
 			TicketNum:   int(info.Ticketnum),
 			CaveFans:    int(info.Cavefans),

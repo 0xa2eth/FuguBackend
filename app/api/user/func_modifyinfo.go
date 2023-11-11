@@ -1,33 +1,32 @@
 package user
 
 import (
-	"errors"
-	"net/http"
-
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
+	"errors"
+	"net/http"
 )
 
-type modifyPersonalInfoRequest struct {
+type modifyInfoRequest struct {
 	Avatar   string `json:"avatar,omitempty"`
 	NickName string `json:"nickName,omitempty"`
 	Bio      string `json:"bio,omitempty"`
 }
 
-type modifyPersonalInfoResponse struct{}
+type modifyInfoResponse struct{}
 
-// Modify 修改个人信息
-// @Summary 修改个人信息
-// @Description 修改个人信息
-// @Tags API.admin
+// ModifyInfo 修改个人（洞穴）信息
+// @Summary 修改个人（洞穴）信息
+// @Description 修改个人（洞穴）信息
+// @Tags API.user
 // @Accept application/json
 // @Produce json
-// @Param Request body modifyPersonalInfoRequest true "请求信息"
-// @Success 200 {object} modifyPersonalInfoResponse
+// @Param Request body modifyInfoRequest true "请求信息"
+// @Success 200 {object} modifyInfoResponse
 // @Failure 400 {object} code.Failure
-// @Router /api/admin/modify_personal_info [patch]
-func (h *handler) Modify() core.HandlerFunc {
+// @Router /api/user/:UserID [put]
+func (h *handler) ModifyInfo() core.HandlerFunc {
 	return func(c core.Context) {
 		uid := c.Param("UserID")
 		if uid == "" {
@@ -38,7 +37,7 @@ func (h *handler) Modify() core.HandlerFunc {
 			)
 			return
 		}
-		req := new(modifyPersonalInfoRequest)
+		req := new(modifyInfoRequest)
 		//res := new(modifyPersonalInfoResponse)
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.AbortWithError(core.Error(

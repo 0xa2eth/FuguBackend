@@ -1,21 +1,19 @@
 package user
 
 import (
-	"net/http"
-
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/validation"
 	"FuguBackend/app/services/user"
 	"FuguBackend/pkg/snowflake"
-
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/spf13/cast"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"net/http"
 )
 
-type createRequest struct {
+type registerOrLoginRequest struct {
 	//Address        string `json:"address,omitempty"`
 	TwitterID      string `json:"twitterID,omitempty" binding:"required"`
 	TwitterAvatar  string `json:"twitterAvatar,omitempty" binding:"required"`
@@ -23,24 +21,24 @@ type createRequest struct {
 	InvitationCode string `json:"invitationCode,omitempty"`
 }
 
-type createResponse struct {
+type registerOrLoginResponse struct {
 	UserID string `json:"UserID"`
 }
 
-// Create 新增管理员
-// @Summary 新增管理员
-// @Description 新增管理员
-// @Tags API.admin
+// RegisterOrLogin 注册或登陆
+// @Summary 注册或登陆
+// @Description 注册或登陆
+// @Tags API.user
 // @Accept application/json
 // @Produce json
-// @Param Request body createRequest true "请求信息"
-// @Success 200 {object} createResponse
+// @Param Request body registerOrLoginRequest true "请求信息"
+// @Success 200 {object} registerOrLoginResponse
 // @Failure 400 {object} code.Failure
-// @Router /api/admin [post]
-func (h *handler) Create() core.HandlerFunc {
+// @Router /api/user/twitterlogin [post]
+func (h *handler) RegisterOrLogin() core.HandlerFunc {
 	return func(c core.Context) {
-		req := new(createRequest)
-		res := new(createResponse)
+		req := new(registerOrLoginRequest)
+		res := new(registerOrLoginResponse)
 		if err := c.ShouldBindJSON(req); err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,

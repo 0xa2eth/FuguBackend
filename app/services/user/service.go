@@ -25,8 +25,6 @@ type service struct {
 	db     mysql.Repo
 	cache  redis.Repo
 	logger *zap.Logger
-	// todo ...
-	// logger config snowflake
 }
 
 func New(db mysql.Repo, cache redis.Repo, logger *zap.Logger) Service {

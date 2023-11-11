@@ -45,11 +45,13 @@ func SetApiRouter(r *Resource) {
 			userGroup := api.Group("/user")
 			userHandler := user.New((*user.Resource)(r))
 			// 创建用户
-			userGroup.POST("/twitterlogin", userHandler.Create())
+			userGroup.POST("/twitterlogin", userHandler.RegisterOrLogin())
 			// 取用户信息
-			userGroup.GET("/:UserID", userHandler.Detail())
+			userGroup.GET("/:UserID", userHandler.UserInfo())
 			// 修改cave信息
-			userGroup.PUT("/:UserID", userHandler.Modify())
+			userGroup.PUT("/:UserID", userHandler.ModifyInfo())
+			// 生成邀请码
+			userGroup.GET("/invitecode", userHandler.GenInviteCode())
 
 		}
 		{
@@ -61,6 +63,8 @@ func SetApiRouter(r *Resource) {
 			// 三类：正常广场的， 特权的， 还有洞穴的
 			// 特权的和广场的在一个接口里 洞穴的单独一个接口
 			secretGroup.GET("/viewable", secretHandler.List())
+			// 投诉
+			secretGroup.GET("/complaint/:SecretID", secretHandler.Complaint())
 		}
 		{
 			// cave

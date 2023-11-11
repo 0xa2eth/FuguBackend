@@ -89,7 +89,7 @@ func Error(c *gin.Context, err error) {
 	// ctx := c.Request.Context()
 	e := errcode.ParseErr(err)
 	if e == errcode.ErrUnexpected || e == errcode.ErrCustom {
-		config.Logger.Error("request handler err code:", zap.Any("", e.Code()), zap.Error(err))
+		config.Lg.Error("request handler err code:", zap.Any("", e.Code()), zap.Error(err))
 	}
 
 	WriteHeader(c.Writer, e)

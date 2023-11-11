@@ -6,7 +6,7 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/router/interceptor"
-	"FuguBackend/app/services/user"
+	"FuguBackend/app/services/cave"
 	"FuguBackend/config"
 	"FuguBackend/pkg/hash"
 
@@ -38,7 +38,7 @@ type handler struct {
 	logger      *zap.Logger
 	cache       redis.Repo
 	hashids     hash.Hash
-	userService user.Service
+	caveService cave.Service
 }
 
 func New(r *Resource) Handler {
@@ -46,7 +46,7 @@ func New(r *Resource) Handler {
 		logger:      r.Logger,
 		cache:       r.Cache,
 		hashids:     hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
-		userService: user.New(r.Db, r.Cache, r.Logger),
+		caveService: cave.New(r.Db, r.Cache, r.Logger),
 	}
 }
 
