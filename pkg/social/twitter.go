@@ -1,10 +1,12 @@
 package social
 
 import (
-	"FuguBackend/config"
-	"FuguBackend/pkg/xhttp"
 	"context"
 	"fmt"
+
+	"FuguBackend/config"
+	"FuguBackend/pkg/xhttp"
+
 	"github.com/michimani/gotwi"
 	"github.com/michimani/gotwi/user/userlookup"
 	Utype "github.com/michimani/gotwi/user/userlookup/types"

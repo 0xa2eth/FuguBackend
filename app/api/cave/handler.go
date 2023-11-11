@@ -1,4 +1,4 @@
-package user
+package cave
 
 import (
 	"FuguBackend/app/pkg/core"
@@ -18,35 +18,20 @@ var _ Handler = (*handler)(nil)
 type Handler interface {
 	i()
 
-	// Login 管理员登录
-	// @Tags API.admin
-	// @Router /api/login [post]
-	Login() core.HandlerFunc
+	// SecretList 洞穴内秘密列表
+	// @Tags API.cave
+	// @Router /api/cave/:CaveID [get]
+	SecretList() core.HandlerFunc
 
-	// Detail 个人信息
-	// @Tags API.admin
-	// @Router /api/admin/info [get]
-	Detail() core.HandlerFunc
+	// Top top5洞穴
+	// @Tags API.cave
+	// @Router /api/cave/top [get]
+	Top() core.HandlerFunc
 
-	// Modify 修改个人信息
-	// @Tags API.admin
-	// @Router /api/admin/modify_personal_info [patch]
-	Modify() core.HandlerFunc
-
-	// Create 新增管理员
-	// @Tags API.admin
-	// @Router /api/admin [post]
-	Create() core.HandlerFunc
-
-	// List 管理员列表
-	// @Tags API.admin
-	// @Router /api/admin [get]
-	List() core.HandlerFunc
-
-	// Delete 删除管理员
-	// @Tags API.admin
-	// @Router /api/admin/{id} [delete]
-	Delete() core.HandlerFunc
+	// RecommendCave 推荐的洞穴
+	// @Tags API.cave
+	// @Router /api/cave/recommend [get]
+	RecommendCave() core.HandlerFunc
 }
 
 type handler struct {

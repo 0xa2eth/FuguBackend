@@ -2,12 +2,13 @@ package user
 
 import (
 	"fmt"
-	"go.uber.org/zap"
 	"net/http"
 
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
+
+	"go.uber.org/zap"
 )
 
 type detailRequest struct {
@@ -23,7 +24,7 @@ type detailResponse struct {
 	//RegisTime   int    `json:"regisTime,omitempty" gorm:"column:registime;type:bigint"`
 	EarnedPoint int `json:"earnedPoint,omitempty" gorm:"column:earned_point;type:bigint"`
 	CavePoint   int `json:"CavePoint,omitempty" gorm:"column:cave_point;type:bigint"`
-	Views       int `json:"views" gorm:"column:views;type:bigint"`
+	Views       int `json:"views,omitempty" gorm:"column:views;type:bigint"`
 	//Tag            int    `json:"tag" gorm:"column:tag;type:int"`
 	NickName string `json:"nickName,omitempty" gorm:"column:nick_name;type:varchar(255)"`
 	Bios     string `json:"bios,omitempty" gorm:"column:bios;type:varchar(255)"`
@@ -33,6 +34,13 @@ type detailResponse struct {
 	//TwitterAvatar  string `json:"twitterAvatar,omitempty" gorm:"column:twitter_avatar;type:varchar(255)"`
 	//TwitterName    string `json:"twitterName,omitempty" gorm:"column:twitter_name;type:varchar(255)"`
 	//CaveReTweetUrl string `json:"CaveReTweetUrl" gorm:"column:caveretweeturl;type:varchar(255)"`
+	NumberOfPosts int            `json:"numberOfPosts,omitempty"`
+	FollowedCaves []FollowedCave `json:"followedCaves,omitempty"`
+}
+type FollowedCave struct {
+	CaveID     string `json:"caveID"`
+	CaveName   string `json:"caveName"`
+	CaveAvatar string `json:"caveAvatar"`
 }
 
 // Detail 个人信息
@@ -90,7 +98,6 @@ func (h *handler) Detail() core.HandlerFunc {
 		//	return
 		//}
 
-		// todo
 		fmt.Println("info : ", info)
 		res := detailResponse{
 			UserID:      receive.ID,
@@ -103,6 +110,10 @@ func (h *handler) Detail() core.HandlerFunc {
 			Bios:        info.Bios,
 			Avatar:      info.Avatar,
 		}
+
+		var num int
+		// todo
+		res.NumberOfPosts = num
 		ctx.Payload(res)
 	}
 }

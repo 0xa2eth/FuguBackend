@@ -1,6 +1,9 @@
 package router
 
 import (
+	"fmt"
+	"net/http"
+
 	"FuguBackend/app/alert"
 	"FuguBackend/app/metrics"
 	"FuguBackend/app/pkg/core"
@@ -8,9 +11,6 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/app/router/interceptor"
-	"fmt"
-	"net/http"
-
 	"FuguBackend/config"
 	"FuguBackend/pkg/env"
 	"FuguBackend/pkg/logger"

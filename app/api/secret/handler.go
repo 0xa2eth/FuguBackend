@@ -18,25 +18,15 @@ import (
 type Handler interface {
 	i()
 
-	// Create 新增管理员
-	// @Tags API.admin
-	// @Router /api/admin [post]
+	// Create 发布新帖子
+	// @Tags API.secret
+	// @Router /api/secret/:UserID [post]
 	Create() core.HandlerFunc
 
-	// List 管理员列表
-	// @Tags API.admin
-	// @Router /api/admin [get]
+	// List 可见的秘密列表
+	// @Tags API.secret
+	// @Router /api/secret/viewable [get]
 	List() core.HandlerFunc
-
-	// Detail 个人信息
-	// @Tags API.admin
-	// @Router /api/admin/info [get]
-	Detail() core.HandlerFunc
-
-	// Delete 删除管理员
-	// @Tags API.admin
-	// @Router /api/admin/{id} [delete]
-	Delete() core.HandlerFunc
 }
 
 type handler struct {

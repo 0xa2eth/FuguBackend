@@ -1,9 +1,6 @@
 package user
 
 import (
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"net/http"
 
 	"FuguBackend/app/code"
@@ -12,7 +9,10 @@ import (
 	"FuguBackend/app/services/user"
 	"FuguBackend/pkg/snowflake"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cast"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type createRequest struct {

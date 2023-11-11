@@ -1,11 +1,12 @@
 package user
 
 import (
+	"errors"
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
-	"github.com/pkg/errors"
-	"net/http"
 )
 
 type modifyPersonalInfoRequest struct {
@@ -38,8 +39,8 @@ func (h *handler) Modify() core.HandlerFunc {
 			return
 		}
 		req := new(modifyPersonalInfoRequest)
-		res := new(modifyPersonalInfoResponse)
-		if err := c.ShouldBindJSON(req); err != nil {
+		//res := new(modifyPersonalInfoResponse)
+		if err := c.ShouldBindJSON(&req); err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.ParamBindError,
@@ -49,7 +50,19 @@ func (h *handler) Modify() core.HandlerFunc {
 		}
 
 		modifyData := new(user.ModifyData)
-		if err := h.userService.Modify(ctx, uid, modifyData); err != nil {
+		modifyData.NickName = req.NickName
+		modifyData.Bio = req.Bio
+		modifyData.Avatar = req.Avatar
+		InnerID, err := h.hashids.HashidsDecode(uid)
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.HashIdsEncodeError,
+				code.Text(code.HashIdsEncodeError)).WithError(err),
+			)
+			return
+		}
+		if err := h.userService.Modify(c, int64(InnerID[0]), modifyData); err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.AdminModifyPersonalInfoError,
@@ -58,6 +71,6 @@ func (h *handler) Modify() core.HandlerFunc {
 			return
 		}
 
-		c.Payload("success")
+		c.Payload(nil)
 	}
 }

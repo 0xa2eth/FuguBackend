@@ -1,11 +1,12 @@
 package xhttp
 
 import (
+	"net/http"
+	"net/url"
+
 	"FuguBackend/config"
 	"FuguBackend/pkg/errcode"
 	"FuguBackend/pkg/kit/convert"
-	"net/http"
-	"net/url"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

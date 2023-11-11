@@ -1,6 +1,7 @@
 package router
 
 import (
+	"FuguBackend/app/api/cave"
 	"FuguBackend/app/api/secret"
 	"FuguBackend/app/api/user"
 	"FuguBackend/app/pkg/core"
@@ -43,26 +44,37 @@ func SetApiRouter(r *Resource) {
 			// user
 			userGroup := api.Group("/user")
 			userHandler := user.New((*user.Resource)(r))
-			// 创建
+			// 创建用户
 			userGroup.POST("/twitterlogin", userHandler.Create())
-			//
+			// 取用户信息
 			userGroup.GET("/:UserID", userHandler.Detail())
-			//userGroup.GET("/:hashid/caves", userHandler.Detail())
-			userGroup.GET("/cave/:UserID", userHandler.List())
+			// 修改cave信息
 			userGroup.PUT("/:UserID", userHandler.Modify())
 
 		}
 		{
 			// secret
-			secretGroup := api.Group("/secrets")
+			secretGroup := api.Group("/secret")
 			secretHandler := secret.New((*secret.Resource)(r))
-			secretGroup.POST("", secretHandler.Create())
-			secretGroup.GET("/:hashid", secretHandler.Detail())
+			// 发布秘密
+			secretGroup.POST("/:UserID", secretHandler.Create())
 			// 三类：正常广场的， 特权的， 还有洞穴的
 			// 特权的和广场的在一个接口里 洞穴的单独一个接口
-			api.GET("", secretHandler.List())
+			secretGroup.GET("/viewable", secretHandler.List())
 		}
+		{
+			// cave
+			caveGroup := api.Group("/cave")
+			caveHandler := cave.New((*cave.Resource)(r))
+			caveGroup.GET("/top", caveHandler.Top())
+			// 进入自己的 或者已拥有的
+			caveGroup.GET("/:CaveID", caveHandler.SecretList())
+			//
 
+			// 三类：正常广场的， 特权的， 还有洞穴的
+			// 特权的和广场的在一个接口里 洞穴的单独一个接口
+			caveGroup.GET("/recommend", caveHandler.RecommendCave())
+		}
 		//api.PATCH("/authorized/used", authorizedHandler.UpdateUsed())
 		//api.DELETE("/authorized/:id", core.AliasForRecordMetrics("/api/authorized/info"), authorizedHandler.Delete())
 		//

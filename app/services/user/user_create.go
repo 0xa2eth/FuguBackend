@@ -1,9 +1,10 @@
 package user
 
 import (
+	"time"
+
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/repository/mysql/users"
-	"time"
 )
 
 type CreateUserData struct {

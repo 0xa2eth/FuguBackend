@@ -17,6 +17,8 @@ type Service interface {
 	Create(ctx core.Context, adminData *CreateUserData) (id int64, err error)
 
 	Detail(ctx core.Context, searchOneData *SearchOneData) (info *users.Users, err error)
+
+	Modify(ctx core.Context, id int64, modifyData *ModifyData) (err error)
 }
 
 type service struct {

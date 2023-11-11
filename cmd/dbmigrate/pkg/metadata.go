@@ -13,8 +13,8 @@ type User struct {
 	RegisTime      int      `json:"regisTime,omitempty" gorm:"column:registime;type:bigint"`
 	EarnedPoint    int      `json:"earnedPoint,omitempty" gorm:"column:earned_point;type:bigint"`
 	CavePoint      int      `json:"CavePoint,omitempty" gorm:"column:cave_point;type:bigint"`
-	Views          int      `json:"views" gorm:"column:views;type:bigint"`
-	Tag            int      `json:"tag" gorm:"column:tag;type:int"`
+	Views          int      `json:"views,omitempty" gorm:"column:views;type:bigint"`
+	Tag            int      `json:"tag,omitempty" gorm:"column:tag;type:int"`
 	NickName       string   `json:"nickName,omitempty" gorm:"column:nick_name;type:varchar(255)"`
 	Bios           string   `json:"bios,omitempty" gorm:"column:bios;type:varchar(255)"`
 	Avatar         string   `json:"avatar,omitempty" gorm:"column:avatar;type:varchar(255)"`
@@ -42,7 +42,7 @@ type Secret struct {
 	Views     int64         `json:"views,omitempty" gorm:"column:views;type:bigint"`
 	Content   string        `json:"content,omitempty" gorm:"column:content;type:varchar(255)"`
 	Images    []SecretImage `json:"images,omitempty" gorm:"foreignKey:SecretID"`
-	// Status 秘闻状态 可以设置为不可见
+	// Status 秘闻状态 平台可以将非法的帖子设置为不可见
 	Status bool `json:"status,omitempty" gorm:"column:status;type:tinyint"`
 }
 type SecretImage struct {

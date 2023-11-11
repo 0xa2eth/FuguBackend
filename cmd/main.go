@@ -1,12 +1,12 @@
 package main
 
 import (
-	"FuguBackend/app/router"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"FuguBackend/app/router"
 	"FuguBackend/config"
 
 	homedir "github.com/mitchellh/go-homedir"
