@@ -4,8 +4,8 @@ import (
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
+	"errors"
 	"fmt"
-	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -52,19 +52,28 @@ type FollowedCave struct {
 // @Failure 400 {object} code.Failure
 // @Router /api/user/:UserID [get]
 func (h *handler) UserInfo() core.HandlerFunc {
-	return func(ctx core.Context) {
-		receive := struct {
-			ID string `uri:"UserID" binding:"required"`
-		}{}
-		err := ctx.ShouldBindURI(&receive)
-		if err != nil {
-			h.logger.Error("", zap.Error(err))
+	return func(c core.Context) {
+		//receive := struct {
+		//	ID string `uri:"UserID" binding:"required"`
+		//}{}
+		//err := c.ShouldBindURI(&receive)
+		//if err != nil {
+		//	h.logger.Error("", zap.Error(err))
+		//}
+		value, exists := c.Get("UserID")
+		if !exists {
+			c.AbortWithError(core.Error(
+				http.StatusUnauthorized,
+				code.AuthorizationError,
+				code.Text(code.AuthorizationError)).WithError(errors.New("invalid token")),
+			)
+			return
 		}
+		hashID := value.(string)
 
-		InnerID, err := h.hashids.HashidsDecode(receive.ID)
-		fmt.Println(InnerID)
+		InnerID, err := h.hashids.HashidsDecode(hashID)
 		if err != nil {
-			ctx.AbortWithError(core.Error(
+			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.HashIdsEncodeError,
 				code.Text(code.HashIdsEncodeError)).WithError(err),
@@ -76,9 +85,9 @@ func (h *handler) UserInfo() core.HandlerFunc {
 
 		searchOneData.Id = InnerID[0]
 
-		info, err := h.userService.Detail(ctx, searchOneData)
+		info, err := h.userService.Detail(c, searchOneData)
 		if err != nil {
-			ctx.AbortWithError(core.Error(
+			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.AdminDetailError,
 				code.Text(code.AdminDetailError)).WithError(err),
@@ -86,19 +95,9 @@ func (h *handler) UserInfo() core.HandlerFunc {
 			return
 		}
 
-		//_, err = h.cache.Get(config.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu", redis.WithTrace(ctx.Trace()))
-		//if err != nil {
-		// ctx.AbortWithError(core.Error(
-		//    http.StatusBadRequest,
-		//    code.AdminDetailError,
-		//    code.Text(code.AdminDetailError)).WithError(err),
-		// )
-		// return
-		//}
-
 		fmt.Println("info : ", info)
 		res := userInfoResponse{
-			UserID:      receive.ID,
+			UserID:      hashID,
 			TicketNum:   int(info.Ticketnum),
 			CaveFans:    int(info.Cavefans),
 			EarnedPoint: int(info.EarnedPoint),
@@ -112,6 +111,6 @@ func (h *handler) UserInfo() core.HandlerFunc {
 		var num int
 		// todo
 		res.NumberOfPosts = num
-		ctx.Payload(res)
+		c.Payload(res)
 	}
 }

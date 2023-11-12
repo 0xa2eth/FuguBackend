@@ -2,6 +2,7 @@ package cave
 
 import (
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/twittersvc"
 	"FuguBackend/app/repository/cron"
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
@@ -32,6 +33,11 @@ type Handler interface {
 	// @Tags API.cave
 	// @Router /api/cave/recommend [get]
 	RecommendCave() core.HandlerFunc
+
+	// VerifyTask 效验洞穴任务是否完成
+	// @Tags API.cave
+	// @Router /api/cave/verifytask [get]
+	VerifyTask() core.HandlerFunc
 }
 
 type handler struct {
@@ -46,17 +52,18 @@ func New(r *Resource) Handler {
 		logger:      r.Logger,
 		cache:       r.Cache,
 		hashids:     hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
-		caveService: cave.New(r.Db, r.Cache, r.Logger),
+		caveService: cave.New(r.Db, r.Cache, r.Logger, r.TwitterServer),
 	}
 }
 
 func (h *handler) i() {}
 
 type Resource struct {
-	Mux          core.Mux
-	Logger       *zap.Logger
-	Db           mysql.Repo
-	Cache        redis.Repo
-	Interceptors interceptor.Interceptor
-	CronServer   cron.Server
+	Mux           core.Mux
+	Logger        *zap.Logger
+	Db            mysql.Repo
+	Cache         redis.Repo
+	Interceptors  interceptor.Interceptor
+	CronServer    cron.Server
+	TwitterServer twittersvc.TwitterServiceMaster
 }

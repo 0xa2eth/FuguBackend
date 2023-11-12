@@ -183,7 +183,7 @@ func MD5(plaintext string) string {
 	m := md5.New()
 	_, err := io.WriteString(m, plaintext)
 	if err != nil {
-		config.Logger.Fatal("[MD5]", zap.Error(err))
+		config.Lg.Fatal("[MD5]", zap.Error(err))
 	}
 	arr := m.Sum(nil)
 	return fmt.Sprintf("%x", arr)

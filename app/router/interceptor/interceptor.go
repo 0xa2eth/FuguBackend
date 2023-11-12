@@ -2,6 +2,7 @@ package interceptor
 
 import (
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/twittersvc"
 	"FuguBackend/app/proposal"
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
@@ -37,13 +38,13 @@ type interceptor struct {
 	userService user.Service
 }
 
-func New(logger *zap.Logger, cache redis.Repo, db mysql.Repo) Interceptor {
+func New(logger *zap.Logger, cache redis.Repo, db mysql.Repo, twsvc twittersvc.TwitterServiceMaster) Interceptor {
 	return &interceptor{
 		logger: logger,
 		cache:  cache,
 		db:     db,
 		//authorizedService: authorized.New(db, cache),
-		userService: user.New(db, cache, logger),
+		userService: user.New(db, cache, logger, twsvc),
 	}
 }
 

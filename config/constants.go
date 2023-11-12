@@ -10,7 +10,7 @@ const (
 	ProjectVersion = "v1.2.8"
 
 	// ProjectName 项目名称
-	ProjectName = "FuGu Toxic"
+	ProjectName = "FuguToxic"
 
 	// ProjectDomain 项目域名
 	ProjectDomain = "http://127.0.0.1"
@@ -56,4 +56,23 @@ const (
 
 	// LoginSessionTTL 登录有效期为 24 小时
 	LoginSessionTTL = time.Hour * 24
+
+	// DefaultInviteCodeLength 默认邀请码长度
+	DefaultInviteCodeLength = 8
+
+	// DefaultInviteCodeTTL 默认邀请码有效期
+	DefaultInviteCodeTTL = time.Hour * 24
+
+	// DefaultAvatar 默认头像
+	DefaultAvatar = "https://fugutoxic.s3.ap-northeast-1.amazonaws.com/siteavatar/defaultavatar.jpg"
+
+	// Fugu 平台Fugu字符串
+	Fugu = "Fugu"
+
+	// DefaultBio 平台默认Bio
+	DefaultBio = "Fugu Toxic Secret is an anonymous content-sharing platform built on Twitter connections, turning your real-life stories into earnings."
+
+	TwitterPostPreFix = "A New Secret Cave =="
+	TwitterPostSuffix = "== Has Been Created! Come To See And Find Your Interests! Transfer Link Here https://metahome.tech"
+	TransferLink      = ""
 )

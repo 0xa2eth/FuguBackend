@@ -63,7 +63,7 @@ access_key = "AAAAAAAAAAAAAAAAAAAAAOcMhQEAAAAAv7AxXoCTM5%2BdfFUhcaOS3TLvWzM%3DMg
 
 [hashids]
 length = 12
-secret = "6ab6122836cfef95f8db"
+secret = "3tagdmqUPkuP"
 
 [language]
 local = "zh-cn"

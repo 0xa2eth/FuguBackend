@@ -3,7 +3,7 @@ package secret
 import (
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
-
+	"FuguBackend/app/services/secret"
 	"errors"
 	"net/http"
 )
@@ -37,5 +37,20 @@ func (h *handler) Create() core.HandlerFunc {
 			)
 			return
 		}
+		req := new(createRequest)
+
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.ParamBindError,
+				code.Text(code.ParamBindError)).WithError(err),
+			)
+			return
+		}
+		s := new(secret.CreateSecretData)
+		s.Content = req.Content
+		s.ViewLevel = req.ViewLevel
+		s.Images = req.Images
+
 	}
 }

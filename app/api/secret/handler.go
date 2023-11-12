@@ -2,6 +2,7 @@ package secret
 
 import (
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/twittersvc"
 	"FuguBackend/app/repository/cron"
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
@@ -46,17 +47,18 @@ func New(r *Resource) Handler {
 		logger:        r.Logger,
 		cache:         r.Cache,
 		hashids:       hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
-		secretService: secret.New(r.Db, r.Cache, r.Logger),
+		secretService: secret.New(r.Db, r.Cache, r.Logger, r.TwitterServer),
 	}
 }
 
 func (h *handler) i() {}
 
 type Resource struct {
-	Mux          core.Mux
-	Logger       *zap.Logger
-	Db           mysql.Repo
-	Cache        redis.Repo
-	Interceptors interceptor.Interceptor
-	CronServer   cron.Server
+	Mux           core.Mux
+	Logger        *zap.Logger
+	Db            mysql.Repo
+	Cache         redis.Repo
+	Interceptors  interceptor.Interceptor
+	CronServer    cron.Server
+	TwitterServer twittersvc.TwitterServiceMaster
 }

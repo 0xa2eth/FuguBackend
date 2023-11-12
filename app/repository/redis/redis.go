@@ -12,6 +12,12 @@ import (
 	"github.com/go-redis/redis/v7"
 )
 
+/*
+ Redis 中，可以通过 SELECT 命令来切换不同的数据库（DB）。默认情况下，Redis 有 16 个编号为 0 到 15 的数据库
+ 每个数据库是相互独立的，切换到一个数据库不会影响其他数据库
+ 但在实践中，通常建议将一个 Redis 实例用于单个应用程序，并使用键前缀来区分不同的数据集，而不是过度使用多个数据库。
+*/
+
 type Option func(*option)
 
 type Trace = trace.T

@@ -2,6 +2,7 @@ package user
 
 import (
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/twittersvc"
 	"FuguBackend/app/repository/cron"
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
@@ -38,6 +39,11 @@ type Handler interface {
 	// @Router /api/user/invitecode [get]
 	GenInviteCode() core.HandlerFunc
 
+	// VerifyInviteCode 验证邀请码
+	// @Tags API.user
+	// @Router /api/user/verifyinvitation [get]
+	VerifyInviteCode() core.HandlerFunc
+
 	// Logout 登出
 	// @Tags API.user
 	// @Router /api/user/logout [get]
@@ -56,17 +62,18 @@ func New(r *Resource) Handler {
 		logger:      r.Logger,
 		cache:       r.Cache,
 		hashids:     hash.New(config.Get().HashIds.Secret, config.Get().HashIds.Length),
-		userService: user.New(r.Db, r.Cache, r.Logger),
+		userService: user.New(r.Db, r.Cache, r.Logger, r.TwitterServer),
 	}
 }
 
 func (h *handler) i() {}
 
 type Resource struct {
-	Mux          core.Mux
-	Logger       *zap.Logger
-	Db           mysql.Repo
-	Cache        redis.Repo
-	Interceptors interceptor.Interceptor
-	CronServer   cron.Server
+	Mux           core.Mux
+	Logger        *zap.Logger
+	Db            mysql.Repo
+	Cache         redis.Repo
+	Interceptors  interceptor.Interceptor
+	CronServer    cron.Server
+	TwitterServer twittersvc.TwitterServiceMaster
 }

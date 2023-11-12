@@ -10,6 +10,9 @@ import (
 type CreateUserData struct {
 	UserID        int64  `json:"userid" binding:"-"`
 	Address       string `json:"address" binding:"-"`
+	NickName      string `json:"nickName,omitempty" gorm:"column:nick_name;type:varchar(255)"`
+	Bios          string `json:"bios,omitempty" gorm:"column:bios;type:varchar(255)"`
+	Avatar        string `json:"avatar,omitempty" gorm:"column:avatar;type:varchar(255)"`
 	TwitterID     string `json:"twitterID" binding:"required"`
 	TwitterName   string `json:"twitterName" binding:"required"`
 	TwitterAvatar string `json:"twitterAvatar" binding:"-"`

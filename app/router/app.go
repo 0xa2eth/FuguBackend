@@ -7,6 +7,7 @@ import (
 	"FuguBackend/app/alert"
 	"FuguBackend/app/metrics"
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/twittersvc"
 	"FuguBackend/app/repository/cron"
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
@@ -60,12 +61,13 @@ func (p *App) AppClose() error {
 }
 
 type Resource struct {
-	Mux          core.Mux
-	Logger       *zap.Logger
-	Db           mysql.Repo
-	Cache        redis.Repo
-	Interceptors interceptor.Interceptor
-	CronServer   cron.Server
+	Mux           core.Mux
+	Logger        *zap.Logger
+	Db            mysql.Repo
+	Cache         redis.Repo
+	Interceptors  interceptor.Interceptor
+	CronServer    cron.Server
+	TwitterServer twittersvc.TwitterServiceMaster
 }
 type Server struct {
 	Mux        core.Mux
@@ -82,6 +84,7 @@ func NewHTTPServer() (*Server, error) {
 	r := new(Resource)
 	//r.Logger = logger
 	r.Logger = config.Lg
+	r.TwitterServer = twittersvc.NewTwitterServiceMaster()
 
 	//_, ok := file.IsExists(config.ProjectInstallMark)
 	//if !ok { // 未安装
@@ -125,7 +128,7 @@ func NewHTTPServer() (*Server, error) {
 	}
 
 	r.Mux = mux
-	r.Interceptors = interceptor.New(config.Lg, r.Cache, r.Db)
+	r.Interceptors = interceptor.New(config.Lg, r.Cache, r.Db, r.TwitterServer)
 
 	// 设置 API 路由
 	SetApiRouter(r)

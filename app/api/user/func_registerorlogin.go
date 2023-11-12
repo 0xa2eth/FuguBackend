@@ -51,16 +51,34 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			)
 			return
 		}
-		//todo  如果注册过 走login 逻辑 颁发一个令牌 如果没注册过 走注册create逻辑  颁发随机头像
+		// 不做验证了 理论上 先验证，能走到这一步的都是有效的
+		//if req.InvitationCode != "" {
+		//	exists := h.cache.Exists(req.InvitationCode)
+		//	if !exists {
+		//		c.AbortWithError(core.Error(
+		//			http.StatusOK,
+		//			code.ParamBindError,
+		//			validation.Error(err)).WithError(err),
+		//		)
+		//	}
+		//}
+
+		//  如果注册过 走login 逻辑 颁发一个令牌 如果没注册过 走注册create逻辑
 		search := &user.SearchOneData{TwitterID: req.TwitterID}
 		users, err2 := h.userService.Detail(c, search)
 		if err2 != nil && errors.Is(err2, gorm.ErrRecordNotFound) {
 			// 有错误 ,没找到  -> 注册
 
 			genID, _ := snowflake.GenID()
+
 			createData := &user.CreateUserData{
-				Address:       "",
-				UserID:        int64(genID),
+				Address: "",
+				UserID:  int64(genID),
+				// 随机名称，和 默认bio，头像
+				NickName: password.GetRandomFishName(),
+				Bios:     config.DefaultBio,
+				Avatar:   config.DefaultAvatar,
+				// 推特数据
 				TwitterID:     req.TwitterID,
 				TwitterName:   req.TwitterName,
 				TwitterAvatar: req.TwitterAvatar,

@@ -62,7 +62,7 @@ func (i *interceptor) CheckJWT() core.HandlerFunc {
 
 		// 将用户信息存储在上下文中，供后续处理函数使用
 
-		c.Set("userID", claims.UserID)
+		c.Set("UserID", claims.UserID)
 		//这里 userID和SessionUserInfo() 都能渠取到用户的userid(或proposal.SessionUserInfo)
 		//c.setSessionUserInfo(config._SessionUserInfo,claims.UserID)
 

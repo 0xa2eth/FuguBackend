@@ -75,6 +75,12 @@ const (
 	CronListError    = 20403
 	CronDetailError  = 20404
 	CronExecuteError = 20405
+
+	VerifyTaskError = 20501
+	//CronUpdateError  = 20502
+	//CronListError    = 20503
+	//CronDetailError  = 20504
+	//CronExecuteError = 20505
 )
 
 func Text(code int) string {

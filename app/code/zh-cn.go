@@ -60,4 +60,6 @@ var zhCNText = map[int]string{
 	CronListError:    "获取定时任务列表失败",
 	CronDetailError:  "获取定时任务详情失败",
 	CronExecuteError: "手动执行定时任务失败",
+
+	VerifyTaskError: "验证任务失败",
 }

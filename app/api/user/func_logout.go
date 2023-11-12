@@ -25,6 +25,15 @@ type logoutResponse struct {
 // @Security LoginToken
 func (h *handler) Logout() core.HandlerFunc {
 	return func(c core.Context) {
+		uid := c.Param("UserID")
+		if uid == "" {
+			c.AbortWithError(core.Error(
+				http.StatusUnauthorized,
+				code.AuthorizationError,
+				code.Text(code.AuthorizationError)).WithError(errors.New("invalid token")),
+			)
+			return
+		}
 		res := new(logoutResponse)
 		res.UserID = c.SessionUserInfo().UserID
 
