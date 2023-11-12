@@ -6,7 +6,15 @@ import (
 
 type topRequest struct{}
 
-type topResponse struct{}
+type topResponse struct {
+	Caves []caveInfo `json:"caves"`
+}
+type caveInfo struct {
+	CaveID     string `json:"caveID"`
+	CaveName   string `json:"caveName"`
+	CaveBio    string `json:"caveBio"`
+	CaveAvatar string `json:"caveAvatar"`
+}
 
 // Top top5洞穴
 // @Summary top5洞穴

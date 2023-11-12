@@ -62,7 +62,7 @@ func SetApiRouter(r *Resource) {
 			//
 
 			// 三类：正常广场的， 特权的， 还有洞穴的
-			// 特权的和广场的在一个接口里 洞穴的单独一个接口
+			// 特权的和广场的在一个接口里 洞穴的单独一个接口 逻辑上只能推荐没买票的
 			caveGroup.GET("/recommend", caveHandler.RecommendCave())
 		}
 

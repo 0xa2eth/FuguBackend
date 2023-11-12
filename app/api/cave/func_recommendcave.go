@@ -6,7 +6,8 @@ import (
 
 type recommendCaveRequest struct{}
 
-type recommendCaveResponse struct{}
+type recommendCaveResponse struct {
+}
 
 // RecommendCave 推荐的洞穴
 // @Summary 推荐的洞穴

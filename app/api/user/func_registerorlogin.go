@@ -113,6 +113,8 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 				return
 			}
 			c.SetHeader(config.HeaderSignToken, jwt)
+			// 启用浏览器的内置XSS保护机制，并阻止页面加载时检测到XSS攻击
+			c.SetHeader("X-XSS-Protection", "1; mode=block")
 			res.UserID = hashId
 			c.Payload(res)
 		}
@@ -141,6 +143,8 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			return
 		}
 		c.SetHeader(config.HeaderSignToken, jwt)
+		// 启用浏览器的内置XSS保护机制，并阻止页面加载时检测到XSS攻击
+		c.SetHeader("X-XSS-Protection", "1; mode=block")
 		res.UserID = hashId
 		c.Payload(res)
 	}
