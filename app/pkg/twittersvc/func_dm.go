@@ -6,15 +6,15 @@ import (
 	"log"
 )
 
-func (s *TwitterServiceMaster) DirectMessage(ctx core.Context) (err error) {
+func (s *TwitterServiceMaster) DirectMessage(ctx core.Context, recipientScreenName, message string) (err error) {
 
 	// 发送私信
-	sendDirectMessage(s.xClient, "recipientScreenName", "Hello, this is a direct message.")
-	return nil
+	return sendDirectMessage(s.xClient, recipientScreenName, message)
+
 }
 
-// 发送私信
-func sendDirectMessage(client *twitter.Client, recipientScreenName, message string) {
+// sendDirectMessage 发送私信
+func sendDirectMessage(client *twitter.Client, recipientScreenName, message string) error {
 	_, _, err := client.DirectMessages.EventsNew(&twitter.DirectMessageEventsNewParams{
 		Event: &twitter.DirectMessageEvent{
 			Type: "message_create",
@@ -33,7 +33,9 @@ func sendDirectMessage(client *twitter.Client, recipientScreenName, message stri
 	})
 	if err != nil {
 		log.Println("Failed to send direct message:", err)
+
 	} else {
 		log.Println("Direct message sent to", recipientScreenName)
 	}
+	return err
 }

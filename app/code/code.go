@@ -81,6 +81,8 @@ const (
 	//CronListError    = 20503
 	//CronDetailError  = 20504
 	//CronExecuteError = 20505
+
+	SecretCreateError = 20601
 )
 
 func Text(code int) string {

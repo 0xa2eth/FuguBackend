@@ -13,7 +13,7 @@ var _ Service = (*service)(nil)
 type Service interface {
 	i()
 
-	Create(core.Context, *CreateSecretData) error
+	Create(core.Context, *CreateSecretData) (int64, error)
 
 	List() error
 

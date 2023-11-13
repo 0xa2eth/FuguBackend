@@ -3,21 +3,12 @@ package twittersvc
 import (
 	"FuguBackend/app/pkg/core"
 	"github.com/dghubble/go-twitter/twitter"
-	"log"
 )
 
-func (s *TwitterServiceMaster) GetFollower(ctx core.Context) (err error) {
-	// 获取用户的follower列表
-	followers, err := getUserFollowers(s.xClient, "screenName")
-	if err != nil {
-		log.Println("Failed to get user followers:", err)
-	} else {
-		log.Println("User followers:")
-		for _, follower := range followers {
-			log.Println(follower.ScreenName)
-		}
-	}
-	return nil
+func (s *TwitterServiceMaster) GetFollower(ctx core.Context, screenName string) ([]twitter.User, error) {
+
+	return getUserFollowers(s.xClient, screenName)
+
 }
 
 // 获取用户的follower列表

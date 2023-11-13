@@ -1,8 +1,6 @@
 package secret
 
-import "FuguBackend/app/pkg/core"
-
-func (s *service) List() core.HandlerFunc {
+func (s *service) List() error {
 	//TODO implement me
 	panic("implement me")
 }

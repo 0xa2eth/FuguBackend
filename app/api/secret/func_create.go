@@ -5,6 +5,7 @@ import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/secret"
 	"errors"
+	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -47,10 +48,25 @@ func (h *handler) Create() core.HandlerFunc {
 			)
 			return
 		}
+		innerID, _ := h.hashids.HashidsDecode(userID)
 		s := new(secret.CreateSecretData)
 		s.Content = req.Content
 		s.ViewLevel = req.ViewLevel
 		s.Images = req.Images
+		s.AuthorID = innerID[0]
 
+		sid, err := h.secretService.Create(c, s)
+		if err != nil {
+			h.logger.Info("err:", zap.Error(err))
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.SecretCreateError,
+				code.Text(code.SecretCreateError)).WithError(err),
+			)
+			return
+		}
+		hashID, _ := h.hashids.HashidsEncode([]int{int(sid)})
+
+		c.Payload(hashID)
 	}
 }
