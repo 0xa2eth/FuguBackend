@@ -19,7 +19,10 @@ type listResponse struct{}
 // @Failure 400 {object} code.Failure
 // @Router /api/secret/viewable [get]
 func (h *handler) List() core.HandlerFunc {
-	return func(ctx core.Context) {
+	return func(c core.Context) {
+		value, exists := c.Get("UserID")
+		//
+		// 先拿id  再刷新下朋友圈 于上次存cache的对比 找到新增的和去处的再根据这些去拿可见的秘密
 
 	}
 }

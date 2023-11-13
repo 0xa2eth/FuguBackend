@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// Secret ...  一对多 has many
+// CreateSecretData ...  一对多 has many
 type CreateSecretData struct {
 	SecretID int `json:"secretId,omitempty" gorm:"column:secretid;type:bigint"`
 	AuthorID int `json:"authorId,omitempty" gorm:"column:authorid;type:bigint"`
@@ -25,7 +25,7 @@ type CreateSecretData struct {
 	// Status 秘闻状态 平台可以将非法的帖子设置为不可见
 	Status bool `json:"status,omitempty" gorm:"column:status;type:tinyint"`
 }
-type SecretImage struct {
+type Image struct {
 	SecretID int    `json:"SecretID,omitempty" gorm:"column:secretid;type:bigint"`
 	ImageUrl string `json:"ImageUrl,omitempty" gorm:"column:imageurl;type:varchar(255)"`
 }

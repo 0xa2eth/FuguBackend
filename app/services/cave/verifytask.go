@@ -21,7 +21,7 @@ func (s *service) VerifyRetweetTask(c core.Context, tocheck int, target int) (bo
 
 	tweetID, _ := s.twSvc.GetTweetIDByUrl(cave.Caveretweeturl)
 
-	isFind, err := s.twSvc.FindSBReTweetByTweetID(c, person.TwitterName, tweetID)
+	isFind, err := s.twSvc.FindSBReTweetByTweetID(c, person.TwitterName, int(tweetID))
 	if err != nil {
 
 	}

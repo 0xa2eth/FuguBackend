@@ -14,13 +14,13 @@ type TwitterService interface {
 
 	GetPosts(ctx core.Context, screenName string, count int) ([]twitter.Tweet, error)
 
-	GetTweetIDByUrl(url string) (int64, error)
+	GetTweetIDByUrl(url string) (int, error)
 
 	GetFollower(ctx core.Context, screenName string) ([]twitter.User, error)
 
 	GetFollowing(ctx core.Context, screenName string) ([]twitter.User, error)
 
-	GetFriendCircle(ctx core.Context, sbName string) ([]twitter.User, error)
+	RefreshFriendCircle(ctx core.Context, sbName string) ([]twitter.User, error)
 
 	FindSBReTweetByTweetID(core.Context, string, int) (isFind bool, err error)
 

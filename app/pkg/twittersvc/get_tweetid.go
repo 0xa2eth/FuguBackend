@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func (s *TwitterServiceMaster) GetTweetIDByUrl(url string) (int64, error) {
+func (s *TwitterServiceMaster) GetTweetIDByUrl(url string) (int, error) {
 	split := strings.Split(url, "/")
 	tweetid := split[len(split)-1]
 
@@ -13,5 +13,5 @@ func (s *TwitterServiceMaster) GetTweetIDByUrl(url string) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return int64(Tid), nil
+	return Tid, nil
 }
