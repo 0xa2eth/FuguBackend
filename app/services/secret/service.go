@@ -2,9 +2,12 @@ package secret
 
 import (
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/pagination"
 	"FuguBackend/app/pkg/twittersvc"
 	"FuguBackend/app/repository/mysql"
+	"FuguBackend/app/repository/mysql/secrets"
 	"FuguBackend/app/repository/redis"
+	"FuguBackend/pkg/hash"
 	"go.uber.org/zap"
 )
 
@@ -15,9 +18,11 @@ type Service interface {
 
 	Create(core.Context, *CreateSecretData) (int64, error)
 
-	List() error
+	List(c core.Context, InnerID int, pageNum, pageSize int, hashFunc hash.Hash) (pagination.PageInfo, error)
 
 	Complaint() error
+
+	BuildRes(c core.Context, raw []secrets.Secrets, hashFunc hash.Hash, viewAble bool) (list []Secret)
 }
 
 type service struct {

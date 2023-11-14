@@ -61,7 +61,7 @@ func (h *handler) VerifyTask() core.HandlerFunc {
 			// 先找到 要转发的推特的id 再找到这个人的推特,然后从他发的推特列表里找这个要转发的id
 			// 一 找人
 			// 二  找到要转发的推特  查数据库 找到tweetid
-			complete, err := h.caveService.VerifyRetweetTask(c, uid[0], targetid[0])
+			complete, err := h.caveService.VerifyTask(c, uid[0], targetid[0])
 			if err != nil {
 				c.AbortWithError(core.Error(
 					http.StatusOK,

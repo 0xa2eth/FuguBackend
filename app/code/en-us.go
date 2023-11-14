@@ -60,4 +60,9 @@ var enUSText = map[int]string{
 	CronListError:    "Failed to get cron list",
 	CronDetailError:  "Failed to get cron detail",
 	CronExecuteError: "Failed to execute cron",
+
+	VerifyTaskError:          "Verify Task Error",
+	SecretCreateError:        "Secret Create Error",
+	GetSecretsError:          "Get Secrets Error",
+	RefreshFriendCircleError: "Refresh Friend Circle Error",
 }

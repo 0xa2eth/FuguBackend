@@ -20,6 +20,8 @@ type Service interface {
 	Detail(ctx core.Context, searchOneData *SearchOneData) (info *users.Users, err error)
 
 	Modify(ctx core.Context, id int64, modifyData *ModifyData) (err error)
+
+	FindAll() ([]*users.Users, error)
 }
 
 type service struct {

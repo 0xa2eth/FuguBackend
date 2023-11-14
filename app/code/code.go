@@ -83,6 +83,9 @@ const (
 	//CronExecuteError = 20505
 
 	SecretCreateError = 20601
+	GetSecretsError   = 20602
+
+	RefreshFriendCircleError = 30101
 )
 
 func Text(code int) string {

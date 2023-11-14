@@ -11,7 +11,9 @@ type verifyInviteCodeRequest struct {
 	Code string `json:"invitationCode,omitempty"`
 }
 
-type verifyInviteCodeResponse struct{}
+type verifyInviteCodeResponse struct {
+	Outdate bool `json:"outdate"`
+}
 
 // VerifyInviteCode  验证邀请码有效性
 // @Summary 验证邀请码有效性
@@ -44,7 +46,8 @@ func (h *handler) VerifyInviteCode() core.HandlerFunc {
 			)
 			return
 		}
-
-		c.Payload(exists)
+		v := new(verifyInviteCodeResponse)
+		v.Outdate = exists
+		c.Payload(v)
 	}
 }

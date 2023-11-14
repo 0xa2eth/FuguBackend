@@ -1,10 +1,18 @@
 package secret
 
 import (
+	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/validation"
+	"errors"
+	"net/http"
 )
 
-type listRequest struct{}
+type listRequest struct {
+	PageNum  int `form:"pageNum"`
+	PageSize int `form:"pageSize"`
+	Order    int `form:"order"`
+}
 
 type listResponse struct{}
 
@@ -21,8 +29,43 @@ type listResponse struct{}
 func (h *handler) List() core.HandlerFunc {
 	return func(c core.Context) {
 		value, exists := c.Get("UserID")
-		//
-		// 先拿id  再刷新下朋友圈 于上次存cache的对比 找到新增的和去处的再根据这些去拿可见的秘密
+		if !exists {
+			c.AbortWithError(core.Error(
+				http.StatusUnauthorized,
+				code.AuthorizationError,
+				code.Text(code.AuthorizationError)).WithError(errors.New("invalid token")),
+			)
+			return
+		}
+		HashID, err := h.hashids.HashidsDecode(value.(string))
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.HashIdsEncodeError,
+				code.Text(code.HashIdsEncodeError)).WithError(err),
+			)
+			return
+		}
+		req := new(listRequest)
+		if err := c.ShouldBindQuery(req); err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.ParamBindError,
+				validation.Error(err)).WithError(err),
+			)
+			return
+		}
+
+		list, err := h.secretService.List(c, HashID[0], req.PageNum, req.PageSize, h.hashids)
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusOK,
+				code.AdminCreateError,
+				code.Text(code.AdminCreateError)).WithError(err),
+			)
+			return
+		}
+		c.Payload(list)
 
 	}
 }

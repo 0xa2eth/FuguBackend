@@ -11,6 +11,7 @@ import (
 
 type logoutResponse struct {
 	UserID string `json:"userID"` // 用户账号
+	Logout bool   `json:"logout"`
 }
 
 // Logout 用户登出
@@ -25,8 +26,8 @@ type logoutResponse struct {
 // @Security LoginToken
 func (h *handler) Logout() core.HandlerFunc {
 	return func(c core.Context) {
-		uid := c.Param("UserID")
-		if uid == "" {
+		uid, exists := c.Get("UserID")
+		if uid == "" || !exists {
 			c.AbortWithError(core.Error(
 				http.StatusUnauthorized,
 				code.AuthorizationError,
@@ -34,8 +35,6 @@ func (h *handler) Logout() core.HandlerFunc {
 			)
 			return
 		}
-		res := new(logoutResponse)
-		res.UserID = c.SessionUserInfo().UserID
 
 		if !h.cache.Del(config.RedisKeyPrefixLoginUser+c.GetHeader(config.HeaderSignToken), redis.WithTrace(c.Trace())) {
 			c.AbortWithError(core.Error(
@@ -45,6 +44,9 @@ func (h *handler) Logout() core.HandlerFunc {
 			)
 			return
 		}
+		res := new(logoutResponse)
+		res.UserID = uid.(string)
+		res.Logout = true
 
 		c.Payload(res)
 	}

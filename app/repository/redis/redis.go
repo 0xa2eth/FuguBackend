@@ -33,6 +33,8 @@ func newOption() *option {
 
 var _ Repo = (*cacheRepo)(nil)
 
+var RedisC *redis.Client
+
 type Repo interface {
 	i()
 	Set(key, value string, ttl time.Duration, options ...Option) error
@@ -56,7 +58,7 @@ func New() (Repo, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	RedisC = client
 	return &cacheRepo{
 		client: client,
 	}, nil
@@ -233,3 +235,15 @@ func (c *cacheRepo) Version() string {
 	spl3 := strings.Split(spl2[1], "redis_git_sha1:")
 	return spl3[0]
 }
+
+//// ExpireAt expire some key at some time
+//func (c *cacheRepo) ExpireAt(key string, ttl time.Time) bool {
+//	ok, _ := c.client.ExpireAt(key, ttl).Result()
+//	return ok
+//}
+//
+//// ExpireAt expire some key at some time
+//func (c *cacheRepo) ExpireAt(key string, ttl time.Time) bool {
+//	ok, _ := c.client.ExpireAt(key, ttl).Result()
+//	return ok
+//}

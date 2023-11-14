@@ -84,7 +84,7 @@ func NewHTTPServer() (*Server, error) {
 	r := new(Resource)
 	//r.Logger = logger
 	r.Logger = config.Lg
-	r.TwitterServer = twittersvc.NewTwitterServiceMaster()
+	r.TwitterServer = twittersvc.NewTwitterServiceMaster(r.Db, r.Cache, r.Logger)
 
 	//_, ok := file.IsExists(config.ProjectInstallMark)
 	//if !ok { // 未安装

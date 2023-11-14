@@ -33,7 +33,7 @@ func SetApiRouter(r *Resource) {
 			// 取用户信息
 			userGroup.GET("/:UserID", userHandler.UserInfo())
 			// 创建cave，修改cave信息
-			userGroup.PUT("/:UserID", userHandler.ModifyInfo())
+			userGroup.POST("/:UserID", userHandler.ModifyInfo())
 			// 生成邀请码
 			userGroup.GET("/invitecode", userHandler.GenInviteCode())
 			// 验证邀请码
@@ -65,7 +65,7 @@ func SetApiRouter(r *Resource) {
 			//
 
 			// 三类：正常广场的， 特权的， 还有洞穴的
-			// 特权的和广场的在一个接口里 洞穴的单独一个接口 逻辑上只能推荐没买票的
+			// 特权的和广场的在一个接口里 洞穴的单独一个接口 逻辑上只能推荐没买票的   废弃
 			caveGroup.GET("/recommend", caveHandler.RecommendCave())
 
 			caveGroup.GET("/:CaveID/verify/:Type", caveHandler.VerifyTask())

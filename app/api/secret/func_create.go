@@ -54,6 +54,7 @@ func (h *handler) Create() core.HandlerFunc {
 		s.ViewLevel = req.ViewLevel
 		s.Images = req.Images
 		s.AuthorID = innerID[0]
+		//s.SecretID, _ = snowflake.GenID()
 
 		sid, err := h.secretService.Create(c, s)
 		if err != nil {
