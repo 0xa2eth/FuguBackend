@@ -14,7 +14,9 @@ import (
 	"github.com/spf13/cast"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 type registerOrLoginRequest struct {
@@ -70,20 +72,28 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			// 有错误 ,没找到  -> 注册
 
 			genID, _ := snowflake.GenID()
-
+			Avatar := config.UserPortraitBaseUrl + GetDefaultImage()
 			createData := &user.CreateUserData{
 				Address: "",
 				UserID:  int64(genID),
 				// 随机名称，和 默认bio，头像
 				NickName: password.GetRandomFishName(),
 				Bios:     config.DefaultBio,
-				Avatar:   config.DefaultAvatar,
+				Avatar:   Avatar,
 				// 推特数据
 				TwitterID:     req.TwitterID,
 				TwitterName:   req.TwitterName,
 				TwitterAvatar: req.TwitterAvatar,
+				//InvitedBy:     req.InvitationCode,
 			}
-
+			if req.InvitationCode != "" {
+				HashID, err := h.cache.Get(req.InvitationCode)
+				if err != nil {
+					h.logger.Error("cache get invitecode failed...", zap.Error(err))
+				}
+				ids, _ := h.hashids.HashidsDecode(HashID)
+				createData.InvitedBy = ids[0]
+			}
 			id, err := h.userService.Create(c, createData)
 			if err != nil {
 				h.logger.Info("err:", zap.Error(err))
@@ -166,4 +176,25 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 		res.UserID = hashId
 		c.Payload(res)
 	}
+}
+func GetDefaultImage() (suffix string) {
+	rand.Seed(time.Now().UnixNano())
+	tag := rand.Intn(7)
+	switch tag {
+	case 1:
+		suffix = "01.png"
+	case 2:
+		suffix = "02.png"
+	case 3:
+		suffix = "03.png"
+	case 4:
+		suffix = "04.png"
+	case 5:
+		suffix = "05.png"
+	case 6:
+		suffix = "06.png"
+	default:
+		suffix = "06.png"
+	}
+	return
 }

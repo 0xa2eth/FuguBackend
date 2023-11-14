@@ -76,4 +76,6 @@ const (
 	TwitterPostPreFix = "A New Secret Cave =="
 	TwitterPostSuffix = "== Has Been Created! Come To See And Find Your Interests! Transfer Link Here https://metahome.tech"
 	TransferLink      = ""
+
+	UserPortraitBaseUrl = "https://fugutoxic.s3.ap-northeast-1.amazonaws.com/siteavatar/"
 )
