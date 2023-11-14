@@ -19,9 +19,9 @@ type TwitterService interface {
 
 	GetTweetIDByUrl(url string) (int, error)
 
-	GetFollower(ctx core.Context, screenName string) ([]twitter.User, error)
+	GetFollower(ctx core.Context, screenName string, isAll bool) ([]twitter.User, error)
 
-	GetFollowing(ctx core.Context, screenName string) ([]twitter.User, error)
+	GetFollowing(ctx core.Context, screenName string, isAll bool) ([]twitter.User, error)
 
 	RefreshFriendCircle(ctx core.Context, sbName string) ([]twitter.User, error)
 
@@ -29,7 +29,7 @@ type TwitterService interface {
 
 	FindSBReTweetByTweetID(core.Context, string, int) (isFind bool, err error)
 
-	FindIsFollower(c core.Context, name string, tweetID int) (isFind bool, err error)
+	FindIsFollowing(c core.Context, tocheckName string, tweetName string) (isFind bool, err error)
 
 	DirectMessage(ctx core.Context, recipientScreenName, message string) (err error)
 }

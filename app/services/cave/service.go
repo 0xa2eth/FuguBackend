@@ -14,6 +14,7 @@ type Service interface {
 	i()
 
 	VerifyRetweetTask(core.Context, int, int) (bool, error)
+	VerifyFollowTask(core.Context, int) (bool, error)
 }
 
 type service struct {

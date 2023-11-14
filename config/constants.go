@@ -66,8 +66,9 @@ const (
 	// DefaultAvatar 默认头像
 	DefaultAvatar = "https://fugutoxic.s3.ap-northeast-1.amazonaws.com/siteavatar/defaultavatar.jpg"
 
-	// Fugu 平台Fugu字符串
-	Fugu = "Fugu"
+	// FuguTwitterName
+	FuguTwitterName = "fugu_social"
+	FuguTwitterID   = "fugu_social"
 
 	// DefaultBio 平台默认Bio
 	DefaultBio = "Fugu Toxic Secret is an anonymous content-sharing platform built on Twitter connections, turning your real-life stories into earnings."
