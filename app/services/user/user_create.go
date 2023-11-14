@@ -32,7 +32,7 @@ func (s *service) Create(ctx core.Context, data *CreateUserData) (id int64, err 
 	model.Avatar = data.Avatar
 	model.Bios = data.Bios
 	model.Registime = time.Now().Unix()
-	//todo
+	//todo 数据库可以改下字段名
 	model.Invitedbycode = strconv.Itoa(data.InvitedBy)
 	//model.DeletedAt = time.Now()
 
@@ -42,9 +42,9 @@ func (s *service) Create(ctx core.Context, data *CreateUserData) (id int64, err 
 	}
 	err = s.db.GetDbW().Table("users").
 		Where("id = ?", id).
-		Update("points", gorm.Expr("points + ?", 1)).Error
+		Update("cavepoint", gorm.Expr("cavepoint + ?", 1)).Error
 	err = s.db.GetDbW().Table("users").
 		Where("id = ?", data.InvitedBy).
-		Update("points", gorm.Expr("points + ?", 1)).Error
+		Update("earnedpoint", gorm.Expr("earnedpoint + ?", 1)).Error
 	return
 }

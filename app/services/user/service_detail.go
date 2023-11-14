@@ -11,7 +11,10 @@ type SearchOneData struct {
 	TwitterID string
 }
 
-func (s *service) Detail(ctx core.Context, searchOneData *SearchOneData) (info *users.Users, err error) {
+func (s *service) Detail(ctx core.Context,
+	searchOneData *SearchOneData) (
+	info *users.Users,
+	err error) {
 
 	qb := users.NewQueryBuilder()
 	//first, err := qb.First(s.db.GetDbR().WithContext(ctx.RequestContext()))
@@ -24,22 +27,6 @@ func (s *service) Detail(ctx core.Context, searchOneData *SearchOneData) (info *
 	if searchOneData.TwitterID != "" {
 		qb.WhereTwitterId(mysql.EqualPredicate, searchOneData.TwitterID)
 	}
-
-	//if searchOneData.Nickname != "" {
-	//	qb.WhereNickname(mysql.EqualPredicate, searchOneData.Nickname)
-	//}
-	//
-	//if searchOneData.Mobile != "" {
-	//	qb.WhereMobile(mysql.EqualPredicate, searchOneData.Mobile)
-	//}
-	//
-	//if searchOneData.Password != "" {
-	//	qb.WherePassword(mysql.EqualPredicate, searchOneData.Password)
-	//}
-	//
-	//if searchOneData.IsUsed != 0 {
-	//	qb.WhereIsUsed(mysql.EqualPredicate, searchOneData.IsUsed)
-	//}
 
 	info, err = qb.QueryOne(s.db.GetDbR().WithContext(ctx.RequestContext()))
 	if err != nil {

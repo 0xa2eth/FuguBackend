@@ -4,6 +4,7 @@ import (
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/password"
+	"FuguBackend/app/repository/mysql/secret_images"
 	"FuguBackend/app/repository/mysql/secrets"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/config"
@@ -11,6 +12,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"regexp"
@@ -71,11 +73,22 @@ func (s *service) Create(c core.Context, hashID string, data *CreateSecretData) 
 		return 0, err
 	}
 
-	//for i, image := range data.Images {
-	//
-	//}
-	//newModel := secret_images.NewModel()
-	//newModel.ImageUrl =
+	for i := range data.Images {
+		simg := secret_images.NewModel()
+		simg.SecretId = id
+		simg.ImageUrl = data.Images[i]
+		_, err = simg.Create(s.db.GetDbW().WithContext(c.RequestContext()))
+		if err != nil {
+			return 0, err
+		}
+	}
+	//userModel := users.NewModel()
+	//var m map[string]interface{}
+	//m["numofposts"] =
+	//qb := users.NewQueryBuilder().Updates()
+	err = s.db.GetDbW().Table("users").
+		Where("id = ?", int64(data.AuthorID)).
+		Update("numofposts", gorm.Expr("numofposts + ?", 1)).Error
 
 	return id, nil
 

@@ -78,4 +78,6 @@ const (
 	TransferLink      = ""
 
 	UserPortraitBaseUrl = "https://fugutoxic.s3.ap-northeast-1.amazonaws.com/siteavatar/"
+
+	RetweetPrefix = "https://twitter.com/intent/retweet?tweet_id="
 )

@@ -1408,3 +1408,46 @@ func (qb *usersQueryBuilder) OrderByInvitedbycode(asc bool) *usersQueryBuilder {
 	qb.order = append(qb.order, "invitedbycode "+order)
 	return qb
 }
+
+func (qb *usersQueryBuilder) WhereNumofposts(p mysql.Predicate, value int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "numofposts", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereNumofpostsIn(value []int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "numofposts", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereNumofpostsNotIn(value []int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "numofposts", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) OrderByNumofposts(asc bool) *usersQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "numofposts "+order)
+	return qb
+}

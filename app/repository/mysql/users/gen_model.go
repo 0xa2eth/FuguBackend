@@ -36,4 +36,5 @@ type Users struct {
 	EarnedPoint    int64     //
 	CavePoint      int64     //
 	Invitedbycode  string    //
+	Numofposts     int64
 }

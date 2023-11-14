@@ -53,22 +53,11 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			)
 			return
 		}
-		// 不做验证了 理论上 先验证，能走到这一步的都是有效的
-		//if req.InvitationCode != "" {
-		//	exists := h.cache.Exists(req.InvitationCode)
-		//	if !exists {
-		//		c.AbortWithError(core.Error(
-		//			http.StatusOK,
-		//			code.ParamBindError,
-		//			validation.Error(err)).WithError(err),
-		//		)
-		//	}
-		//}
 
 		//  如果注册过 走login 逻辑 颁发一个令牌 如果没注册过 走注册create逻辑
 		search := &user.SearchOneData{TwitterID: req.TwitterID}
-		users, err2 := h.userService.Detail(c, search)
-		if err2 != nil && errors.Is(err2, gorm.ErrRecordNotFound) {
+		users, err := h.userService.Detail(c, search)
+		if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 			// 有错误 ,没找到  -> 注册
 
 			genID, _ := snowflake.GenID()
@@ -116,7 +105,7 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			}
 			jwt, err3 := password.GenerateJWT(hashId)
 			if err3 != nil {
-				h.logger.Fatal(" Failed to generate auth token!!! ", zap.Error(err2))
+				h.logger.Fatal(" Failed to generate auth token!!! ", zap.Error(err))
 				c.AbortWithError(core.Error(
 					http.StatusBadRequest,
 					code.HashIdsEncodeError,
@@ -146,9 +135,9 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 			res.UserID = hashId
 			c.Payload(res)
 		}
-		if err2 != nil && !errors.Is(err2, gorm.ErrRecordNotFound) {
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 			// 有错误 internal error
-			c.Payload(err2)
+			c.Payload(err)
 		}
 		// 没错误, 找到, 登录逻辑
 		hashId, err := h.hashids.HashidsEncode([]int{cast.ToInt(users.Id)})

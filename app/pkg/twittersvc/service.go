@@ -17,7 +17,7 @@ type TwitterService interface {
 
 	GetPosts(ctx core.Context, screenName string, count int) ([]twitter.Tweet, error)
 
-	GetTweetIDByUrl(url string) (int, error)
+	GetTweetIDByUrl(url string) (int, string, error)
 
 	GetFollower(ctx core.Context, screenName string, isAll bool) ([]twitter.User, error)
 

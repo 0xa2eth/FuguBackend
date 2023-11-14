@@ -3,6 +3,8 @@ package cave
 import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 func (s *service) VerifyRetweetTask(c core.Context, tocheck int, target int) (bool, error) {
@@ -19,11 +21,21 @@ func (s *service) VerifyRetweetTask(c core.Context, tocheck int, target int) (bo
 		Id: target,
 	})
 
-	tweetID, _ := s.twSvc.GetTweetIDByUrl(cave.Caveretweeturl)
+	tweetID, _, _ := s.twSvc.GetTweetIDByUrl(cave.Caveretweeturl)
 
 	isFind, err := s.twSvc.FindSBReTweetByTweetID(c, person.TwitterName, int(tweetID))
 	if err != nil {
+		s.logger.Error("FindSBReTweetByTweetID failed ...", zap.Error(err))
+		return false, err
+	}
+	if isFind {
 
+		err = s.db.GetDbW().Table("users").
+			Where("id = ?", tocheck).
+			Update("earnedpoint", gorm.Expr("earnedpoint + ?", 1)).Error
+		err = s.db.GetDbW().Table("users").
+			Where("id = ?", target).
+			Update("cavepoint", gorm.Expr("cavepoint + ?", 1)).Error
 	}
 	return isFind, err
 }

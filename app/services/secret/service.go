@@ -23,6 +23,8 @@ type Service interface {
 	Complaint() error
 
 	BuildRes(c core.Context, raw []secrets.Secrets, hashFunc hash.Hash, viewAble bool) (list []Secret)
+
+	GetPostsByAuthorID(c core.Context, id int) (list []*secrets.Secrets, err error)
 }
 
 type service struct {

@@ -31,9 +31,9 @@ type userInfoResponse struct {
 	//TwitterID      string `json:"twitterID,omitempty" gorm:"column:twitter_id;type:varchar(255)"`
 	//TwitterAvatar  string `json:"twitterAvatar,omitempty" gorm:"column:twitter_avatar;type:varchar(255)"`
 	//TwitterName    string `json:"twitterName,omitempty" gorm:"column:twitter_name;type:varchar(255)"`
-	//CaveReTweetUrl string `json:"CaveReTweetUrl" gorm:"column:caveretweeturl;type:varchar(255)"`
-	NumberOfPosts int            `json:"numberOfPosts,omitempty"`
-	FollowedCaves []FollowedCave `json:"followedCaves,omitempty"`
+	CaveReTweetUrl string         `json:"CaveReTweetUrl" gorm:"column:caveretweeturl;type:varchar(255)"`
+	NumberOfPosts  int            `json:"numberOfPosts,omitempty"`
+	FollowedCaves  []FollowedCave `json:"followedCaves,omitempty"`
 }
 type FollowedCave struct {
 	CaveID     string `json:"caveID"`
@@ -97,20 +97,19 @@ func (h *handler) UserInfo() core.HandlerFunc {
 
 		fmt.Println("info : ", info)
 		res := userInfoResponse{
-			UserID:      hashID,
-			TicketNum:   int(info.Ticketnum),
-			CaveFans:    int(info.Cavefans),
-			EarnedPoint: int(info.EarnedPoint),
-			CavePoint:   int(info.CavePoint),
-			Views:       int(info.Views),
-			NickName:    info.NickName,
-			Bios:        info.Bios,
-			Avatar:      info.Avatar,
+			UserID:         hashID,
+			TicketNum:      int(info.Ticketnum),
+			CaveFans:       int(info.Cavefans),
+			EarnedPoint:    int(info.EarnedPoint),
+			CavePoint:      int(info.CavePoint),
+			Views:          int(info.Views),
+			NickName:       info.NickName,
+			Bios:           info.Bios,
+			Avatar:         info.Avatar,
+			CaveReTweetUrl: info.Caveretweeturl,
+			NumberOfPosts:  int(info.Numofposts),
 		}
 
-		var num int
-		// todo
-		res.NumberOfPosts = num
 		c.Payload(res)
 	}
 }

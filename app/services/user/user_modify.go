@@ -23,13 +23,14 @@ func (s *service) Modify(ctx core.Context, id int64, modifyData *ModifyData) (er
 		s.logger.Error("twitter a post a  failed... ", zap.Error(err))
 		return err
 	}
-
+	_, tweetIDstr, _ := s.twSvc.GetTweetIDByUrl(postUrl)
+	retweetUrl := config.RetweetPrefix + tweetIDstr
 	// 2 入库
 	data := map[string]interface{}{
 		"nick_name":      modifyData.NickName,
 		"avatar":         modifyData.Avatar,
 		"bios":           modifyData.Bio,
-		"caveretweeturl": postUrl,
+		"caveretweeturl": retweetUrl,
 	}
 	qb := users.NewQueryBuilder()
 	qb.WhereId(mysql.EqualPredicate, id)
