@@ -1,13 +1,18 @@
 package secret
 
 import (
+	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/password"
 	"FuguBackend/app/repository/mysql/secrets"
+	"FuguBackend/app/repository/redis"
+	"FuguBackend/config"
 	"FuguBackend/pkg/snowflake"
 	"encoding/json"
 	"fmt"
 	"go.uber.org/zap"
 	"log"
+	"net/http"
 	"regexp"
 	"time"
 )
@@ -30,13 +35,23 @@ type Image struct {
 	ImageUrl string `json:"ImageUrl,omitempty" gorm:"column:imageurl;type:varchar(255)"`
 }
 
-func (s *service) Create(c core.Context, data *CreateSecretData) (id int64, err error) {
+func (s *service) Create(c core.Context, hashID string, data *CreateSecretData) (id int64, err error) {
 
 	// 提取被艾特的人
 	screenName, _ := extractUsername(data.Content)
 	// 如果有 那么就推特私信
 	if screenName != "" {
-		err = s.twSvc.DirectMessage(c, screenName, buildMessage())
+		inviteCode := password.GenInviteCode(hashID, config.DefaultInviteCodeLength)
+		err = s.cache.Set(inviteCode, hashID, config.DefaultInviteCodeTTL, redis.WithTrace(c.Trace()))
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusInternalServerError,
+				code.CacheSetError,
+				code.Text(code.CacheSetError)).WithError(err),
+			)
+			return
+		}
+		err = s.twSvc.DirectMessage(c, screenName, buildMessage(screenName, inviteCode))
 		if err != nil {
 			s.logger.Error("send direct message failed ...", zap.Error(err))
 
@@ -102,7 +117,11 @@ func testExtract() {
 
 	fmt.Println("用户名:", username)
 }
-func buildMessage() string {
-	defaultMessage := "One of your twitter friends in FuGu-Toxic has mentioned you in his latest secret,come and see by clicking the link https://metahome.tech "
+func buildMessage(name, code string) string {
+	defaultMessage := fmt.Sprintf(`Hey, @%v, 
+	There's a secret admirer on Fugu Toxic! 
+	Explore the mysterious world of anonymous affection, earn points, snag rewards. 
+	Just log in with Twitter, grab a quirky username, and let the rewards flow. 
+	Invitation code：%v，url：fugutoxic.com`, name, code)
 	return defaultMessage
 }

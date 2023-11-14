@@ -6,7 +6,10 @@ import (
 	"log"
 )
 
-func (s *TwitterServiceMaster) DirectMessage(ctx core.Context, recipientScreenName, message string) (err error) {
+func (s *TwitterServiceMaster) DirectMessage(
+	ctx core.Context,
+	recipientScreenName,
+	message string) (err error) {
 
 	// 发送私信
 	return sendDirectMessage(s.xClient, recipientScreenName, message)
@@ -14,7 +17,9 @@ func (s *TwitterServiceMaster) DirectMessage(ctx core.Context, recipientScreenNa
 }
 
 // sendDirectMessage 发送私信
-func sendDirectMessage(client *twitter.Client, recipientScreenName, message string) error {
+func sendDirectMessage(client *twitter.Client,
+	recipientScreenName,
+	message string) error {
 	_, _, err := client.DirectMessages.EventsNew(&twitter.DirectMessageEventsNewParams{
 		Event: &twitter.DirectMessageEvent{
 			Type: "message_create",

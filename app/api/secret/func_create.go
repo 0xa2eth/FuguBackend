@@ -29,15 +29,25 @@ type createResponse struct{}
 // @Router /api/secret/:UserID [post]
 func (h *handler) Create() core.HandlerFunc {
 	return func(c core.Context) {
-		userID := c.Param("UserID")
-		if userID == "" {
+		//userID := c.Param("UserID")
+		//if userID == "" {
+		//	c.AbortWithError(core.Error(
+		//		http.StatusBadRequest,
+		//		code.ParamBindError,
+		//		code.Text(code.ParamBindError)).WithError(errors.New("path param not found")),
+		//	)
+		//	return
+		//}
+		value, exists := c.Get("UserID")
+		if !exists {
 			c.AbortWithError(core.Error(
-				http.StatusBadRequest,
-				code.ParamBindError,
-				code.Text(code.ParamBindError)).WithError(errors.New("path param not found")),
+				http.StatusUnauthorized,
+				code.AuthorizationError,
+				code.Text(code.AuthorizationError)).WithError(errors.New("invalid token")),
 			)
 			return
 		}
+		hashID := value.(string)
 		req := new(createRequest)
 
 		if err := c.ShouldBindJSON(&req); err != nil {
@@ -48,7 +58,7 @@ func (h *handler) Create() core.HandlerFunc {
 			)
 			return
 		}
-		innerID, _ := h.hashids.HashidsDecode(userID)
+		innerID, _ := h.hashids.HashidsDecode(hashID)
 		s := new(secret.CreateSecretData)
 		s.Content = req.Content
 		s.ViewLevel = req.ViewLevel
@@ -56,7 +66,7 @@ func (h *handler) Create() core.HandlerFunc {
 		s.AuthorID = innerID[0]
 		//s.SecretID, _ = snowflake.GenID()
 
-		sid, err := h.secretService.Create(c, s)
+		sid, err := h.secretService.Create(c, hashID, s)
 		if err != nil {
 			h.logger.Info("err:", zap.Error(err))
 			c.AbortWithError(core.Error(
@@ -66,7 +76,7 @@ func (h *handler) Create() core.HandlerFunc {
 			)
 			return
 		}
-		hashID, _ := h.hashids.HashidsEncode([]int{int(sid)})
+		hashID, _ = h.hashids.HashidsEncode([]int{int(sid)})
 
 		c.Payload(hashID)
 	}

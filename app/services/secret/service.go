@@ -16,7 +16,7 @@ var _ Service = (*service)(nil)
 type Service interface {
 	i()
 
-	Create(core.Context, *CreateSecretData) (int64, error)
+	Create(core.Context, string, *CreateSecretData) (int64, error)
 
 	List(c core.Context, InnerID int, pageNum, pageSize int, hashFunc hash.Hash) (pagination.PageInfo, error)
 

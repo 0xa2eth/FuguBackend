@@ -8,10 +8,10 @@ import (
 func (s *TwitterServiceMaster) RefreshFriendCircle(ctx core.Context, sbName string) ([]twitter.User, error) {
 	var friendCircle []twitter.User
 
-	follower, _ := s.GetFollower(ctx, sbName)
+	follower, _ := s.GetFollower(ctx, sbName, true)
 	friendCircle = append(friendCircle, follower...)
 
-	following, _ := s.GetFollowing(ctx, sbName)
+	following, _ := s.GetFollowing(ctx, sbName, true)
 	friendCircle = append(friendCircle, following...)
 
 	return friendCircle, nil
