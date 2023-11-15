@@ -41,6 +41,8 @@ func (s *service) Create(c core.Context, hashID string, data *CreateSecretData) 
 
 	// 提取被艾特的人
 	screenName, _ := extractUsername(data.Content)
+	//screenName = "Fergus_Hinn"
+	s.logger.Info(fmt.Sprintf("=====people to be @ :%v=======", screenName))
 	// 如果有 那么就推特私信
 	if screenName != "" {
 		inviteCode := password.GenInviteCode(hashID, config.DefaultInviteCodeLength)
@@ -117,6 +119,7 @@ func extractUsername(jsonStr string) (string, error) {
 	}
 
 	// 返回提取的用户名
+
 	return match[1], nil
 }
 

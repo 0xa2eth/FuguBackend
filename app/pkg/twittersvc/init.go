@@ -1,15 +1,16 @@
 package twittersvc
 
 import (
+	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 )
 
 const (
-	ConsumerKey    = "consumerKey"
-	ConsumerSecret = "consumerSecret"
-	AccessToken    = "accessToken"
-	AccessSecret   = ""
+	ConsumerKey    = "QK9pCxEpBrkMZD993E3bIfoVQ"
+	ConsumerSecret = "nUcqMMQfq0XbtjcyuAVmQrimNjL8zBOV5gBvheaMC5uGxGdC8v"
+	AccessToken    = "1521091305107243008-QboEaJjeaiJOhcAT4hAhabDQ5hS0wa"
+	AccessSecret   = "VhiSWkGKtw1NQwuHuDiMAoLP50cXqPEExgDfkksmYZwVM"
 )
 
 var FuGuTwitterClient *twitter.Client
@@ -22,5 +23,6 @@ func buildClient() *twitter.Client {
 
 	// 创建Twitter客户端
 	FuGuTwitterClient = twitter.NewClient(httpClient)
+	fmt.Println("Build TwitterClient Success!")
 	return FuGuTwitterClient
 }

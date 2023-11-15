@@ -5,6 +5,7 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/mysql/users"
 	"FuguBackend/config"
+	"fmt"
 	"go.uber.org/zap"
 )
 
@@ -19,10 +20,13 @@ func (s *service) Modify(ctx core.Context, id int64, modifyData *ModifyData) (er
 	// 1 新建洞穴 转发一个推特
 	content := config.TwitterPostPreFix + modifyData.NickName + config.TwitterPostSuffix
 	postUrl, err := s.twSvc.Post(ctx, content)
+	s.logger.Info(fmt.Sprintf("===========postUrl:%v ==============", postUrl))
+
 	if err != nil {
-		s.logger.Error("twitter a post a  failed... ", zap.Error(err))
+		s.logger.Error("twitter a post failed... ", zap.Error(err))
 		return err
 	}
+
 	_, tweetIDstr, _ := s.twSvc.GetTweetIDByUrl(postUrl)
 	retweetUrl := config.RetweetPrefix + tweetIDstr
 	// 2 入库

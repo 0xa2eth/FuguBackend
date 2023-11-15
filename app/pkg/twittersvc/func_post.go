@@ -2,19 +2,20 @@ package twittersvc
 
 import (
 	"FuguBackend/app/pkg/core"
+	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
-	"log"
+	"go.uber.org/zap"
 	"strconv"
 )
 
 func (s *TwitterServiceMaster) Post(ctx core.Context, content string) (string, error) {
 	tweet, err := sendTweet(s.xClient, content)
 	if err != nil {
-		log.Println("Failed to send tweet:", err)
+		s.logger.Error("Failed to send tweet:", zap.Error(err))
 		return "", err
 	} else {
 		tweetURL := getTweetURL(tweet.User.ScreenName, tweet.ID)
-		log.Println("Tweet URL:", tweetURL)
+		s.logger.Info(fmt.Sprintf("Tweet URL:%v", tweetURL))
 		return tweetURL, nil
 	}
 }

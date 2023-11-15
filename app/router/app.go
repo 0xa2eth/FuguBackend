@@ -85,7 +85,7 @@ func NewHTTPServer() (*Server, error) {
 	//r.Logger = logger
 	r.Logger = config.Lg
 	r.TwitterServer = twittersvc.NewTwitterServiceMaster(r.Db, r.Cache, r.Logger)
-
+	r.Logger.Info("Init TwitterService Success!")
 	//_, ok := file.IsExists(config.ProjectInstallMark)
 	//if !ok { // 未安装
 	//	openBrowserUri += "/install"
@@ -97,14 +97,14 @@ func NewHTTPServer() (*Server, error) {
 		config.Lg.Fatal("new db err", zap.Error(err))
 	}
 	r.Db = dbRepo
-
+	r.Logger.Info("Init Mysql Success!")
 	// 初始化 Cache
 	cacheRepo, err := redis.New()
 	if err != nil {
 		config.Lg.Fatal("new cache err", zap.Error(err))
 	}
 	r.Cache = cacheRepo
-
+	r.Logger.Info("Init Cache Success!")
 	//// 初始化 CRON Server
 	//cronServer, err := cron.New(cronLogger, dbRepo, cacheRepo)
 	//if err != nil {
@@ -128,17 +128,19 @@ func NewHTTPServer() (*Server, error) {
 	}
 
 	r.Mux = mux
+	r.Logger.Info("Init Mux Success!")
 	r.Interceptors = interceptor.New(config.Lg, r.Cache, r.Db, r.TwitterServer)
-
+	r.Logger.Info("Init Interceptors Success!")
 	// 设置 API 路由
 	SetApiRouter(r)
+	r.Logger.Info("Set ApiRouter Success!")
 
 	s := new(Server)
 	s.Mux = mux
 	s.Db = r.Db
 	s.Cache = r.Cache
 	s.CronServer = r.CronServer
-
+	r.Logger.Info("Build New Server Success!")
 	return s, nil
 }
 func GetTraceLogger() (accessLogger, cronLogger *zap.Logger) {

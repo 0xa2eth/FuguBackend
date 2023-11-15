@@ -5,6 +5,7 @@ import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/config"
 	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"net/http"
 )
@@ -63,6 +64,7 @@ func (i *interceptor) CheckJWT() core.HandlerFunc {
 		i.logger.Info("===========jwt: token.Claims.(*CustomClaims) success  jwt-claims 类型断言成功 ==============")
 
 		// 将用户信息存储在上下文中，供后续处理函数使用
+		i.logger.Info(fmt.Sprintf("===========jwt: UserID:%v ==============", claims.UserID))
 
 		c.Set("UserID", claims.UserID)
 		//这里 userID和SessionUserInfo() 都能渠取到用户的userid(或proposal.SessionUserInfo)
