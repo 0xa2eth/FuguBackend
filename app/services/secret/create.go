@@ -70,10 +70,11 @@ func (s *service) Create(c core.Context, hashID string, data *CreateSecretData) 
 	model.Timestamp = time.Now().Unix()
 	model.Status = 1
 
-	id, err = model.Create(s.db.GetDbW().WithContext(c.RequestContext()))
-	if err != nil {
-		return 0, err
-	}
+	//id, err = model.Create(s.db.GetDbW().WithContext(c.RequestContext()))
+	//if err != nil {
+	//	return 0, err
+	//}
+	s.db.GetDbW().Table("secrets").Create(&model)
 
 	for i := range data.Images {
 		simg := secret_images.NewModel()

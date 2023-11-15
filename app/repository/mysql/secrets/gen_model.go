@@ -7,9 +7,9 @@ import "time"
 //go:generate gormgen -structs Secrets -input .
 type Secrets struct {
 	Id        int64     //
-	CreatedAt time.Time `gorm:"time"` //
-	UpdatedAt time.Time `gorm:"time"` //
-	DeletedAt time.Time `gorm:"time"` //
+	CreatedAt time.Time `gorm:"time"`                       //
+	UpdatedAt time.Time `gorm:"time"`                       //
+	DeletedAt time.Time `gorm:"type:datetime;default:null"` //
 	SecretId  int64     //
 	AuthorId  int64     //
 	ViewLevel int64     //

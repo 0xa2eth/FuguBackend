@@ -5,6 +5,7 @@ import (
 	"FuguBackend/app/pkg/twittersvc"
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
+	"FuguBackend/pkg/hash"
 	"go.uber.org/zap"
 )
 
@@ -14,7 +15,10 @@ type Service interface {
 	i()
 
 	VerifyRetweetTask(core.Context, int, int) (bool, error)
+
 	VerifyFollowTask(core.Context, int) (bool, error)
+
+	ListMySecrets(c core.Context, InnerID int, pageNum, pageSize int, hashFunc hash.Hash) ([]Secretcave, error)
 }
 
 type service struct {

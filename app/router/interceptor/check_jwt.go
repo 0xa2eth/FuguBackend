@@ -35,7 +35,7 @@ func (i *interceptor) CheckJWT() core.HandlerFunc {
 			)
 			return
 		}
-		i.logger.Info("========jwt:get header success ============")
+		i.logger.Info("===========jwt:get header success ============")
 		token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(secretKey), nil
 		})

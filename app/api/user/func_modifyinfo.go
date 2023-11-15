@@ -14,7 +14,9 @@ type modifyInfoRequest struct {
 	Bio      string `json:"bio,omitempty"`
 }
 
-type modifyInfoResponse struct{}
+type modifyInfoResponse struct {
+	Success bool `json:"success"`
+}
 
 // ModifyInfo 创建洞穴 修改个人（洞穴）信息
 // @Summary 创建洞穴 修改个人（洞穴）信息
@@ -78,7 +80,8 @@ func (h *handler) ModifyInfo() core.HandlerFunc {
 			)
 			return
 		}
-
-		c.Payload(nil)
+		m := new(modifyInfoResponse)
+		m.Success = true
+		c.Payload(m)
 	}
 }
