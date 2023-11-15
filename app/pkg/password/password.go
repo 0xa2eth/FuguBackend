@@ -1,6 +1,7 @@
 package password
 
 import (
+	"FuguBackend/config"
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha256"
@@ -49,7 +50,7 @@ func GenerateLoginToken(id int32) (token string) {
 
 const (
 	secretKey = "kEf%Wr2SsLke"
-	Issuer    = "Fugu.club"
+	Issuer    = "fugutoxic.com"
 )
 
 // CustomClaims 定义 JWT 载荷结构
@@ -61,15 +62,17 @@ type CustomClaims struct {
 
 // GenerateJWT ...  生成 JWT
 func GenerateJWT(userID string) (string, error) {
-	expirationTime := time.Now().Add(1 * time.Hour) // 设置过期时间为1小时
+	//expirationTime := time.Now().Add(1 * time.Hour) // 设置过期时间为1小时
+	expirationTime := time.Now().Add(time.Duration(config.Conf.Jwt.ExpirationTime) * time.Hour) // 设置过期时间为24小时
 	claims := &CustomClaims{
 		UserID: userID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
-			Issuer:    Issuer,
+			Issuer:    config.Conf.Jwt.Issuer,
 		},
+		LoggedIn: true,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(secretKey))
+	return token.SignedString([]byte(config.Conf.Jwt.SecretKey))
 }

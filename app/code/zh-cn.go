@@ -37,7 +37,7 @@ var zhCNText = map[int]string{
 	AdminDeleteError:             "删除管理员失败",
 	AdminUpdateError:             "更新管理员失败",
 	AdminResetPasswordError:      "重置密码失败",
-	AdminLoginError:              "登录失败",
+	UserLoginError:               "登录失败",
 	AdminLogOutError:             "退出失败",
 	AdminModifyPasswordError:     "修改密码失败",
 	AdminModifyPersonalInfoError: "修改个人信息失败",
@@ -61,6 +61,8 @@ var zhCNText = map[int]string{
 	CronDetailError:  "获取定时任务详情失败",
 	CronExecuteError: "手动执行定时任务失败",
 
-	VerifyTaskError:   "验证任务失败",
-	SecretCreateError: "发布秘密失败",
+	VerifyTaskError:          "验证任务失败",
+	SecretCreateError:        "发布秘密失败",
+	GetSecretsError:          "获取秘密失败",
+	RefreshFriendCircleError: "刷新朋友圈失败",
 }

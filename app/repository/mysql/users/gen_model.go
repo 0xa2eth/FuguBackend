@@ -7,9 +7,9 @@ import "time"
 //go:generate gormgen -structs Users -input .
 type Users struct {
 	Id             int64     //
-	CreatedAt      time.Time `gorm:"time"` //
-	UpdatedAt      time.Time `gorm:"time"` //
-	DeletedAt      time.Time `gorm:"time"` //
+	CreatedAt      time.Time `gorm:"time"`                       //
+	UpdatedAt      time.Time `gorm:"time"`                       //
+	DeletedAt      time.Time `gorm:"type:datetime;default:null"` //
 	Userid         int64     //
 	Ticketnum      int64     //
 	Cavefans       int64     //

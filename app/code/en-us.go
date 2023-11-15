@@ -37,7 +37,7 @@ var enUSText = map[int]string{
 	AdminDeleteError:             "Failed to delete administrator",
 	AdminUpdateError:             "Failed to update administrator",
 	AdminResetPasswordError:      "Reset password failed",
-	AdminLoginError:              "Login failed",
+	UserLoginError:               "Login failed",
 	AdminLogOutError:             "Exit failed",
 	AdminModifyPasswordError:     "Failed to modify password",
 	AdminModifyPersonalInfoError: "Failed to modify personal information",

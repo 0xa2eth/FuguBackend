@@ -57,7 +57,8 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 		//  如果注册过 走login 逻辑 颁发一个令牌 如果没注册过 走注册create逻辑
 		search := &user.SearchOneData{TwitterID: req.TwitterID}
 		users, err := h.userService.Detail(c, search)
-		if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		//if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		if users == nil {
 			// 有错误 ,没找到  -> 注册
 
 			genID, _ := snowflake.GenID()
@@ -118,14 +119,13 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 				UserID: hashId,
 				//UserName:
 			}
-
 			// 将用户信息记录到 Redis 中
 			err = h.cache.Set(config.RedisKeyPrefixLoginUser+jwt, string(sessionUserInfo.Marshal()), config.LoginSessionTTL, redis.WithTrace(c.Trace()))
 			if err != nil {
 				c.AbortWithError(core.Error(
 					http.StatusBadRequest,
-					code.AdminLoginError,
-					code.Text(code.AdminLoginError)).WithError(err),
+					code.UserLoginError,
+					code.Text(code.UserLoginError)).WithError(err),
 				)
 				return
 			}
@@ -156,6 +156,20 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 				http.StatusBadRequest,
 				code.HashIdsEncodeError,
 				code.Text(code.HashIdsEncodeError)).WithError(err),
+			)
+			return
+		}
+		// 用户信息
+		sessionUserInfo := &proposal.SessionUserInfo{
+			UserID: hashId,
+		}
+		// 将用户信息记录到 Redis 中
+		err = h.cache.Set(config.RedisKeyPrefixLoginUser+jwt, string(sessionUserInfo.Marshal()), config.LoginSessionTTL, redis.WithTrace(c.Trace()))
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.UserLoginError,
+				code.Text(code.UserLoginError)).WithError(err),
 			)
 			return
 		}

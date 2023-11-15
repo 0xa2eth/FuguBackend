@@ -36,7 +36,7 @@ build-mac:
 .PHONY: build-linux
 build-linux:
 	mkdir -p $(DIST);
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BINARY) ./cmd/main.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BINARY) ./app/main.go
 
 .PHONY: build-linux-mini
 build-linux-mini:

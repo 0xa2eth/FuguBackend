@@ -21,7 +21,7 @@ func SetApiRouter(r *Resource) {
 	// 创建用户
 	userHandler := user.New((*user.Resource)(r))
 
-	login.POST("/twitterlogin", userHandler.RegisterOrLogin())
+	login.POST("/twitterLogin", userHandler.RegisterOrLogin())
 
 	// 需要签名验证、登录验证、RBAC 权限验证
 	api := r.Mux.Group("/api", core.WrapAuthHandler(r.Interceptors.CheckLogin), r.Interceptors.CheckJWT())

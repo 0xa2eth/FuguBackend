@@ -15,7 +15,8 @@ const CSTLayout = "2006-01-02 15:04:05"
 
 func init() {
 	var err error
-	if cst, err = time.LoadLocation("Asia/Shanghai"); err != nil {
+	//if cst, err = time.LoadLocation("Asia/Shanghai"); err != nil {
+	if cst, err = time.LoadLocation("UTC"); err != nil {
 		panic(err)
 	}
 

@@ -19,21 +19,44 @@ addr = "127.0.0.1:9999"
         maxopenconn = 10
         loglevel = "info"
 
+#    [mysql.read]
+#        host = "127.0.0.1"
+#        port = "13306"
+#        database = "fugu"
+#        pass = "123456"
+#        user = "root"
+#
+#    [mysql.write]
+#        host = "127.0.0.1"
+#        port = "13306"
+#        database = "fugu"
+#        pass = "123456"
+#        user = "root"
+
     [mysql.read]
-        host = "127.0.0.1"
+        host = "3.112.220.168"
         port = "13306"
         database = "fugu"
-        pass = "123456"
-        user = "root"
+        pass = "fugutoxic"
+        user = "fugudata"
 
     [mysql.write]
-        host = "127.0.0.1"
+        host = "3.112.220.168"
         port = "13306"
         database = "fugu"
-        pass = "123456"
-        user = "root"
+        pass = "fugutoxic"
+        user = "fugudata"
+
+#[redis]
+#addr = "127.0.0.1:16379"
+#db = 0
+#maxretries = 3
+#minidleconns = 5
+#pass = ""
+#poolsize = 10
+
 [redis]
-addr = "127.0.0.1:16379"
+addr = "3.112.220.168:16489"
 db = 0
 maxretries = 3
 minidleconns = 5
@@ -53,9 +76,9 @@ region = "ap-northeast-1"
 endpoint = "https://s3.ap-northeast-1.amazonaws.com/"
 
 [jwt]
-issuer = "fuguclub.io"
-secret_key = "hp"
-expiration_time = 86400
+issuer = "fugutoxic.com"
+secret_key = "kEf%Wr2SsLke"
+expiration_time = 24
 
 [twitter]
 access_key = "AAAAAAAAAAAAAAAAAAAAAOcMhQEAAAAAv7AxXoCTM5%2BdfFUhcaOS3TLvWzM%3DMgLOp3wGhKlah2N9fitsuECrcD2gjk1tku6NZgXKFOgE4yrVyJ"

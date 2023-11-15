@@ -52,7 +52,7 @@ const (
 	AdminDeleteError             = 20203
 	AdminUpdateError             = 20204
 	AdminResetPasswordError      = 20205
-	AdminLoginError              = 20206
+	UserLoginError               = 20206
 	AdminLogOutError             = 20207
 	AdminModifyPasswordError     = 20208
 	AdminModifyPersonalInfoError = 20209

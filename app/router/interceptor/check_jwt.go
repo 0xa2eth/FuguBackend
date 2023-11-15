@@ -34,7 +34,7 @@ func (i *interceptor) CheckJWT() core.HandlerFunc {
 			)
 			return
 		}
-
+		i.logger.Info("========jwt:get header success ============")
 		token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(secretKey), nil
 		})
@@ -49,7 +49,7 @@ func (i *interceptor) CheckJWT() core.HandlerFunc {
 
 			return
 		}
-
+		i.logger.Info("===========jwt:  jwt.ParseWithClaims() success ==============")
 		claims, ok := token.Claims.(*CustomClaims)
 		if !ok {
 			c.AbortWithError(core.Error(
@@ -59,6 +59,8 @@ func (i *interceptor) CheckJWT() core.HandlerFunc {
 			)
 			return
 		}
+
+		i.logger.Info("===========jwt: token.Claims.(*CustomClaims) success  jwt-claims 类型断言成功 ==============")
 
 		// 将用户信息存储在上下文中，供后续处理函数使用
 
