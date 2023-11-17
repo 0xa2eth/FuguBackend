@@ -22,6 +22,7 @@ type Service interface {
 	Modify(ctx core.Context, id int64, modifyData *ModifyData) (err error)
 
 	FindAll() ([]*users.Users, error)
+	UpdateFriendCircle(string)
 }
 
 type service struct {

@@ -1,11 +1,12 @@
 package user
 
 import (
+	"errors"
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
-	"errors"
-	"net/http"
 )
 
 type modifyInfoRequest struct {

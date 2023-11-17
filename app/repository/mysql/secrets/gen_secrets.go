@@ -549,6 +549,16 @@ func (qb *secretsQueryBuilder) OrderByContent(asc bool) *secretsQueryBuilder {
 	return qb
 }
 
+func (qb *secretsQueryBuilder) OrderBy(asc bool) *secretsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, " "+order)
+	return qb
+}
+
 func (qb *secretsQueryBuilder) WhereStatus(p mysql.Predicate, value int32) *secretsQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
@@ -589,134 +599,5 @@ func (qb *secretsQueryBuilder) OrderByStatus(asc bool) *secretsQueryBuilder {
 	}
 
 	qb.order = append(qb.order, "status "+order)
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereSecretid(p mysql.Predicate, value int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "secretid", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereSecretidIn(value []int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "secretid", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereSecretidNotIn(value []int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "secretid", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) OrderBySecretid(asc bool) *secretsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "secretid "+order)
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereAuthorid(p mysql.Predicate, value int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "authorid", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereAuthoridIn(value []int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "authorid", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereAuthoridNotIn(value []int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "authorid", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) OrderByAuthorid(asc bool) *secretsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "authorid "+order)
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereViewlevel(p mysql.Predicate, value int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "viewlevel", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereViewlevelIn(value []int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "viewlevel", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) WhereViewlevelNotIn(value []int64) *secretsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "viewlevel", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *secretsQueryBuilder) OrderByViewlevel(asc bool) *secretsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "viewlevel "+order)
 	return qb
 }

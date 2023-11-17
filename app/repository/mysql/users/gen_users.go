@@ -291,347 +291,347 @@ func (qb *usersQueryBuilder) OrderByDeletedAt(asc bool) *usersQueryBuilder {
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereUserid(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereUserId(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "userid", p),
+		fmt.Sprintf("%v %v ?", "user_id", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereUseridIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereUserIdIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "userid", "IN"),
+		fmt.Sprintf("%v %v ?", "user_id", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereUseridNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereUserIdNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "userid", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "user_id", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByUserid(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByUserId(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "userid "+order)
+	qb.order = append(qb.order, "user_id "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereTicketnum(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereTicketNum(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "ticketnum", p),
+		fmt.Sprintf("%v %v ?", "ticket_num", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereTicketnumIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereTicketNumIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "ticketnum", "IN"),
+		fmt.Sprintf("%v %v ?", "ticket_num", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereTicketnumNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereTicketNumNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "ticketnum", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "ticket_num", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByTicketnum(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByTicketNum(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "ticketnum "+order)
+	qb.order = append(qb.order, "ticket_num "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCavefans(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereCaveFans(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "cavefans", p),
+		fmt.Sprintf("%v %v ?", "cave_fans", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCavefansIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereCaveFansIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "cavefans", "IN"),
+		fmt.Sprintf("%v %v ?", "cave_fans", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCavefansNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereCaveFansNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "cavefans", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "cave_fans", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByCavefans(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByCaveFans(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "cavefans "+order)
+	qb.order = append(qb.order, "cave_fans "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereTwitterfans(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereTwitterFans(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "twitterfans", p),
+		fmt.Sprintf("%v %v ?", "twitter_fans", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereTwitterfansIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereTwitterFansIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "twitterfans", "IN"),
+		fmt.Sprintf("%v %v ?", "twitter_fans", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereTwitterfansNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereTwitterFansNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "twitterfans", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "twitter_fans", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByTwitterfans(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByTwitterFans(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "twitterfans "+order)
+	qb.order = append(qb.order, "twitter_fans "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereLastlogin(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereLastLogin(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "lastlogin", p),
+		fmt.Sprintf("%v %v ?", "last_login", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereLastloginIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereLastLoginIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "lastlogin", "IN"),
+		fmt.Sprintf("%v %v ?", "last_login", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereLastloginNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereLastLoginNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "lastlogin", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "last_login", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByLastlogin(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByLastLogin(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "lastlogin "+order)
+	qb.order = append(qb.order, "last_login "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereRegistime(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereRegisTime(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "registime", p),
+		fmt.Sprintf("%v %v ?", "regis_time", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereRegistimeIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereRegisTimeIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "registime", "IN"),
+		fmt.Sprintf("%v %v ?", "regis_time", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereRegistimeNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereRegisTimeNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "registime", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "regis_time", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByRegistime(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByRegisTime(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "registime "+order)
+	qb.order = append(qb.order, "regis_time "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereEarnedpoint(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereEarnedPoint(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "earnedpoint", p),
+		fmt.Sprintf("%v %v ?", "earned_point", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereEarnedpointIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereEarnedPointIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "earnedpoint", "IN"),
+		fmt.Sprintf("%v %v ?", "earned_point", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereEarnedpointNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereEarnedPointNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "earnedpoint", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "earned_point", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByEarnedpoint(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByEarnedPoint(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "earnedpoint "+order)
+	qb.order = append(qb.order, "earned_point "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCavepoint(p mysql.Predicate, value int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereCavePoint(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "cavepoint", p),
+		fmt.Sprintf("%v %v ?", "cave_point", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCavepointIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereCavePointIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "cavepoint", "IN"),
+		fmt.Sprintf("%v %v ?", "cave_point", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCavepointNotIn(value []int64) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereCavePointNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "cavepoint", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "cave_point", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByCavepoint(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByCavePoint(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "cavepoint "+order)
+	qb.order = append(qb.order, "cave_point "+order)
 	return qb
 }
 
@@ -675,6 +675,92 @@ func (qb *usersQueryBuilder) OrderByViews(asc bool) *usersQueryBuilder {
 	}
 
 	qb.order = append(qb.order, "views "+order)
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereVipLevel(p mysql.Predicate, value int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "vip_level", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereVipLevelIn(value []int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "vip_level", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereVipLevelNotIn(value []int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "vip_level", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) OrderByVipLevel(asc bool) *usersQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "vip_level "+order)
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereInvitedBy(p mysql.Predicate, value int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "invited_by", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereInvitedByIn(value []int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "invited_by", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) WhereInvitedByNotIn(value []int64) *usersQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "invited_by", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *usersQueryBuilder) OrderByInvitedBy(asc bool) *usersQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "invited_by "+order)
 	return qb
 }
 
@@ -979,475 +1065,131 @@ func (qb *usersQueryBuilder) OrderByTwitterName(asc bool) *usersQueryBuilder {
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCaveretweeturl(p mysql.Predicate, value string) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereRetweetUrl(p mysql.Predicate, value string) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "caveretweeturl", p),
+		fmt.Sprintf("%v %v ?", "retweet_url", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCaveretweeturlIn(value []string) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereRetweetUrlIn(value []string) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "caveretweeturl", "IN"),
+		fmt.Sprintf("%v %v ?", "retweet_url", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereCaveretweeturlNotIn(value []string) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereRetweetUrlNotIn(value []string) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "caveretweeturl", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "retweet_url", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByCaveretweeturl(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByRetweetUrl(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "caveretweeturl "+order)
+	qb.order = append(qb.order, "retweet_url "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereMintcave(p mysql.Predicate, value int32) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereMintCave(p mysql.Predicate, value int32) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "mintcave", p),
+		fmt.Sprintf("%v %v ?", "mint_cave", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereMintcaveIn(value []int32) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereMintCaveIn(value []int32) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "mintcave", "IN"),
+		fmt.Sprintf("%v %v ?", "mint_cave", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereMintcaveNotIn(value []int32) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WhereMintCaveNotIn(value []int32) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "mintcave", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "mint_cave", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByMintcave(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByMintCave(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "mintcave "+order)
+	qb.order = append(qb.order, "mint_cave "+order)
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereNickname(p mysql.Predicate, value string) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WherePosts(p mysql.Predicate, value int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "nickname", p),
+		fmt.Sprintf("%v %v ?", "posts", p),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereNicknameIn(value []string) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WherePostsIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "nickname", "IN"),
+		fmt.Sprintf("%v %v ?", "posts", "IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) WhereNicknameNotIn(value []string) *usersQueryBuilder {
+func (qb *usersQueryBuilder) WherePostsNotIn(value []int64) *usersQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "nickname", "NOT IN"),
+		fmt.Sprintf("%v %v ?", "posts", "NOT IN"),
 		value,
 	})
 	return qb
 }
 
-func (qb *usersQueryBuilder) OrderByNickname(asc bool) *usersQueryBuilder {
+func (qb *usersQueryBuilder) OrderByPosts(asc bool) *usersQueryBuilder {
 	order := "DESC"
 	if asc {
 		order = "ASC"
 	}
 
-	qb.order = append(qb.order, "nickname "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitterid(p mysql.Predicate, value string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twitterid", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitteridIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twitterid", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitteridNotIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twitterid", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByTwitterid(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "twitterid "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitteravatar(p mysql.Predicate, value string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twitteravatar", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitteravatarIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twitteravatar", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitteravatarNotIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twitteravatar", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByTwitteravatar(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "twitteravatar "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwittername(p mysql.Predicate, value string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twittername", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitternameIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twittername", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTwitternameNotIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "twittername", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByTwittername(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "twittername "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTag(p mysql.Predicate, value int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "tag", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTagIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "tag", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereTagNotIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "tag", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByTag(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "tag "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereEarnedPoint(p mysql.Predicate, value int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "earned_point", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereEarnedPointIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "earned_point", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereEarnedPointNotIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "earned_point", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByEarnedPoint(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "earned_point "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereCavePoint(p mysql.Predicate, value int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "cave_point", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereCavePointIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "cave_point", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereCavePointNotIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "cave_point", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByCavePoint(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "cave_point "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereInvitedbycode(p mysql.Predicate, value string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "invitedbycode", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereInvitedbycodeIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "invitedbycode", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereInvitedbycodeNotIn(value []string) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "invitedbycode", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByInvitedbycode(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "invitedbycode "+order)
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereNumofposts(p mysql.Predicate, value int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "numofposts", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereNumofpostsIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "numofposts", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) WhereNumofpostsNotIn(value []int64) *usersQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "numofposts", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *usersQueryBuilder) OrderByNumofposts(asc bool) *usersQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "numofposts "+order)
+	qb.order = append(qb.order, "posts "+order)
 	return qb
 }

@@ -3,6 +3,7 @@ package cave
 import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/services/user"
+
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -21,7 +22,7 @@ func (s *service) VerifyRetweetTask(c core.Context, tocheck int, target int) (bo
 		Id: target,
 	})
 
-	tweetID, _, _ := s.twSvc.GetTweetIDByUrl(cave.Caveretweeturl)
+	tweetID, _, _ := s.twSvc.GetTweetIDByUrl(cave.RetweetUrl)
 
 	isFind, err := s.twSvc.FindSBReTweetByTweetID(c, person.TwitterName, int(tweetID))
 	if err != nil {

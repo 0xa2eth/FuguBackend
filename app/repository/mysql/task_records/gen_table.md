@@ -6,7 +6,5 @@
 | 2 | created_at |  | datetime(3) |  | YES |  |  |
 | 3 | updated_at |  | datetime(3) |  | YES |  |  |
 | 4 | deleted_at |  | datetime(3) | MUL | YES |  |  |
-| 5 | cave_id |  | longtext |  | YES |  |  |
+| 5 | cave_id |  | bigint |  | YES |  |  |
 | 6 | user_id |  | bigint |  | YES |  |  |
-| 7 | caveid |  | bigint |  | YES |  |  |
-| 8 | userid |  | bigint |  | YES |  |  |

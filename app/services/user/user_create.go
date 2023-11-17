@@ -1,12 +1,12 @@
 package user
 
 import (
-	"gorm.io/gorm"
-	"strconv"
 	"time"
 
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/repository/mysql/users"
+
+	"gorm.io/gorm"
 )
 
 type CreateUserData struct {
@@ -27,13 +27,13 @@ func (s *service) Create(ctx core.Context, data *CreateUserData) (id int64, err 
 	model := users.NewModel()
 	model.TwitterName = data.TwitterName
 	model.TwitterId = data.TwitterID
-	model.Twitteravatar = data.TwitterAvatar
+	model.TwitterAvatar = data.TwitterAvatar
 	model.NickName = data.NickName
 	model.Avatar = data.Avatar
 	model.Bios = data.Bios
-	model.Registime = time.Now().Unix()
+	model.RegisTime = time.Now().Unix()
 	//todo 数据库可以改下字段名
-	model.Invitedbycode = strconv.Itoa(data.InvitedBy)
+	model.InvitedBy = int64(data.InvitedBy)
 	//model.DeletedAt = time.Now()
 
 	id, err = model.Create(s.db.GetDbW().WithContext(ctx.RequestContext()))

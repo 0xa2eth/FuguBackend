@@ -1,10 +1,11 @@
 package user
 
 import (
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/pkg/errors"
-	"net/http"
 )
 
 type verifyInviteCodeRequest struct {

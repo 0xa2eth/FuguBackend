@@ -28,10 +28,10 @@ func (s *service) Modify(ctx core.Context, id int64, modifyData *ModifyData) (er
 	//retweetUrl := config.RetweetPrefix + tweetIDstr
 	// 2 入库
 	data := map[string]interface{}{
-		"nick_name":      modifyData.NickName,
-		"avatar":         modifyData.Avatar,
-		"bios":           modifyData.Bio,
-		"caveretweeturl": "retweetUrl",
+		"nick_name":   modifyData.NickName,
+		"avatar":      modifyData.Avatar,
+		"bios":        modifyData.Bio,
+		"retweet_url": "retweetUrl",
 	}
 	qb := users.NewQueryBuilder()
 	qb.WhereId(mysql.EqualPredicate, id)

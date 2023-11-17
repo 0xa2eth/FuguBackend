@@ -4,6 +4,7 @@ import (
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"go.uber.org/zap"
 )
@@ -32,6 +33,8 @@ type TwitterService interface {
 	FindIsFollowing(c core.Context, tocheckName string, tweetName string) (isFind bool, err error)
 
 	DirectMessage(ctx core.Context, recipientScreenName, message string) (err error)
+	DoRefreshTaskFunc()
+	TimeTask()
 }
 
 type TwitterServiceMaster struct {

@@ -16,15 +16,23 @@ type Secretcave struct {
 }
 
 func (s *service) ListMySecrets(c core.Context, InnerID int, pageNum, pageSize int, hashFunc hash.Hash) (secrets []Secretcave, err error) {
+
 	offset := (pageNum - 1) * pageSize
-	err = s.db.GetDbW().Table("secrets").Where("secrets.author_id = ?", InnerID).Limit(offset).Offset(offset).Find(&secrets).Error
+	err = s.db.GetDbW().Table("secrets").
+		Where("secrets.author_id = ?", InnerID).
+		Limit(offset).
+		Offset(offset).
+		Find(&secrets).Error
 	if err != nil {
 		return nil, err
 	}
 
 	for i, v := range secrets {
 		var images []string
-		err = s.db.GetDbW().Table("secret_images").Select("image_url").Where("secret_id = ?", v.SecretID).Find(&images).Error
+		err = s.db.GetDbW().Table("secret_images").
+			Select("image_url").
+			Where("secret_id = ?", v.SecretID).
+			Find(&images).Error
 		if err != nil {
 			return nil, err
 		}
@@ -33,4 +41,12 @@ func (s *service) ListMySecrets(c core.Context, InnerID int, pageNum, pageSize i
 	}
 
 	return
+}
+func (s *service) ListCaveSecrets(c core.Context, InnerID,
+	caveID int, pageNum, pageSize int, hashFunc hash.Hash) ([]Secretcave, error) {
+	//err := s.db.GetDbW().Table("secret_images").
+	//	Select("image_url").
+	//	Where("secret_id = ?", v.SecretID).
+	//	Find(&images).Error
+	return nil, nil
 }

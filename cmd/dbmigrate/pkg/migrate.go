@@ -21,7 +21,13 @@ var cfg config.Config
 func Migrate() {
 	Db := InitMysql()
 	//structs := ScanStructs()
-	Db.AutoMigrate(&User{}, &Secret{}, &SecretImage{}, &Retweet{}, &TaskRecord{}, &Friend{}, &Nft{}, &Ft{}, &InviteCode{})
+
+	models := []interface{}{
+		&User{},
+		&Secret{}, &TaskRecord{},
+		&Friend{},
+	}
+	Db.Debug().AutoMigrate(models...)
 	//images := []SecretImage{
 	//	{
 	//		Model:    gorm.Model{},
@@ -42,7 +48,7 @@ func Migrate() {
 	//})
 	//
 	//fmt.Println(u)
-	fmt.Println(" migrate success! ")
+	fmt.Println(" ========migrate success!========== ")
 }
 func InitMysql() *gorm.DB {
 	//dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true&loc=Local",

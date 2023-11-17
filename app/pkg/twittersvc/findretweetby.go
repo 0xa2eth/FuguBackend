@@ -1,9 +1,11 @@
 package twittersvc
 
 import (
-	"FuguBackend/app/pkg/core"
-	"github.com/dghubble/go-twitter/twitter"
 	"log"
+
+	"FuguBackend/app/pkg/core"
+
+	"github.com/dghubble/go-twitter/twitter"
 )
 
 func (s *TwitterServiceMaster) FindSBReTweetByTweetID(c core.Context, screenName string, tweetID int) (bool, error) {

@@ -2,6 +2,7 @@ package user
 
 import (
 	"FuguBackend/app/repository/mysql/users"
+
 	"go.uber.org/zap"
 )
 

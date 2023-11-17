@@ -1,20 +1,24 @@
 package cave
 
 import (
+	"FuguBackend/app/services/cave"
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/pagination"
 	"FuguBackend/app/pkg/validation"
 	"FuguBackend/pkg/errors"
-	"net/http"
 )
 
 type secretListRequest struct {
-	PageNum  int `form:"pageNum"`
-	PageSize int `form:"pageSize"`
-	Order    int `form:"order"`
+	PageNum  int    `form:"pageNum"`
+	PageSize int    `form:"pageSize"`
+	Order    string `form:"order"`
 }
-
+type secretListUri struct {
+	CaveID string `uri:"CaveID"`
+}
 type secretListResponse struct {
 	Data pagination.PageInfo `json:"secrets"`
 }
@@ -47,7 +51,7 @@ type secretListResponse struct {
 // @Router /api/cave/:CaveID [get]
 func (h *handler) SecretList() core.HandlerFunc {
 	return func(c core.Context) {
-		value, exists := c.Get("UserID")
+		hashid, exists := c.Get("UserID")
 		if !exists {
 			c.AbortWithError(core.Error(
 				http.StatusUnauthorized,
@@ -56,7 +60,7 @@ func (h *handler) SecretList() core.HandlerFunc {
 			)
 			return
 		}
-		InnerID, err := h.hashids.HashidsDecode(value.(string))
+		InnerID, err := h.hashids.HashidsDecode(hashid.(string))
 		if err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
@@ -74,19 +78,36 @@ func (h *handler) SecretList() core.HandlerFunc {
 			)
 			return
 		}
-		secrets, err := h.caveService.ListMySecrets(c, req.PageNum, req.PageSize, InnerID[0], h.hashids)
-		if err != nil {
+		uri := new(secretListUri)
+		if err = c.ShouldBindURI(uri); err != nil {
 			c.AbortWithError(core.Error(
-				http.StatusOK,
-				code.GetSecretsError,
-				code.Text(code.GetSecretsError)).WithError(err),
+				http.StatusBadRequest,
+				code.ParamBindError,
+				validation.Error(err)).WithError(err),
 			)
 			return
 		}
+		var CaveSecret []cave.Secretcave
+		if hashid != uri.CaveID {
+			//h.caveService.ListCaveSecrets(c core.Context, InnerID, caveID int,
+			//	pageNum, pageSize int, hashFunc hash.Hash) ([]Secretcave, error)
+
+		} else {
+			CaveSecret, err = h.caveService.ListMySecrets(c, req.PageNum, req.PageSize, InnerID[0], h.hashids)
+			if err != nil {
+				c.AbortWithError(core.Error(
+					http.StatusOK,
+					code.GetSecretsError,
+					code.Text(code.GetSecretsError)).WithError(err),
+				)
+				return
+			}
+		}
+
 		page := pagination.PageInfo{}
 		page.PageNum = req.PageNum
 		page.PageSize = req.PageSize
-		page.Data = secrets
+		page.Data = CaveSecret
 		res := new(secretListResponse)
 		res.Data = page
 		c.Payload(res)

@@ -7,7 +7,6 @@ package friends
 
 import (
 	"fmt"
-	"time"
 
 	"FuguBackend/app/repository/mysql"
 
@@ -116,221 +115,6 @@ func (qb *friendsQueryBuilder) Limit(limit int) *friendsQueryBuilder {
 
 func (qb *friendsQueryBuilder) Offset(offset int) *friendsQueryBuilder {
 	qb.offset = offset
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereBaseId(p mysql.Predicate, value int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "base_id", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereBaseIdIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "base_id", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereBaseIdNotIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "base_id", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) OrderByBaseId(asc bool) *friendsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "base_id "+order)
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereFriendId(p mysql.Predicate, value int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "friend_id", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereFriendIdIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "friend_id", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereFriendIdNotIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "friend_id", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) OrderByFriendId(asc bool) *friendsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "friend_id "+order)
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereStatus(p mysql.Predicate, value int32) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "status", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereStatusIn(value []int32) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "status", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereStatusNotIn(value []int32) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "status", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) OrderByStatus(asc bool) *friendsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "status "+order)
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereBaseid(p mysql.Predicate, value int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "baseid", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereBaseidIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "baseid", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereBaseidNotIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "baseid", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) OrderByBaseid(asc bool) *friendsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "baseid "+order)
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereFriendid(p mysql.Predicate, value int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "friendid", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereFriendidIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "friendid", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) WhereFriendidNotIn(value []int64) *friendsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "friendid", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *friendsQueryBuilder) OrderByFriendid(asc bool) *friendsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "friendid "+order)
 	return qb
 }
 
@@ -503,5 +287,134 @@ func (qb *friendsQueryBuilder) OrderByDeletedAt(asc bool) *friendsQueryBuilder {
 	}
 
 	qb.order = append(qb.order, "deleted_at "+order)
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereBaseId(p mysql.Predicate, value int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "base_id", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereBaseIdIn(value []int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "base_id", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereBaseIdNotIn(value []int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "base_id", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) OrderByBaseId(asc bool) *friendsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "base_id "+order)
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereFriendId(p mysql.Predicate, value int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "friend_id", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereFriendIdIn(value []int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "friend_id", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereFriendIdNotIn(value []int64) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "friend_id", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) OrderByFriendId(asc bool) *friendsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "friend_id "+order)
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereStatus(p mysql.Predicate, value int32) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "status", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereStatusIn(value []int32) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "status", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) WhereStatusNotIn(value []int32) *friendsQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "status", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *friendsQueryBuilder) OrderByStatus(asc bool) *friendsQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "status "+order)
 	return qb
 }

@@ -1,13 +1,15 @@
 package interceptor
 
 import (
+	"errors"
+	"fmt"
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/config"
-	"errors"
-	"fmt"
+
 	"github.com/golang-jwt/jwt/v4"
-	"net/http"
 )
 
 const (

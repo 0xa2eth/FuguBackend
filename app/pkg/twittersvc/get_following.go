@@ -1,10 +1,12 @@
 package twittersvc
 
 import (
-	"FuguBackend/app/pkg/core"
 	"fmt"
-	"github.com/dghubble/go-twitter/twitter"
 	"time"
+
+	"FuguBackend/app/pkg/core"
+
+	"github.com/dghubble/go-twitter/twitter"
 )
 
 func (s *TwitterServiceMaster) GetFollowing(ctx core.Context, screenName string, isAll bool) ([]twitter.User, error) {

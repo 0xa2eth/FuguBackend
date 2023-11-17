@@ -2,16 +2,39 @@ package social
 
 import (
 	"fmt"
+	"github.com/michimani/gotwi"
+
 	dmpkg "github.com/ChimeraCoder/anaconda"
 )
 
-func buildClient() *dmpkg.TwitterApi {
-	dmpkg.SetConsumerKey("YOUR_CONSUMER_KEY")
-	dmpkg.SetConsumerSecret("YOUR_CONSUMER_SECRET")
-	return dmpkg.NewTwitterApi("YOUR_ACCESS_TOKEN", "YOUR_ACCESS_TOKEN_SECRET")
+const (
+	ConsumerKey    = "QK9pCxEpBrkMZD993E3bIfoVQ"
+	ConsumerSecret = "nUcqMMQfq0XbtjcyuAVmQrimNjL8zBOV5gBvheaMC5uGxGdC8v"
+	AccessToken    = "1521091305107243008-QboEaJjeaiJOhcAT4hAhabDQ5hS0wa"
+	AccessSecret   = "VhiSWkGKtw1NQwuHuDiMAoLP50cXqPEExgDfkksmYZwVM"
+)
+
+func buildANAClient() *dmpkg.TwitterApi {
+	dmpkg.SetConsumerKey(ConsumerKey)
+	dmpkg.SetConsumerSecret(ConsumerSecret)
+	return dmpkg.NewTwitterApi(AccessToken, AccessSecret)
 }
-func DirectMessageTo(sb string, content string) {
-	client := buildClient()
+func buildTWIClient() *gotwi.Client {
+	in := &gotwi.NewClientInput{
+		AuthenticationMethod: gotwi.AuthenMethodOAuth1UserContext,
+		OAuthToken:           AccessToken,
+		OAuthTokenSecret:     AccessSecret,
+	}
+
+	c, err := gotwi.NewClient(in)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return c
+}
+func DirectMessage_ANA(sb string, content string) {
+	client := buildANAClient()
 	recipientScreenName := sb // 收件人的 Twitter 用户名
 	messageText := content    // 要发送的私信内容
 

@@ -8,6 +8,7 @@ import (
 	"FuguBackend/app/repository/mysql/secrets"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/pkg/hash"
+
 	"go.uber.org/zap"
 )
 
@@ -16,14 +17,14 @@ var _ Service = (*service)(nil)
 type Service interface {
 	i()
 
-	Create(core.Context, string, *CreateSecretData) (int64, error)
+	Create(core.Context, string, *CreateSecretData) (int, error)
 
 	List(c core.Context, InnerID int, pageNum, pageSize int, hashFunc hash.Hash) (pagination.PageInfo, error)
 
 	Complaint() error
 
-	BuildRes(c core.Context, raw []secrets.Secrets, hashFunc hash.Hash, viewAble bool) (list []Secret)
-
+	BuildNormalSecretsRes(c core.Context, raw []secrets.Secret, hashFunc hash.Hash, viewAble bool) []SecretRes
+	GetExtro(c core.Context, siteFriendIds []int, hashFunc hash.Hash, InnerID int) []SecretRes
 	GetPostsByAuthorID(c core.Context, id int) (list []*secrets.Secrets, err error)
 }
 

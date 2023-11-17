@@ -2,6 +2,7 @@ package twittersvc
 
 import (
 	"fmt"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"

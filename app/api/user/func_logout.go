@@ -1,12 +1,13 @@
 package user
 
 import (
+	"errors"
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/config"
-	"errors"
-	"net/http"
 )
 
 type logoutResponse struct {

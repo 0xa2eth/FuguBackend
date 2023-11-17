@@ -52,5 +52,7 @@ func (i *interceptor) CheckLogin(ctx core.Context) (sessionUserInfo proposal.Ses
 		return
 	}
 
+	go i.userService.UpdateFriendCircle(sessionUserInfo.UserID)
+
 	return
 }

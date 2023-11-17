@@ -1,12 +1,13 @@
 package user
 
 import (
-	"FuguBackend/app/code"
-	"FuguBackend/app/pkg/core"
-	"FuguBackend/app/services/user"
 	"errors"
 	"fmt"
 	"net/http"
+
+	"FuguBackend/app/code"
+	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/services/user"
 )
 
 type userInfoRequest struct {
@@ -98,16 +99,16 @@ func (h *handler) UserInfo() core.HandlerFunc {
 		fmt.Println("info : ", info)
 		res := userInfoResponse{
 			UserID:         hashID,
-			TicketNum:      int(info.Ticketnum),
-			CaveFans:       int(info.Cavefans),
+			TicketNum:      int(info.TicketNum),
+			CaveFans:       int(info.CaveFans),
 			EarnedPoint:    int(info.EarnedPoint),
 			CavePoint:      int(info.CavePoint),
 			Views:          int(info.Views),
 			NickName:       info.NickName,
 			Bios:           info.Bios,
 			Avatar:         info.Avatar,
-			CaveReTweetUrl: info.Caveretweeturl,
-			NumberOfPosts:  int(info.Numofposts),
+			CaveReTweetUrl: info.RetweetUrl,
+			NumberOfPosts:  int(info.Posts),
 		}
 
 		c.Payload(res)

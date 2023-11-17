@@ -290,7 +290,7 @@ func (qb *taskRecordsQueryBuilder) OrderByDeletedAt(asc bool) *taskRecordsQueryB
 	return qb
 }
 
-func (qb *taskRecordsQueryBuilder) WhereCaveId(p mysql.Predicate, value string) *taskRecordsQueryBuilder {
+func (qb *taskRecordsQueryBuilder) WhereCaveId(p mysql.Predicate, value int64) *taskRecordsQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -301,7 +301,7 @@ func (qb *taskRecordsQueryBuilder) WhereCaveId(p mysql.Predicate, value string) 
 	return qb
 }
 
-func (qb *taskRecordsQueryBuilder) WhereCaveIdIn(value []string) *taskRecordsQueryBuilder {
+func (qb *taskRecordsQueryBuilder) WhereCaveIdIn(value []int64) *taskRecordsQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -312,7 +312,7 @@ func (qb *taskRecordsQueryBuilder) WhereCaveIdIn(value []string) *taskRecordsQue
 	return qb
 }
 
-func (qb *taskRecordsQueryBuilder) WhereCaveIdNotIn(value []string) *taskRecordsQueryBuilder {
+func (qb *taskRecordsQueryBuilder) WhereCaveIdNotIn(value []int64) *taskRecordsQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -373,91 +373,5 @@ func (qb *taskRecordsQueryBuilder) OrderByUserId(asc bool) *taskRecordsQueryBuil
 	}
 
 	qb.order = append(qb.order, "user_id "+order)
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) WhereCaveid(p mysql.Predicate, value int64) *taskRecordsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "caveid", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) WhereCaveidIn(value []int64) *taskRecordsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "caveid", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) WhereCaveidNotIn(value []int64) *taskRecordsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "caveid", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) OrderByCaveid(asc bool) *taskRecordsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "caveid "+order)
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) WhereUserid(p mysql.Predicate, value int64) *taskRecordsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "userid", p),
-		value,
-	})
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) WhereUseridIn(value []int64) *taskRecordsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "userid", "IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) WhereUseridNotIn(value []int64) *taskRecordsQueryBuilder {
-	qb.where = append(qb.where, struct {
-		prefix string
-		value  interface{}
-	}{
-		fmt.Sprintf("%v %v ?", "userid", "NOT IN"),
-		value,
-	})
-	return qb
-}
-
-func (qb *taskRecordsQueryBuilder) OrderByUserid(asc bool) *taskRecordsQueryBuilder {
-	order := "DESC"
-	if asc {
-		order = "ASC"
-	}
-
-	qb.order = append(qb.order, "userid "+order)
 	return qb
 }

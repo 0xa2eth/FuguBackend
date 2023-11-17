@@ -19,33 +19,33 @@ addr = "127.0.0.1:9999"
         maxopenconn = 10
         loglevel = "info"
 
-#    [mysql.read]
-#        host = "127.0.0.1"
-#        port = "13306"
-#        database = "fugu"
-#        pass = "123456"
-#        user = "root"
-#
-#    [mysql.write]
-#        host = "127.0.0.1"
-#        port = "13306"
-#        database = "fugu"
-#        pass = "123456"
-#        user = "root"
-
     [mysql.read]
-        host = "3.112.220.168"
+        host = "127.0.0.1"
         port = "13306"
         database = "fugu"
-        pass = "fugutoxic"
-        user = "fugudata"
-
+        pass = "123456"
+        user = "root"
+#
     [mysql.write]
-        host = "3.112.220.168"
+        host = "127.0.0.1"
         port = "13306"
         database = "fugu"
-        pass = "fugutoxic"
-        user = "fugudata"
+        pass = "123456"
+        user = "root"
+
+#    [mysql.read]
+#        host = "3.112.220.168"
+#        port = "13306"
+#        database = "fugu"
+#        pass = "fugutoxic"
+#        user = "fugudata"
+
+#    [mysql.write]
+#        host = "3.112.220.168"
+#        port = "13306"
+#        database = "fugu"
+#        pass = "fugutoxic"
+#        user = "fugudata"
 
 #[redis]
 #addr = "127.0.0.1:16379"

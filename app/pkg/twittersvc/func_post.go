@@ -1,11 +1,13 @@
 package twittersvc
 
 import (
-	"FuguBackend/app/pkg/core"
 	"fmt"
+	"strconv"
+
+	"FuguBackend/app/pkg/core"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 func (s *TwitterServiceMaster) Post(ctx core.Context, content string) (string, error) {
@@ -22,7 +24,10 @@ func (s *TwitterServiceMaster) Post(ctx core.Context, content string) (string, e
 
 // 发送推文
 func sendTweet(client *twitter.Client, tweetText string) (*twitter.Tweet, error) {
-	tweet, _, err := client.Statuses.Update(tweetText, nil)
+	params := &twitter.StatusUpdateParams{
+		Status: tweetText,
+	}
+	tweet, _, err := client.Statuses.Update(tweetText, params)
 	if err != nil {
 		return nil, err
 	}

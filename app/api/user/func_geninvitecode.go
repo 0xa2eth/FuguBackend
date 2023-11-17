@@ -1,13 +1,14 @@
 package user
 
 import (
+	"errors"
+	"net/http"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/password"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/config"
-	"errors"
-	"net/http"
 )
 
 type genInviteCodeRequest struct{}

@@ -6,6 +6,7 @@ import (
 	"FuguBackend/app/repository/mysql"
 	"FuguBackend/app/repository/redis"
 	"FuguBackend/pkg/hash"
+
 	"go.uber.org/zap"
 )
 
@@ -17,6 +18,7 @@ type Service interface {
 	VerifyRetweetTask(core.Context, int, int) (bool, error)
 
 	VerifyFollowTask(core.Context, int) (bool, error)
+	ListCaveSecrets(c core.Context, InnerID, caveID int, pageNum, pageSize int, hashFunc hash.Hash) ([]Secretcave, error)
 
 	ListMySecrets(c core.Context, InnerID int, pageNum, pageSize int, hashFunc hash.Hash) ([]Secretcave, error)
 }

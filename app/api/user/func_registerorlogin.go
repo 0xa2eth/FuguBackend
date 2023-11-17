@@ -1,6 +1,11 @@
 package user
 
 import (
+	"errors"
+	"math/rand"
+	"net/http"
+	"time"
+
 	"FuguBackend/app/code"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/password"
@@ -10,13 +15,10 @@ import (
 	"FuguBackend/app/services/user"
 	"FuguBackend/config"
 	"FuguBackend/pkg/snowflake"
-	"errors"
+
 	"github.com/spf13/cast"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"math/rand"
-	"net/http"
-	"time"
 )
 
 type registerOrLoginRequest struct {

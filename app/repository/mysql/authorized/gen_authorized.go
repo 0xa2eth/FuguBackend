@@ -7,7 +7,6 @@ package authorized
 
 import (
 	"fmt"
-	"time"
 
 	"FuguBackend/app/repository/mysql"
 
@@ -27,7 +26,7 @@ func (t *Authorized) Create(db *gorm.DB) (id int64, err error) {
 	if err = db.Create(t).Error; err != nil {
 		return 0, errors.Wrap(err, "create err")
 	}
-	return int64(t.Id), nil
+	return t.Id, nil
 }
 
 type authorizedQueryBuilder struct {

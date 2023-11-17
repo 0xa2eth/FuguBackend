@@ -10,8 +10,6 @@ type TaskRecords struct {
 	CreatedAt time.Time `gorm:"time"` //
 	UpdatedAt time.Time `gorm:"time"` //
 	DeletedAt time.Time `gorm:"time"` //
-	CaveId    string    //
+	CaveId    int64     //
 	UserId    int64     //
-	Caveid    int64     //
-	Userid    int64     //
 }

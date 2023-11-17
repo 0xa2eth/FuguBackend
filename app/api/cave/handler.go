@@ -38,6 +38,8 @@ type Handler interface {
 	// @Tags API.cave
 	// @Router /api/cave/verifytask [get]
 	VerifyTask() core.HandlerFunc
+
+	MayIView() core.HandlerFunc
 }
 
 type handler struct {

@@ -1,14 +1,16 @@
 package password
 
 import (
-	"FuguBackend/config"
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/golang-jwt/jwt/v4"
 	"time"
+
+	"FuguBackend/config"
+
+	"github.com/golang-jwt/jwt/v4"
 )
 
 const (
