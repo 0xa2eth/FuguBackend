@@ -65,4 +65,5 @@ var zhCNText = map[int]string{
 	SecretCreateError:        "发布秘密失败",
 	GetSecretsError:          "获取秘密失败",
 	RefreshFriendCircleError: "刷新朋友圈失败",
+	InvitationVerifyError:    "邀请码效验失败",
 }

@@ -3,9 +3,8 @@ package secrets
 import (
 	"FuguBackend/app/repository/mysql"
 	"fmt"
-	"gorm.io/gorm"
-
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Publisher struct {
@@ -35,13 +34,13 @@ func FindViewableSecrets(ids []int) []Secret {
 func FindExtroVipSecrets() []Secret {
 	var vips []int
 	var find []Secret
-	err := mysql.DB.Table("users").Select("id").Where("users.tag > ?", 0).Find(&vips).Error
+	err := mysql.DB.Table("users").Select("id").Where("users.vip_level > ?", 0).Find(&vips).Error
 	if err != nil {
 		zap.L().Error("FindExtroVipSecrets failed ... ", zap.Error(err))
-	}
 
+	}
 	err = mysql.DB.Table("secrets s").
-		Where("s.author_id IN ？", vips).Order("RAND()").Limit(1).Find(&find).Error
+		Where("s.author_id IN (?)", vips).Order("s.id").Limit(1).Find(&find).Error
 	if err != nil {
 		zap.L().Error("FindExtroVipSecrets failed ... ", zap.Error(err))
 	}
@@ -53,9 +52,9 @@ func FindExtroRecommendCaveSecrets(ids []int) []Secret {
 
 	var find []Secret
 	err := mysql.DB.Table("secrets s").
-		Not("s.author_id  IN ？", ids).
-		Where("s.view_level = ?", 2). // 1,广场 2,洞穴 3,广场&洞穴
-		Order("RAND()").Limit(1).Find(&find).Error
+		Where("s.view_level = ? ", 2). // 1,广场 2,洞穴 3,广场&洞穴
+		Not("s.author_id  IN (?)", ids).
+		Order("s.id").Limit(1).Find(&find).Error
 	if err != nil {
 		zap.L().Error("FindExtroRecommendSecrets failed ... ", zap.Error(err))
 	}
@@ -77,7 +76,7 @@ func FindSiteFriendsSecrets(friendids []int, pageNum, pageSize int) ([]Secret, e
 	var dbsecrets []Secret
 	offset := (pageNum - 1) * pageSize
 	dberr := mysql.DB.Table("secrets").
-		Where("author_id IN ? ", friendids).
+		Where("author_id IN (?) ", friendids).
 		Offset(offset).
 		Limit(pageSize).
 		Order("id DESC").Find(&dbsecrets).Error

@@ -1,22 +1,23 @@
 package secret
 
 import (
-	"FuguBackend/app/code"
-	"FuguBackend/app/pkg/core"
-	"FuguBackend/app/pkg/password"
-	"FuguBackend/app/repository/mysql/secret_images"
-	"FuguBackend/app/repository/mysql/secrets"
-	"FuguBackend/app/repository/redis"
-	"FuguBackend/config"
-	"FuguBackend/pkg/snowflake"
 	"encoding/json"
 	"fmt"
-	"go.uber.org/zap"
-	"gorm.io/gorm"
+	"gorm.io/datatypes"
 	"log"
 	"net/http"
 	"regexp"
 	"time"
+
+	"FuguBackend/app/code"
+	"FuguBackend/app/pkg/core"
+	"FuguBackend/app/pkg/password"
+	"FuguBackend/app/repository/mysql/secrets"
+	"FuguBackend/app/repository/redis"
+	"FuguBackend/config"
+	"FuguBackend/pkg/snowflake"
+
+	"go.uber.org/zap"
 )
 
 // CreateSecretData ...  一对多 has many
@@ -37,7 +38,7 @@ type Image struct {
 	ImageUrl string `json:"ImageUrl,omitempty" gorm:"column:imageurl;type:varchar(255)"`
 }
 
-func (s *service) Create(c core.Context, hashID string, data *CreateSecretData) (id int64, err error) {
+func (s *service) Create(c core.Context, hashID string, data *CreateSecretData) (id int, err error) {
 
 	// 提取被艾特的人
 	screenName, _ := extractUsername(data.Content)
@@ -62,38 +63,23 @@ func (s *service) Create(c core.Context, hashID string, data *CreateSecretData) 
 		}
 	}
 	// 写库
-	model := secrets.NewModel()
+
+	model := secrets.Secret{}
 	genID, _ := snowflake.GenID()
-	model.SecretId = int64(genID)
-	model.Authorid = int64(data.AuthorID)
-	model.ViewLevel = int64(data.ViewLevel)
+	model.SecretID = genID
+	model.AuthorID = data.AuthorID
+	model.ViewLevel = data.ViewLevel
 	model.Timestamp = time.Now().Unix()
-	model.Status = 1
-
-	//id, err = model.Create(s.db.GetDbW().WithContext(c.RequestContext()))
-	//if err != nil {
-	//	return 0, err
-	//}
-	s.db.GetDbW().Table("secrets").Create(&model)
-
-	for i := range data.Images {
-		simg := secret_images.NewModel()
-		simg.SecretId = id
-		simg.ImageUrl = data.Images[i]
-		_, err = simg.Create(s.db.GetDbW().WithContext(c.RequestContext()))
-		if err != nil {
-			return 0, err
-		}
+	model.Content = data.Content
+	model.Status = true
+	jsonImages, _ := json.Marshal(data.Images)
+	model.Images = datatypes.JSON(jsonImages)
+	secretID, err := secrets.CreatSecret(model)
+	if err != nil {
+		return 0, err
 	}
-	//userModel := users.NewModel()
-	//var m map[string]interface{}
-	//m["numofposts"] =
-	//qb := users.NewQueryBuilder().Updates()
-	err = s.db.GetDbW().Table("users").
-		Where("id = ?", int64(data.AuthorID)).
-		Update("numofposts", gorm.Expr("numofposts + ?", 1)).Error
 
-	return id, nil
+	return secretID, nil
 
 }
 

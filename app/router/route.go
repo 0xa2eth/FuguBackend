@@ -23,8 +23,12 @@ func SetApiRouter(r *Resource) {
 
 	login.POST("/twitterLogin", userHandler.RegisterOrLogin())
 
-	// 需要签名验证、登录验证、RBAC 权限验证
-	api := r.Mux.Group("/api", core.WrapAuthHandler(r.Interceptors.CheckLogin), r.Interceptors.CheckJWT())
+	////需要签名验证、登录验证、RBAC 权限验证
+	//api := r.Mux.Group("/api",
+	//	core.WrapAuthHandler(r.Interceptors.CheckLogin),
+	//	r.Interceptors.CheckJWT())
+	api := r.Mux.Group("/api",
+		r.Interceptors.CheckJWT())
 	{
 		{
 			// user

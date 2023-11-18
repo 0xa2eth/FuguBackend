@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -79,12 +80,27 @@ func (h *handler) RegisterOrLogin() core.HandlerFunc {
 				//InvitedBy:     req.InvitationCode,
 			}
 			if req.InvitationCode != "" {
-				HashID, err := h.cache.Get(req.InvitationCode)
-				if err != nil {
-					h.logger.Error("cache get invitecode failed...", zap.Error(err))
+				if req.InvitationCode == "fugutoxic.com" {
+					createData.InvitedBy = 0
+				} else {
+					exists := h.cache.Exists(req.InvitationCode)
+					h.logger.Info(fmt.Sprintf("===InvitationCode Exist=== %v", exists))
+					if !exists {
+						c.AbortWithError(core.Error(
+							http.StatusBadRequest,
+							code.InvitationVerifyError,
+							code.Text(code.InvitationVerifyError)).WithError(err),
+						)
+						return
+					}
+					HashID, err := h.cache.Get(req.InvitationCode)
+					if err != nil {
+						h.logger.Error("cache get invitecode failed...", zap.Error(err))
+					}
+					ids, _ := h.hashids.HashidsDecode(HashID)
+					createData.InvitedBy = ids[0]
 				}
-				ids, _ := h.hashids.HashidsDecode(HashID)
-				createData.InvitedBy = ids[0]
+
 			}
 			id, err := h.userService.Create(c, createData)
 			if err != nil {

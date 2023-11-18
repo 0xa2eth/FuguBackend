@@ -36,7 +36,7 @@ echo "文件上传成功 ｜ File transferred successfully"
 #            echo "文件从远程服务器拷贝失败"
 #        fi
 else
-    echo "文件上传失败 ｜ File transfer failed"local_source_file
+    echo "文件上传失败 ｜ File transfer failed"
 fi
 # 在服务器 对应路径下 使用 ll 或者 stat 命令来查看文件的大小或创建时间和更新时间来手动确认上传成功
 # cp -f main /fugu/fugu/

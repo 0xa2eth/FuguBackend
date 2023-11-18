@@ -65,4 +65,5 @@ var enUSText = map[int]string{
 	SecretCreateError:        "Secret Create Error",
 	GetSecretsError:          "Get Secrets Error",
 	RefreshFriendCircleError: "Refresh Friend Circle Error",
+	InvitationVerifyError:    "Invitation Verify Error",
 }

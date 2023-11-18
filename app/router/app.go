@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"FuguBackend/app/alert"
 	"FuguBackend/app/metrics"
 	"FuguBackend/app/pkg/core"
 	"FuguBackend/app/pkg/twittersvc"
@@ -119,7 +118,7 @@ func NewHTTPServer() (*Server, error) {
 		//core.WithEnableOpenBrowser(openBrowserUri),
 		core.WithEnableCors(),
 		core.WithEnableRate(),
-		core.WithAlertNotify(alert.NotifyHandler(config.Lg)),
+		//core.WithAlertNotify(alert.NotifyHandler(config.Lg)),
 		core.WithRecordMetrics(metrics.RecordHandler(config.Lg)),
 	)
 

@@ -67,12 +67,10 @@ func (s *service) List(c core.Context, InnerID int, pageNum, pageSize int, hashF
 	Response.SecretsList = NormalSecretsList
 	Response.Extro = extra
 
-	var page pagination.PageInfo
-	page.PageSize = pageSize
-	page.PageNum = pageNum
-	page.Data = Response
+	helper := pagination.PageHelper(pageNum, pageSize, "DESC", len(secrets))
+	helper.Data = Response
 
-	return page, err
+	return helper, err
 
 }
 func (s *service) BuildNormalSecretsRes(c core.Context, raw []repo.Secret, hashFunc hash.Hash, viewAble bool) []SecretRes {

@@ -166,3 +166,8 @@ cave 改bio后 要重新发推特 对其内容吗 bio name ？？？
 5 最小权限原则，限制数据库的权限
 
 流程安全：首先推荐的地方使用secret 而非洞穴就很没道理。
+
+-----
+login  refresh 登陆的时候 刷新一次
+time refresh 定时刷新 
+朋友入库的时候 status 要设置1

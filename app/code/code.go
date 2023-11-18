@@ -85,6 +85,8 @@ const (
 	SecretCreateError = 20601
 	GetSecretsError   = 20602
 
+	InvitationVerifyError = 20701
+
 	RefreshFriendCircleError = 30101
 )
 

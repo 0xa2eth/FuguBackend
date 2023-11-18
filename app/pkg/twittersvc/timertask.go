@@ -14,7 +14,7 @@ type People struct {
 func (s *TwitterServiceMaster) TimeTask() {
 	var count = 0
 	ticker := time.NewTicker(time.Hour * 3)
-	//ticker := time.NewTicker(time.Second * 10)
+
 	//defer ticker.Stop()
 	var ct time.Time
 	for {
@@ -25,7 +25,8 @@ func (s *TwitterServiceMaster) TimeTask() {
 
 			s.DoRefreshTaskFunc()
 
-			zap.L().Info(fmt.Sprintf(" 第%v次拉取结束  结束时间:%v   耗时：%v 秒\n", count, time.Now(), time.Since(ct).Seconds()))
+			zap.L().Info(fmt.Sprintf(" 第%v次拉取结束  结束时间:%v   耗时：%v 秒\n",
+				count, time.Now(), time.Since(ct).Seconds()))
 
 		}
 
@@ -33,7 +34,12 @@ func (s *TwitterServiceMaster) TimeTask() {
 }
 func (s *TwitterServiceMaster) DoRefreshTaskFunc() {
 	// 1 拿在线人数
-	s.cache.Get("")
+
+	// 2 获取在线人数的follower 和 following
+
+	// 3 和平台用户做对比 找到friends
+
+	// 4 先删 再增（或者）
 
 }
 
